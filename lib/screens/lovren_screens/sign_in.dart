@@ -40,7 +40,7 @@ class SignInPage extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          CustomButon(text: 'Login'),
+          CustomButton(text: 'Login'),
           const SizedBox(
             height: 10,
           ),

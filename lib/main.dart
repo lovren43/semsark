@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:semsark/screens/sign_in.dart';
+import 'package:semsark/screens/lovren_screens/sign_in.dart';
 
 void main() {
   runApp(const Semsark());
