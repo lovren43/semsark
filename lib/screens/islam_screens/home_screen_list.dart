@@ -1,24 +1,130 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 
 class HomeScreenList extends StatelessWidget{
   const HomeScreenList({super.key});
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      backgroundColor: Colors.white,
-      iconTheme: const IconThemeData.fallback(),
+    body: Column(
+      children: [
+        SizedBox(height: 150,),
+        Expanded(
+          child: Stack(
+            children: [
+              ListView.builder(
+                  itemBuilder: (context , index) => buildItemView(),
+                  itemCount: 20
+              ),
+              Container(
+                margin: const EdgeInsetsDirectional.only(
+                  bottom: 15
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    buildNavBar(),
+                  ],
+                ),
+              ) ,
+            ],
+          ),
+        ),
+      ],
     ),
-    body: ListView.builder(
-        itemBuilder: (context , index) => buildItemView(),
-        itemCount: 20
-    ),
-    backgroundColor: Colors.white,
+
+    //backgroundColor: Colors.white,
   );
 
 
+  // flag true  => color gray and white
+  // flag false => color silver and blue
+  Widget buildNavBar() => Container(
+    //color: Colors.indigo,
+    margin: EdgeInsetsDirectional.all(8),
+    height: 100,
+    decoration: const BoxDecoration(
+        color: Color.fromRGBO(240, 249, 249, 1),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(18),
+          bottomRight: Radius.circular(18),
+        ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey ,
+          offset: Offset(0,2),
+          blurRadius: 5,
+          blurStyle: BlurStyle.solid
+        ),
+      ],
+    ),
+    child: Container(
+      margin: const EdgeInsetsDirectional.only(
+        top: 3,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsetsDirectional.all(5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                buildIcons(Icons.add_box , "SERVICES", true) ,
+                buildIcons(Icons.add , "CHAT", false) ,
+                buildIcons(Icons.add , "ADDITION", true) ,
+                buildIcons(Icons.add , "FAVORITE", false) ,
+                buildIcons(Icons.add , "MY ACCOUNT", true) ,
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  ) ;
+  Widget buildIcons(IconData icon,String txt,bool flag) => Container(
+      child: Column(
+        children: [
+          InkWell(
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(
+                  color: Colors.grey
+                ),
+                color: flag ? Color.fromRGBO(241, 246, 251, 1) : Colors.black12,
+              ),
+              child:
+                Icon(
+                  icon ,
+                  size: 35,
+                  color: Colors.blue,
+                ),
+            ),
+            onTap: (){
+
+            },
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Text(
+              txt,
+              style: const TextStyle(
+              color: Color.fromRGBO(69, 166, 221, 1),
+              fontWeight: FontWeight.bold,
+              fontSize: 9,
+            ),
+          ),
+        ],
+      ),
+    ) ;
   Widget buildItemView() => Container(
-    margin: const EdgeInsetsDirectional.all(7),
+    margin: const EdgeInsetsDirectional.all(5),
     decoration: const BoxDecoration(
       color: Color.fromRGBO(241, 246, 251, 1) ,
       borderRadius: BorderRadius.only(
@@ -86,16 +192,16 @@ class HomeScreenList extends StatelessWidget{
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
                       Icon(
-                        Icons.king_bed_rounded,
+                        Icons.bed_outlined,
                         color: Color.fromRGBO(69, 166, 221, 1),
-                        size: 31,
+                        size: 25,
                       ),
                       SizedBox(width: 5),
                       Text(
                         '2' ,
                         style: TextStyle(
                             color: Color.fromRGBO(70, 83, 123, 1.0),
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold ,
                         ),
                         maxLines: 1,
@@ -103,9 +209,9 @@ class HomeScreenList extends StatelessWidget{
                       ) ,
                       SizedBox(width: 10),
                       Icon(
-                        Icons.bathtub_rounded,
+                        Icons.ice_skating,
                         color: Color.fromRGBO(69, 166, 221, 1),
-                        size: 28,
+                        size: 25,
                       ),
                       SizedBox(width: 5),
                       Text(
@@ -185,5 +291,6 @@ class HomeScreenList extends StatelessWidget{
       
     ),
   ) ;
+
 
 }

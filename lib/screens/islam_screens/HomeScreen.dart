@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     body: Stack(
       children: [
-        GoogleMap(
+        const GoogleMap(
             initialCameraPosition:CameraPosition(target: LatLng(30.0276 , 31.2101), zoom: 15),
         ),
         Container(
