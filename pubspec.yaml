@@ -76,6 +76,7 @@ flutter:
       - assets/images/logo.png 
       - assets/images/dot.png
       - assets/images/user_icon.svg
+      - assets/images/Animation.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -92,6 +93,9 @@ flutter:
     - family: Cairo
       fonts:
         - asset: assets/fonts/Cairo-VariableFont_slnt,wght.ttf
+    - family: Hacen
+      fonts:
+        - asset: assets/fonts/Hacen.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
