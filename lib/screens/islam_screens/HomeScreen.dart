@@ -42,27 +42,27 @@ class _HomeScreen extends State<HomeScreen> {
         items: const [
           Icon(
             Icons.home_outlined,
-            size: 35,
+            size: 30,
             color: Colors.white,
           ),
           Icon(
             Icons.chat_outlined,
-            size: 35,
+            size: 30,
             color: Colors.white,
           ),
           Icon(
             Icons.add,
-            size: 35,
+            size: 30,
             color: Colors.white,
           ),
           Icon(
             Icons.notifications,
-            size: 35,
+            size: 30,
             color: Colors.white,
           ),
           Icon(
             Icons.account_box_outlined,
-            size: 35,
+            size: 30,
             color: Colors.white,
           ),
         ],

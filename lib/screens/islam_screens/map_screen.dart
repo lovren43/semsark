@@ -13,19 +13,21 @@ class _HomeState extends State<Home> {
   late LocationData _currentPosition;
   Location location = Location();
   late GoogleMapController _controller;
-  late LatLng _initialCameraPosition = const LatLng(31, 31);
+  late LatLng _initialCameraPosition ;
   static bool isMap = true;
 
   @override
   void initState() {
-    getLoc();
     super.initState();
+    Future.delayed(Duration.zero , ()=> getLoc()) ;
   }
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
-    setState(() {
-      getLoc();
-    });
+    _controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(0,0), zoom: 15),
+      ),
+    );
   }
 
   getLoc() async {
@@ -56,12 +58,6 @@ class _HomeState extends State<Home> {
     _initialCameraPosition = LatLng(
         double.tryParse('${_currentPosition.latitude}')!.toDouble(),
         double.tryParse('${_currentPosition.longitude}')!.toDouble());
-
-    _controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: _initialCameraPosition, zoom: 15),
-      ),
-    );
   }
 
   Widget mapWidget() => SafeArea(
