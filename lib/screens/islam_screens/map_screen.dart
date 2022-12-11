@@ -1,70 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
 import 'helper.dart';
 
 class Home extends StatefulWidget {
+  late Position cameraPosition ;
+
+  Home({required this.cameraPosition}) ;
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  late LocationData _currentPosition;
-  Location location = Location();
-  late GoogleMapController _controller;
-  late LatLng _initialCameraPosition ;
   static bool isMap = true;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero , ()=> getLoc()) ;
   }
-  void _onMapCreated(GoogleMapController _cntlr) {
-    _controller = _cntlr;
-    _controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(0,0), zoom: 15),
-      ),
-    );
-  }
-
-  getLoc() async {
-    late bool serviceEnabled;
-    late PermissionStatus _permissionGranted;
-    location.serviceEnabled().then((_serviceEnabled) => {
-          if (!_serviceEnabled)
-            {
-              location
-                  .requestService()
-                  .then((value) => {serviceEnabled = value})
-            }
-        });
-
-    if (!serviceEnabled) return;
-    location.hasPermission().then((value) => {
-          if (value == PermissionStatus.denied)
-            {
-              location
-                  .requestPermission()
-                  .then((value) => {_permissionGranted = value})
-            }
-        });
-
-    if (_permissionGranted != PermissionStatus.granted) return;
-
-    location.getLocation().then((value) => {_currentPosition = value});
-    _initialCameraPosition = LatLng(
-        double.tryParse('${_currentPosition.latitude}')!.toDouble(),
-        double.tryParse('${_currentPosition.longitude}')!.toDouble());
-  }
-
+  void _onMapCreated(GoogleMapController _cntlr) {}
   Widget mapWidget() => SafeArea(
         child: GoogleMap(
           zoomGesturesEnabled: true,
           initialCameraPosition:
-              CameraPosition(target: _initialCameraPosition, zoom: 15),
+              CameraPosition(target: LatLng(
+                  double.tryParse('${widget.cameraPosition.latitude}')!.toDouble() ,
+                  double.tryParse('${widget.cameraPosition.longitude}')!.toDouble() ,
+              ), zoom: 15),
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,
           padding: const EdgeInsets.only(bottom: 90, right: 10),

@@ -1,11 +1,16 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:semsark/screens/islam_screens/chat.dart';
 import 'package:semsark/screens/islam_screens/map_screen.dart';
 import 'package:semsark/screens/islam_screens/helper.dart';
+import 'package:semsark/screens/joo_screens/Profile.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+
+  late Position currentPosition;
+
+  HomeScreen({super.key , required this.currentPosition});
   @override
   _HomeScreen createState() => _HomeScreen();
 }
@@ -16,11 +21,10 @@ class _HomeScreen extends State<HomeScreen> {
   int index = 0;
 
   var widgets = [
-    Home(),
     ChatScreen(res: 'Chat Screen'),
     ChatScreen(res : 'Add Screen'),
     ChatScreen(res :"Notifications screen"),
-    ChatScreen(res :"Profile Screen")
+    Profile()
   ];
 
   @override
@@ -33,7 +37,7 @@ class _HomeScreen extends State<HomeScreen> {
     return Scaffold(
       extendBody: true,
       body: Container(
-        child: widgets[index],
+        child: index==0 ? Home(cameraPosition: widget.currentPosition,) :widgets[index-1],
       ),
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
