@@ -17,8 +17,9 @@ class CustomButon extends StatelessWidget {
         height: 60,
         child: Center(
           child: Text(text,
-          style: TextStyle(
-            color: Color(0xFFFFFFFF)
+          style: const TextStyle(
+            color: Color(0xFFFFFFFF),
+            fontSize: 18
           ),
           ),
         ),

@@ -1,0 +1,148 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:semsark/components/InputField.dart';
+import 'package:semsark/components/button.dart';
+import 'package:semsark/screens/sign_in.dart';
+import 'package:semsark/screens/sign_up.dart';
+
+import '../components/input_digit.dart';
+
+class VerificationPage extends StatelessWidget {
+  const VerificationPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        alignment: Alignment.topLeft,
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  children: [
+                    Stack(alignment: Alignment.center, children: <Widget>[
+                      ClipRRect(
+                        borderRadius:  const BorderRadius.only(
+                          bottomLeft:Radius.circular(150),
+                          bottomRight:Radius.circular(150)
+                          ),
+                          child: ImageFiltered(
+                        imageFilter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+                        child: SizedBox(
+                            height: 200,
+                            width: double.infinity,
+                            child: Image.asset(
+                              'assets/images/back.png',
+                              fit: BoxFit.fill,
+                            )),
+                      )),
+                      
+                    ]),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          const Text("Verification",
+                              style: TextStyle(
+                                  color: Color(0xFF7f88b3), fontSize: 30)),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          const Text("Enter the six digit code we sent to your",
+                          style: TextStyle(
+                            color: Color(0xFF7f88b3),
+                            fontSize: 17
+                          ),),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text("email address to verify your new account:",
+                          style: TextStyle(
+                            color: Color(0xFF7f88b3),
+                            fontSize: 17
+                          ),),
+                           const SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 40,
+                                child:inputDigit()
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              SizedBox(
+                                width: 40,
+                                child:inputDigit()
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              SizedBox(
+                                width: 40,
+                                child:inputDigit()
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              SizedBox(
+                                width: 40,
+                                child:inputDigit()
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              SizedBox(
+                                width: 40,
+                                child:inputDigit()
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              SizedBox(
+                                width: 40,
+                                child:inputDigit()
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          CustomButon(text: 'Verify'),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pop(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const SignUpPage();
+                  },
+                ),
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+}

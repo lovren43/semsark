@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
-class InputField extends StatelessWidget {
-  InputField(this.hintText, this.inputIcon, {super.key});
+class PassordInputField extends StatelessWidget {
+  PassordInputField(this.hintText, {super.key});
   String? hintText;
-  Icon? inputIcon;
+  bool invisible = true;
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return  TextField(
+      obscureText: true,
+      enableSuggestions: false,
+      autocorrect: false,
       decoration: InputDecoration(
           filled: true,
           fillColor: const Color(0xFFF1F6FB),
-          prefixIcon: inputIcon,
+          prefixIcon: const Icon(Icons.lock_outlined),
           hintText: hintText,
           hintStyle: const TextStyle(color: Color(0xFF8189B0)),
           enabledBorder: const OutlineInputBorder(
@@ -21,6 +24,8 @@ class InputField extends StatelessWidget {
               borderSide: BorderSide(
             color: Colors.white,
           ))),
+          
     );
   }
 }
+
