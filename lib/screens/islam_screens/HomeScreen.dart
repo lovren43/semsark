@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:semsark/screens/islam_screens/chat.dart';
+import 'package:semsark/screens/islam_screens/create_ad_screen.dart';
 import 'package:semsark/screens/islam_screens/map_screen.dart';
 import 'package:semsark/screens/islam_screens/helper.dart';
 import 'package:semsark/screens/joo_screens/Profile.dart';
@@ -22,7 +23,7 @@ class _HomeScreen extends State<HomeScreen> {
 
   var widgets = [
     ChatScreen(res: 'Chat Screen'),
-    ChatScreen(res : 'Add Screen'),
+    CreateAd(),
     ChatScreen(res :"Notifications screen"),
     Profile()
   ];
