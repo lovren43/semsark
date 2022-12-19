@@ -68,6 +68,7 @@ flutter:
       - assets/images/back.png 
       - assets/images/dot.png 
       - assets/images/googleIcon.png
+      - assets/images/emailIcon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

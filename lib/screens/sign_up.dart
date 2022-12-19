@@ -25,7 +25,7 @@ class SignUpPage extends StatelessWidget {
                           child: ImageFiltered(
                         imageFilter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
                         child: SizedBox(
-                            height: 400,
+                            height: 350,
                             width: double.infinity,
                             child: Image.asset(
                               'assets/images/back.png',
@@ -89,26 +89,111 @@ class SignUpPage extends StatelessWidget {
                             onTap: () => showDialog<String>(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
-                                      content: const Text(
-                                          "Verfication code has been sent to your email address, please check."),
+                                      actionsAlignment:
+                                          MainAxisAlignment.center,
                                       actions: [
-                                        CustomButon(
-                                          text: "BACK",
-                                          onTap: () =>
-                                              Navigator.pop(context, 'BACK'),
-                                        ),
-                                        CustomButon(
-                                          text: "DOne",
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return const VerificationPage();
-                                                },
+                                        Stack(
+                                            alignment: Alignment.center,
+                                            children: <Widget>[
+                                              Column(
+                                                children: [
+                                                  ClipRRect(
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .only(
+                                                              bottomLeft: Radius
+                                                                  .circular(
+                                                                      150),
+                                                              bottomRight:
+                                                                  Radius
+                                                                      .circular(
+                                                                          150)),
+                                                      child: ImageFiltered(
+                                                        imageFilter:
+                                                            ImageFilter.blur(
+                                                                sigmaX: 4,
+                                                                sigmaY: 4),
+                                                        child: SizedBox(
+                                                            height: 100,
+                                                            width:
+                                                                double.infinity,
+                                                            child: Image.asset(
+                                                              'assets/images/back.png',
+                                                              fit: BoxFit.fill,
+                                                            )),
+                                                      )),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                ],
                                               ),
-                                            );
-                                          },
+                                              Positioned(
+                                                  bottom: 0,
+                                                  height: 70,
+                                                  child: Image.asset(
+                                                    'assets/images/emailIcon.png',
+                                                    
+                                                  )),
+                                            ]),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            const Center(
+                                              child: Text(
+                                                
+                                                "Verification code has been sent to your",
+                                                style: TextStyle(
+                                                  color: Color(0xFF45A6DD),
+                                                  fontSize: 17
+                                                ),
+                                              ),
+                                            ),
+                                            const Center(
+                                              child: Text(
+                                                "email adddress, Please check ",
+                                                style: TextStyle(
+                                                  color: Color(0xFF45A6DD),
+                                                  fontSize: 17
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                          width: 130,
+                                          height: 50,
+                                          child: CustomButon(
+                                            text: "BACK",
+                                            onTap: () =>
+                                                Navigator.pop(context, 'BACK'),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 0,
+                                          width: 10,
+                                        ),
+                                        SizedBox(
+                                          width: 130,
+                                          height: 50,
+                                          child: CustomButon(
+                                            text: "DONE",
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return const VerificationPage();
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        )
+                                          ],
                                         )
                                       ],
                                     )),

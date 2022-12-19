@@ -23,23 +23,37 @@ class VerificationPage extends StatelessWidget {
                 child: Column(
                   children: [
                     Stack(alignment: Alignment.center, children: <Widget>[
-                      ClipRRect(
-                        borderRadius:  const BorderRadius.only(
-                          bottomLeft:Radius.circular(150),
-                          bottomRight:Radius.circular(150)
-                          ),
-                          child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
-                        child: SizedBox(
-                            height: 200,
-                            width: double.infinity,
+                      Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius:  const BorderRadius.only(
+                              bottomLeft:Radius.circular(150),
+                              bottomRight:Radius.circular(150)
+                              ),
+                              child: ImageFiltered(
+                            imageFilter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+                            child: SizedBox(
+                                height: 200,
+                                width: double.infinity,
+                                child: Image.asset(
+                                  'assets/images/back.png',
+                                  fit: BoxFit.fill,
+                                )),
+                          )),
+                          const SizedBox(
+                        height: 20,
+                      ),
+                        ],
+                      ),
+                      Positioned(
+                        bottom: 0,
+                            height: 120,
                             child: Image.asset(
-                              'assets/images/back.png',
-                              fit: BoxFit.fill,
+                              'assets/images/emailIcon.png',
+                              height: 120,
                             )),
-                      )),
-                      
                     ]),
+                    
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Column(
@@ -112,6 +126,25 @@ class VerificationPage extends StatelessWidget {
                           ),
                           const SizedBox(
                             height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text("If you did't receive the code !  ",
+                              style: TextStyle(
+                                color: Color(0xFF7f88b3),
+                                fontSize: 17,
+                              )),
+                              Text("Resend",
+                              style: TextStyle(
+                                color: Color(0xFFe87476),
+                                fontSize: 17,
+                                decoration: TextDecoration.underline
+                              ))
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 25,
                           ),
                           CustomButon(text: 'Verify'),
                           const SizedBox(
