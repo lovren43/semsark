@@ -32,6 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   font_awesome_flutter: ^10.2.1
+  passwordfield: ^0.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -69,6 +70,8 @@ flutter:
       - assets/images/dot.png 
       - assets/images/googleIcon.png
       - assets/images/emailIcon.png
+      - assets/images/Mask.png
+      - assets/images/gender.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

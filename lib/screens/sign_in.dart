@@ -8,6 +8,8 @@ class SignInPage extends StatelessWidget {
   SignInPage({super.key});
   int? phoneNumber;
   String? password;
+  final _passwordFieldKey = GlobalKey<FormFieldState<String>>();
+
 GlobalKey<FormState> formKey=GlobalKey();
   @override
   Widget build(BuildContext context) {

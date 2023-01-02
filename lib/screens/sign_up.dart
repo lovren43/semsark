@@ -248,28 +248,6 @@ class SignUpPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     const Text("Already have an account?"),
-                          //     GestureDetector(
-                          //       onTap: () {
-                          //         Navigator.pop(
-                          //           context,
-                          //           MaterialPageRoute(
-                          //             builder: (context) {
-                          //               return  SignInPage();
-                          //             },
-                          //           ),
-                          //         );
-                          //       },
-                          //       child: const Text(
-                          //         '    Sign In',
-                          //         style: TextStyle(color: Color(0xFF45A6DD)),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
                         ],
                       ),
                     )
