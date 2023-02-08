@@ -31,7 +31,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  permission_handler: ^10.2.0
+  permission_handler: ^9.2.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -45,6 +45,8 @@ dependencies:
   location: ^4.4.0
   intl_utils: ^2.8.1
   curved_navigation_bar: ^1.0.3
+  dropdown_button2: ^1.9.2
+  passwordfield: ^0.1.0
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +76,13 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
       - assets/images/
+      - assets/images/logo.png 
+      - assets/images/back.png 
+      - assets/images/dot.png 
+      - assets/images/googleIcon.png
+      - assets/images/emailIcon.png
+      - assets/images/Mask.png
+      - assets/images/gender.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
