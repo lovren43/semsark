@@ -155,9 +155,7 @@ class _ProfileState extends State<Profile> {
       backgroundColor: Colors.white,
       child: CircleAvatar(
         radius: 65,
-        backgroundImage: NetworkImage(
-          'https://expertphotography.b-cdn.net/wp-content/uploads/2020/08/social-media-profile-photos-3.jpg',
-        ),
+        backgroundImage: AssetImage("assets/images/haha.JPG"),
       ),
     ),
   );
