@@ -98,55 +98,14 @@ class _personalInfoPageState extends State<personalInfoPage> {
                       padding: const EdgeInsets.all(15.0),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                  width: screenWidth*0.43,
-                                  height: 80,
-                                  child: InputField("First Name",
-                                      const Icon(Icons.person_outlined))),
-                              const SizedBox(
-                                width: 25,
-                                height: 0,
-                              ),
-                              SizedBox(
-                                  width: screenWidth*0.43,
-                                  height: 80,
-                                  child: InputField("Last Name",
-                                      const Icon(Icons.person_outlined))),
-                            ],
-                          ),
+                          InputField("Full Name", const Icon(Icons.person_outlined)),
                           const SizedBox(
-                            height: 5,
+                            height: 20,
                           ),
                           InputField("Phone Number", const Icon(Icons.phone)),
                           const SizedBox(
                             height: 20,
                           ),
-                          // TextField(
-                          //   decoration: InputDecoration(
-                          //       filled: true,
-                          //       fillColor: const Color(0xFFF1F6FB),
-                          // prefixIcon: Padding(
-                          //   padding: const EdgeInsets.all(12.0),
-                          //   child: Image.asset(
-                          //     'assets/images/gender.png',
-                          //     height: 5,
-                          //     width: 5,
-                          //   ),
-                          // ),
-                          //       hintText: genderHintText,
-                          //       hintStyle:
-                          //           const TextStyle(color: Color(0xFF8189B0)),
-                          //       enabledBorder: const OutlineInputBorder(
-                          //           borderSide: BorderSide(
-                          //         color: Colors.white,
-                          //       )),
-                          //       border: const OutlineInputBorder(
-                          //           borderSide: BorderSide(
-                          //         color: Colors.white,
-                          //       ))),
-                          // ),
                           Form(
                             key: _formKey,
                             child: Column(

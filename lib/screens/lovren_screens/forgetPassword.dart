@@ -6,17 +6,19 @@ import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/screens/lovren_screens/verfication_page.dart';
+import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
+
 import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class forgetPasswordEmail extends StatefulWidget {
+  const forgetPasswordEmail({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<forgetPasswordEmail> createState() => _forgetPasswordEmailState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
   GlobalKey<FormState> formKey = GlobalKey();
 
   @override
@@ -194,7 +196,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                               MaterialPageRoute(
                                                                 builder:
                                                                     (context) {
-                                                                  return const PinCodeVerificationScreen();
+                                                                  return const forgetPasswordVerficationCode();
                                                                 },
                                                               ),
                                                             );

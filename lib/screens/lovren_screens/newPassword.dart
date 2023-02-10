@@ -6,19 +6,36 @@ import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/screens/lovren_screens/verfication_page.dart';
+import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
+import 'package:semsark/components/PasswordInputField.dart';
 import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 
-
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class newPassword extends StatefulWidget {
+  const newPassword({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<newPassword> createState() => _newPasswordState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  GlobalKey<FormState> formKey = GlobalKey();
+class _newPasswordState extends State<newPassword> {
+  final textFieldFocusNode = FocusNode();
+  final textFieldFocusNode2 = FocusNode();
 
+  bool _obscured = true;
+  void _toggleObscured() {
+    setState(() {
+      _obscured = !_obscured;
+      if (textFieldFocusNode.hasPrimaryFocus) {
+        return;
+      } // If focus is on text field, dont unfocus
+      textFieldFocusNode.canRequestFocus = false;
+      // Prevents focus if tap on eye
+    });
+  }
+
+  GlobalKey<FormState> formKey = GlobalKey();
+  String _password = '';
+  String _confirmPassword = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,22 +87,111 @@ class _SignUpPageState extends State<SignUpPage> {
                         padding: const EdgeInsets.all(15.0),
                         child: Column(
                           children: [
-                            const Text("Enter Your Email",
+                            const Text("Reset your password",
                                 style: TextStyle(
                                     color: Color(0xFF45A6DD), fontSize: 23)),
                             const SizedBox(
                               height: 30,
                             ),
-                            EmailInputField(
-                                'Email ', const Icon(Icons.email_outlined)),
+                            TextFormField(
+                              onChanged: (value) {
+                                _password = value;
+                              },
+                              validator: (data) {
+                                if (data!.isEmpty) {
+                                  return "Field is required";
+                                }
+                              },
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: _obscured,
+                              focusNode: textFieldFocusNode,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color(0xFFF1F6FB),
+                                prefixIcon: const Icon(Icons.lock_outlined),
+                                hintText: "New password",
+                                hintStyle:
+                                    const TextStyle(color: Color(0xFF8189B0)),
+                                enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Colors.white,
+                                )),
+                                border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Colors.white,
+                                )),
+                                suffixIcon: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                  child: GestureDetector(
+                                    onTap: _toggleObscured,
+                                    child: Icon(
+                                      _obscured
+                                          ? Icons.visibility_off_rounded
+                                          : Icons.visibility_rounded,
+                                      size: 24,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                             const SizedBox(
                               height: 10,
+                            ),
+                            TextFormField(
+                              onChanged: (value) {
+                                _confirmPassword = value;
+                              },
+                              validator: (data) {
+                                if (data!.isEmpty) {
+                                  return "Field is required";
+                                }
+                                if(_password!=_confirmPassword){
+                                  return "Password must match";
+                                }
+                              },
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: _obscured,
+                              focusNode: textFieldFocusNode2,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color(0xFFF1F6FB),
+                                prefixIcon: const Icon(Icons.lock_outlined),
+                                hintText: "Confirm password",
+                                hintStyle:
+                                    const TextStyle(color: Color(0xFF8189B0)),
+                                enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Colors.white,
+                                )),
+                                border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Colors.white,
+                                )),
+                                suffixIcon: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                  child: GestureDetector(
+                                    onTap: _toggleObscured,
+                                    child: Icon(
+                                      _obscured
+                                          ? Icons.visibility_off_rounded
+                                          : Icons.visibility_rounded,
+                                      size: 24,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
                             ),
                             CustomButon(
-                              text: 'NEXT',
+                              text: 'Confirm',
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   showDialog<String>(
@@ -194,7 +300,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                               MaterialPageRoute(
                                                                 builder:
                                                                     (context) {
-                                                                  return const PinCodeVerificationScreen();
+                                                                  return const forgetPasswordVerficationCode();
                                                                 },
                                                               ),
                                                             );
@@ -277,7 +383,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignInPage();
+                      return forgetPasswordVerficationCode();
                     },
                   ),
                 );

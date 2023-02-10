@@ -8,9 +8,16 @@ import 'package:semsark/screens/lovren_screens/sign_up.dart';
 
 import 'package:semsark/components/input_digit.dart';
 
-class VerificationPage extends StatelessWidget {
+class VerificationPage extends StatefulWidget {
   const VerificationPage({super.key});
 
+  @override
+  State<VerificationPage> createState() => _VerificationPageState();
+}
+
+class _VerificationPageState extends State<VerificationPage> {
+  bool _onEditing = true;
+  String? _code;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,32 +86,6 @@ class VerificationPage extends StatelessWidget {
                           ),
                           const SizedBox(
                             height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(width: 40, child: inputDigit()),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              SizedBox(width: 40, child: inputDigit()),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              SizedBox(width: 40, child: inputDigit()),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              SizedBox(width: 40, child: inputDigit()),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              SizedBox(width: 40, child: inputDigit()),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              SizedBox(width: 40, child: inputDigit()),
-                            ],
                           ),
                           const SizedBox(
                             height: 30,
