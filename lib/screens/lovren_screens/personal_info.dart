@@ -32,6 +32,8 @@ class _personalInfoPageState extends State<personalInfoPage> {
     const List<String> list = <String>['Male', 'Female'];
     String dropdownValue = list.first;
     String genderHintText = 'Gender';
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Stack(
         alignment: Alignment.topLeft,
@@ -76,6 +78,21 @@ class _personalInfoPageState extends State<personalInfoPage> {
                               height: 120,
                             )),
                       ),
+                      Positioned(
+                        bottom: 5,
+                        left: 105,
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                                border:
+                                    Border.all(color: Colors.black, width: 1),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(80))),
+                            height: 30,
+                            child: Image.asset(
+                              'assets/images/CAM.png',
+                            )),
+                        )
                     ]),
                     Padding(
                       padding: const EdgeInsets.all(15.0),
@@ -84,16 +101,16 @@ class _personalInfoPageState extends State<personalInfoPage> {
                           Row(
                             children: [
                               SizedBox(
-                                  width: 180,
+                                  width: screenWidth*0.43,
                                   height: 80,
                                   child: InputField("First Name",
                                       const Icon(Icons.person_outlined))),
                               const SizedBox(
-                                width: 20,
+                                width: 25,
                                 height: 0,
                               ),
                               SizedBox(
-                                  width: 180,
+                                  width: screenWidth*0.43,
                                   height: 80,
                                   child: InputField("Last Name",
                                       const Icon(Icons.person_outlined))),

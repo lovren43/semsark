@@ -5,7 +5,12 @@ class inputDigit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return   TextField(
+    return TextFormField(
+      validator: (data) {
+        if (data!.isEmpty) {
+          return "field is required";
+        }
+      },
       maxLength: 1,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(

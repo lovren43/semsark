@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 
-class InputField extends StatelessWidget {
-  InputField(this.hintText, this.inputIcon, {super.key});
+class EmailInputField extends StatelessWidget {
+  EmailInputField(this.hintText, this.inputIcon, {super.key});
   String? hintText;
   Icon? inputIcon;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: (data) {
-        if (data!.isEmpty) {
-          return "Field is required";
-        }
-      },
+      validator: (value) =>
+          EmailValidator.validate(value!) ? null : "Please enter a valid email",
       decoration: InputDecoration(
           filled: true,
           fillColor: const Color(0xFFF1F6FB),

@@ -10,22 +10,29 @@ class PassordInputField extends StatefulWidget {
 
 class _PassordInputFieldState extends State<PassordInputField> {
   final textFieldFocusNode = FocusNode();
-  bool _obscured = false;
+  bool _obscured = true;
 
   void _toggleObscured() {
     setState(() {
       _obscured = !_obscured;
       if (textFieldFocusNode.hasPrimaryFocus) {
+        
         return;
       } // If focus is on text field, dont unfocus
       textFieldFocusNode.canRequestFocus =
-          false; // Prevents focus if tap on eye
+          false;
+       // Prevents focus if tap on eye
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: (data) {
+        if (data!.isEmpty) {
+          return "Field is required";
+        }
+      },
       keyboardType: TextInputType.visiblePassword,
       obscureText: _obscured,
       focusNode: textFieldFocusNode,
@@ -51,8 +58,8 @@ class _PassordInputFieldState extends State<PassordInputField> {
             onTap: _toggleObscured,
             child: Icon(
               _obscured
-                  ? Icons.visibility_rounded
-                  : Icons.visibility_off_rounded,
+                  ? Icons.visibility_off_rounded
+                  : Icons.visibility_rounded,
               size: 24,
             ),
           ),
