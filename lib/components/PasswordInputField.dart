@@ -12,6 +12,9 @@ class PassordInputField extends StatefulWidget {
 class _PassordInputFieldState extends State<PassordInputField> {
   final textFieldFocusNode = FocusNode();
   bool _obscured = true;
+    TextEditingController? pass = TextEditingController();
+
+  
 
   void _toggleObscured() {
     setState(() {
@@ -28,6 +31,7 @@ class _PassordInputFieldState extends State<PassordInputField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      
       validator: (data) {
         if (data!.isEmpty) {
           return "Field is required";

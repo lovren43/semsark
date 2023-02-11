@@ -20,8 +20,10 @@ class newPassword extends StatefulWidget {
 class _newPasswordState extends State<newPassword> {
   final textFieldFocusNode = FocusNode();
   final textFieldFocusNode2 = FocusNode();
-
+final TextEditingController pass = TextEditingController();
+  final TextEditingController confirmPass = TextEditingController();
   bool _obscured = true;
+  
   void _toggleObscured() {
     setState(() {
       _obscured = !_obscured;
@@ -93,25 +95,75 @@ class _newPasswordState extends State<newPassword> {
                             const SizedBox(
                               height: 30,
                             ),
-                            PassordInputField(
-                                onChanged: (data) {
-                                  password = data;
-                                },
-                                hintText: 'Password'),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            // PassordInputField(
+                            //     onChanged: (data) {
+                            //       password = data;
+                            //     },
+                            //     hintText: 'Password'),
                             TextFormField(
+                              controller: pass,
                               onChanged: (data) {
-                                confirmPassword = data;
+                                password = data;
+                                
                               },
                               validator: (data) {
                                 if (data!.isEmpty) {
                                   return "Field is required";
                                 }
-                                if (password != confirmPassword) {
-                                  return "Password must match";
-                                }
+                                
+                              },
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: _obscured,
+                              focusNode: textFieldFocusNode,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color(0xFFF1F6FB),
+                                prefixIcon: const Icon(Icons.lock_outlined),
+                                hintText: "Password",
+                                hintStyle:
+                                    const TextStyle(color: Color(0xFF8189B0)),
+                                enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Colors.white,
+                                )),
+                                border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Colors.white,
+                                )),
+                                suffixIcon: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                  child: GestureDetector(
+                                    onTap: _toggleObscured,
+                                    child: Icon(
+                                      _obscured
+                                          ? Icons.visibility_off_rounded
+                                          : Icons.visibility_rounded,
+                                      size: 24,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              controller: confirmPass,
+                              onChanged: (val) {
+                                confirmPassword = val;
+                                
+                              },
+                              validator: (val){
+                              if(val!.isEmpty) {
+                                return 'Empty';
+                              }
+                              if(val != pass.text) {
+                                return 'Password must match';
+                              }
+                              return null;
                               },
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: _obscured,
