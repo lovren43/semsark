@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
 class EmailInputField extends StatelessWidget {
-  EmailInputField(this.hintText, this.inputIcon, {super.key});
+  EmailInputField({this.hintText,this.onChanged});
   String? hintText;
-  Icon? inputIcon;
+  Function(String)? onChanged;
+  
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -13,7 +14,7 @@ class EmailInputField extends StatelessWidget {
       decoration: InputDecoration(
           filled: true,
           fillColor: const Color(0xFFF1F6FB),
-          prefixIcon: inputIcon,
+          prefixIcon:   const Icon(Icons.email_outlined),
           hintText: hintText,
           hintStyle: const TextStyle(color: Color(0xFF8189B0)),
           enabledBorder: const OutlineInputBorder(

@@ -10,7 +10,6 @@ import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
 
 import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 
-
 class forgetPasswordEmail extends StatefulWidget {
   const forgetPasswordEmail({super.key});
 
@@ -20,7 +19,7 @@ class forgetPasswordEmail extends StatefulWidget {
 
 class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
   GlobalKey<FormState> formKey = GlobalKey();
-
+  String? email;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +78,10 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
                               height: 30,
                             ),
                             EmailInputField(
-                                'Email ', const Icon(Icons.email_outlined)),
+                                onChanged: (data) {
+                                  email = data;
+                                },
+                                hintText: 'Email '),
                             const SizedBox(
                               height: 10,
                             ),

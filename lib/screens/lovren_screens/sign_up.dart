@@ -8,7 +8,6 @@ import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/screens/lovren_screens/verfication_page.dart';
 import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 
-
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -18,7 +17,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   GlobalKey<FormState> formKey = GlobalKey();
-
+  String? email;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +76,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               height: 30,
                             ),
                             EmailInputField(
-                                'Email ', const Icon(Icons.email_outlined)),
+                                onChanged: (data) {
+                                  email = data;
+                                },
+                                hintText: 'Email '
+                                ),
                             const SizedBox(
                               height: 10,
                             ),

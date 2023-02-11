@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import '../helper/Api.dart';
 
 class signUp {
-  Future<bool> verfiyEmail(String email) async {
+  Future<bool> verifyEmail(String email) async {
     dynamic data =
         await Api().get(url: 'insecure/userDetails/checkEmail/' + email);
     return true;

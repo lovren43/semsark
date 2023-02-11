@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
-  InputField(this.hintText, this.inputIcon, {super.key});
+  InputField({this.hintText, this.inputIcon,this.onChanged});
   String? hintText;
   Icon? inputIcon;
+  Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -12,6 +13,7 @@ class InputField extends StatelessWidget {
           return "Field is required";
         }
       },
+      onChanged: onChanged,
       decoration: InputDecoration(
           filled: true,
           fillColor: const Color(0xFFF1F6FB),

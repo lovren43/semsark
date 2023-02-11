@@ -14,7 +14,7 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  int? phoneNumber;
+  String? email;
 
   String? password;
 
@@ -46,11 +46,19 @@ class _SignInPageState extends State<SignInPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                EmailInputField('Email', const Icon(Icons.email_outlined)),
+                EmailInputField(
+                    onChanged: (data) {
+                      email = data;
+                    },
+                    hintText: 'Email'),
                 const SizedBox(
                   height: 10,
                 ),
-                PassordInputField('Password'),
+                PassordInputField(
+                    onChanged: (data) {
+                      password = data;
+                    },
+                    hintText: 'Password'),
                 const SizedBox(
                   height: 10,
                 ),

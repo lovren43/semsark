@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class PassordInputField extends StatefulWidget {
-  PassordInputField(this.hintText, {super.key});
+  PassordInputField({this.hintText, this.onChanged,this.validator});
   String? hintText;
-
+  Function(String)? onChanged;
+  Function(String)? validator;
   @override
   State<PassordInputField> createState() => _PassordInputFieldState();
 }
@@ -16,15 +17,14 @@ class _PassordInputFieldState extends State<PassordInputField> {
     setState(() {
       _obscured = !_obscured;
       if (textFieldFocusNode.hasPrimaryFocus) {
-        
         return;
       } // If focus is on text field, dont unfocus
-      textFieldFocusNode.canRequestFocus =
-          false;
-       // Prevents focus if tap on eye
+      textFieldFocusNode.canRequestFocus = false;
+      // Prevents focus if tap on eye
     });
   }
 
+  void onChange([int? value]) {}
   @override
   Widget build(BuildContext context) {
     return TextFormField(
