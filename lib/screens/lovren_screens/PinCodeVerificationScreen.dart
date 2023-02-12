@@ -65,67 +65,67 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: GestureDetector(
-        onTap: () {},
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: ListView(
-            children: <Widget>[
-              Stack(alignment: Alignment.center, children: <Widget>[
-                Column(
-                  children: [
-                    ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(150),
-                            bottomRight: Radius.circular(150)),
-                        child: ImageFiltered(
-                          imageFilter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
-                          child: SizedBox(
-                              height: 200,
-                              width: double.infinity,
-                              child: Image.asset(
-                                'assets/images/back.png',
-                                fit: BoxFit.fill,
-                              )),
-                        )),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-                Positioned(
-                    bottom: 0,
-                    height: 120,
-                    child: Image.asset(
-                      'assets/images/emailIcon.png',
+      body: Form(
+        key: formKey,
+        child: GestureDetector(
+          onTap: () {},
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: ListView(
+              children: <Widget>[
+                Stack(alignment: Alignment.center, children: <Widget>[
+                  Column(
+                    children: [
+                      ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(150),
+                              bottomRight: Radius.circular(150)),
+                          child: ImageFiltered(
+                            imageFilter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+                            child: SizedBox(
+                                height: 200,
+                                width: double.infinity,
+                                child: Image.asset(
+                                  'assets/images/back.png',
+                                  fit: BoxFit.fill,
+                                )),
+                          )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                      bottom: 0,
                       height: 120,
-                    )),
-              ]),
-              Column(children: const [
-                Text("Verification",
-                    style: TextStyle(color: Color(0xFF7f88b3), fontSize: 30)),
-                SizedBox(
+                      child: Image.asset(
+                        'assets/images/emailIcon.png',
+                        height: 120,
+                      )),
+                ]),
+                Column(children: const [
+                  Text("Verification",
+                      style: TextStyle(color: Color(0xFF7f88b3), fontSize: 30)),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    "Enter the six digit code we sent to your",
+                    style: TextStyle(color: Color(0xFF7f88b3), fontSize: 17),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "email address to verify your new account:",
+                    style: TextStyle(color: Color(0xFF7f88b3), fontSize: 17),
+                  ),
+                ]),
+                const SizedBox(
                   height: 30,
                 ),
-                Text(
-                  "Enter the six digit code we sent to your",
-                  style: TextStyle(color: Color(0xFF7f88b3), fontSize: 17),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "email address to verify your new account:",
-                  style: TextStyle(color: Color(0xFF7f88b3), fontSize: 17),
-                ),
-              ]),
-              const SizedBox(
-                height: 30,
-              ),
-              Form(
-                key: formKey,
-                child: Padding(
+                Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 8.0, horizontal: 30),
                     child: PinCodeTextField(
@@ -139,11 +139,14 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                       length: 6,
                       obscureText: true,
                       obscuringCharacter: '*',
-                      obscuringWidget:  Image.asset('assets/images/logo.png'),
+                      obscuringWidget: Image.asset('assets/images/logo.png'),
                       blinkWhenObscuring: true,
                       animationType: AnimationType.fade,
                       validator: (v) {
-                        if (v!.length < 6) {
+                        if (v!.isEmpty) {
+                          return "Feild is required";
+                        }
+                        if (v.length < 6) {
                           return "Enter full code";
                         } else {
                           return null;
@@ -188,61 +191,63 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                         return true;
                       },
                     )),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Text(
-                  hasError ? "*Please fill up all the cells properly" : "",
-                  style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Text(
+                    hasError ? "*Please fill up all the cells properly" : "",
+                    style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Didn't receive the code? ",
-                      style: TextStyle(
-                        color: Color(0xFF7f88b3),
-                        fontSize: 17,
-                      )),
-                  TextButton(
-                    onPressed: () => snackBar("OTP resend!!"),
-                    child: const Text(
-                      "RESEND",
-                      style: TextStyle(
-                          color: Color(0xFFe87476),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Didn't receive the code? ",
+                        style: TextStyle(
+                          color: Color(0xFF7f88b3),
                           fontSize: 17,
-                          decoration: TextDecoration.underline),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 14,
-              ),
-              Padding(
-               padding: const EdgeInsets.all(15.0),
-                      child: CustomButon(
-                text: 'Verify',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const personalInfoPage();
-                      },
-                    ),
-                  );
-                },
-              ),
-              ),
-              
-            ],
+                        )),
+                    TextButton(
+                      onPressed: () => snackBar("OTP resend!!"),
+                      child: const Text(
+                        "RESEND",
+                        style: TextStyle(
+                            color: Color(0xFFe87476),
+                            fontSize: 17,
+                            decoration: TextDecoration.underline),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 14,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: CustomButon(
+                    text: 'Verify',
+                    onTap: () async {
+                      if (formKey.currentState!.validate()) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const personalInfoPage();
+                            },
+                          ),
+                        );
+                        setState(() {});
+                      } else {}
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

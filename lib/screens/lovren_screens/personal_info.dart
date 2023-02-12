@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/PasswordInputField.dart';
 import 'package:semsark/screens/lovren_screens/sign_up.dart';
-
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/input_digit.dart';
 
@@ -51,6 +52,74 @@ class _personalInfoPageState extends State<personalInfoPage> {
     });
   }
 
+  XFile? image;
+
+  final ImagePicker picker = ImagePicker();
+
+  //we can upload image from camera or from gallery based on parameter
+  Future getImage(ImageSource media) async {
+    var img = await picker.pickImage(source: media);
+
+    setState(() {
+      image = img;
+    });
+  }
+
+  //show popup dialog
+  void myAlert() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: Text('Please choose media to select'),
+            content: Container(
+              height: MediaQuery.of(context).size.height / 8,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    //if user click this button, user can upload image from gallery
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.gallery);
+                    },
+                    child: Row(
+                      children:const [
+                        Icon(Icons.image),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text('From Gallery'),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                  height: 10,
+                  ),
+                  ElevatedButton(
+                    //if user click this button. user can upload image from camera
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.camera);
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.camera),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text('From Camera'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     const List<String> list = <String>['Male', 'Female'];
@@ -75,7 +144,8 @@ class _personalInfoPageState extends State<personalInfoPage> {
                           children: [
                             ClipRRect(
                                 child: ImageFiltered(
-                              imageFilter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+                              imageFilter:
+                                  ImageFilter.blur(sigmaX: 7, sigmaY: 7),
                               child: SizedBox(
                                   height: 130,
                                   width: double.infinity,
@@ -107,18 +177,23 @@ class _personalInfoPageState extends State<personalInfoPage> {
                         Positioned(
                           bottom: 5,
                           left: 105,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border:
-                                      Border.all(color: Colors.black, width: 1),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(80))),
-                              height: 30,
-                              child: Image.asset(
-                                'assets/images/CAM.png',
-                              )),
-                        )
+                          child: GestureDetector(
+                            onTap: () {
+                              myAlert();
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: Colors.black, width: 1),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(80))),
+                                height: 30,
+                                child: Image.asset(
+                                  'assets/images/CAM.png',
+                                )),
+                          ),
+                        ),
                       ]),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -147,64 +222,64 @@ class _personalInfoPageState extends State<personalInfoPage> {
                                   height: 20,
                                 ),
                                 DropdownButtonFormField2(
-                                decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: const Color(0xFFF1F6FB),
-                                    prefixIcon: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Image.asset(
-                                        'assets/images/gender.png',
-                                        height: 5,
-                                        width: 5,
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: const Color(0xFFF1F6FB),
+                                      prefixIcon: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Image.asset(
+                                          'assets/images/gender.png',
+                                          height: 5,
+                                          width: 5,
+                                        ),
                                       ),
-                                    ),
-                                    hintStyle: const TextStyle(
-                                        color: Color(0xFF8189B0)),
-                                    enabledBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                      color: Colors.white,
-                                    )),
-                                    border: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                      color: Colors.white,
-                                    ))),
-                                //isExpanded: true,
-                                hint: const Text(
-                                  'Gender',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.black45,
-                                ),
-                                iconSize: 30,
-                                buttonHeight: 20,
-                                dropdownDecoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                items: genderItems
-                                    .map((item) => DropdownMenuItem<String>(
-                                          value: item,
-                                          child: Text(
-                                            item,
-                                            style: const TextStyle(
-                                              fontSize: 14,
+                                      hintStyle: const TextStyle(
+                                          color: Color(0xFF8189B0)),
+                                      enabledBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                        color: Colors.white,
+                                      )),
+                                      border: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ))),
+                                  //isExpanded: true,
+                                  hint: const Text(
+                                    'Gender',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  icon: const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.black45,
+                                  ),
+                                  iconSize: 30,
+                                  buttonHeight: 20,
+                                  dropdownDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  items: genderItems
+                                      .map((item) => DropdownMenuItem<String>(
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
                                             ),
-                                          ),
-                                        ))
-                                    .toList(),
-                                validator: (value) {
-                                  if (value == null) {
-                                    return 'Please select gender.';
-                                  }
-                                },
-                                onChanged: (value) {
-                                  //Do something when changing the item if you want.
-                                },
-                                onSaved: (value) {
-                                  gender = value.toString();
-                                },
-                              ),
+                                          ))
+                                      .toList(),
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'Feild is required';
+                                    }
+                                  },
+                                  onChanged: (value) {
+                                    //Do something when changing the item if you want.
+                                  },
+                                  onSaved: (value) {
+                                    gender = value.toString();
+                                  },
+                                ),
                               ],
                             ),
                             const SizedBox(
@@ -249,7 +324,8 @@ class _personalInfoPageState extends State<personalInfoPage> {
                                   color: Colors.white,
                                 )),
                                 suffixIcon: Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 4, 0),
                                   child: GestureDetector(
                                     onTap: _toggleObscured,
                                     child: Icon(
@@ -272,7 +348,7 @@ class _personalInfoPageState extends State<personalInfoPage> {
                               },
                               validator: (val) {
                                 if (val!.isEmpty) {
-                                  return 'Empty';
+                                  return 'Feild is required';
                                 }
                                 if (val != pass.text) {
                                   return 'Password must match';
@@ -300,7 +376,8 @@ class _personalInfoPageState extends State<personalInfoPage> {
                                   color: Colors.white,
                                 )),
                                 suffixIcon: Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 4, 0),
                                   child: GestureDetector(
                                     onTap: _toggleObscured,
                                     child: Icon(

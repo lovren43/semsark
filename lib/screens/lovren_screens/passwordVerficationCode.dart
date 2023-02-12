@@ -138,7 +138,10 @@ class _forgetPasswordVerficationCodeState extends State<forgetPasswordVerficatio
                       blinkWhenObscuring: true,
                       animationType: AnimationType.fade,
                       validator: (v) {
-                        if (v!.length < 6) {
+                        if (v!.isEmpty) {
+                          return "Feild is required";
+                        }
+                        if (v.length < 6) {
                           return "Enter full code";
                         } else {
                           return null;

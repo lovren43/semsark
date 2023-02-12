@@ -35,7 +35,7 @@ class _SignInPageState extends State<SignInPage> {
             child: Column(
               children: [
                 SizedBox(
-                    height: 350, child: Image.asset('assets/images/logo.png')),
+                    height: 350, child: Image.asset('assets/images/c.png')),
                 const Text(
                   'PLEASE ENTER YOUR ACCOUNT HERE',
                   style: TextStyle(
