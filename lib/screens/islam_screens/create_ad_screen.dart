@@ -3,6 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:semsark/components/custom_drop_down_field.dart';
+import 'package:semsark/components/custom_input_field.dart';
+import 'package:semsark/components/numaric_data_field.dart';
+import 'package:semsark/screens/islam_screens/helper.dart';
 
 class CreateAd extends StatefulWidget {
   CreateAd({Key? key}) : super(key: key);
@@ -12,32 +16,28 @@ class CreateAd extends StatefulWidget {
 }
 
 class _CreateAdState extends State<CreateAd> {
-  var defult_val = "ALL";
+  var type_val = "ALL";
+  var signal_val = "ALL";
+
   bool isChecked = false;
-  final TextStyle _textStyle = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.bold,
-    color: Colors.white.withRed(93).withGreen(109).withBlue(129),
-  );
-  var _value, fin_value;
+
+  var cat_value, fin_value;
   var num_of_rooms = 1 , num_of_bath_rooms = 1 ,
       num_of_halls = 1 , num_of_level = 1 ;
-  var _color = Colors.white.withBlue(251).withGreen(246).withRed(241);
-  var defult_sinal = "ALL";
-  var defult_cat = "APARTMENT FOR RENT";
-  var type_key = GlobalKey();
+
+
+  var type_key = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey();
   var signal_key = GlobalKey();
-  var cat_key = GlobalKey();
 
   dynamic types = ["ALL", "APARTMENT", "DUPLEX", "STUDIO"];
   dynamic signals = ["ALL", "Vodafone", "Orange", "Etisalat", "WE"];
-  dynamic cat = ["APARTMENT FOR RENT", "APARTMENT FOR SELL"];
   List<XFile> photos = [];
 
   @override
   void initState() {
     setState(() {
-      _value = "RENT";
+      cat_value = "RENT";
       fin_value = "YES";
       WidgetsFlutterBinding.ensureInitialized();
     });
@@ -55,7 +55,7 @@ class _CreateAdState extends State<CreateAd> {
             ),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               color: Colors.white30,
               child: const Center(
                 child: Text(
@@ -68,10 +68,11 @@ class _CreateAdState extends State<CreateAd> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             Expanded(
               child: SingleChildScrollView(
                 child: Form(
+                  key: _formKey,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -82,96 +83,60 @@ class _CreateAdState extends State<CreateAd> {
                         const SizedBox(
                           height: 20,
                         ),
-                        buildFormInput("Title", TextInputType.text, 1, 50),
+                        CustomFieldInput(
+                          txt: "Title",
+                        ) ,
                         const SizedBox(
                           height: 20,
                         ),
-                        buildFormInput(
-                            "Price",
-                            const TextInputType.numberWithOptions(decimal: true),
-                            1,
-                            10),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        buildFormInput("Area", TextInputType.number, 1, 10),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          color: _color,
-                          child: DropdownButtonFormField(
-                              key: type_key,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: "Type",
-                              ),
-                              value: defult_val,
-                              items: types
-                                  .map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  defult_val = newValue.toString();
-                                });
-                              }),
+                        CustomFieldInput(
+                          txt: "Price",
+                          inputType: const TextInputType.numberWithOptions(decimal: true),
+                          maxLen: 10,
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          color: _color,
-                          child: DropdownButtonFormField(
-                              key: signal_key,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Signal Power"),
-                              value: defult_sinal,
-                              items: signals
-                                  .map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  defult_sinal = newValue.toString();
-                                });
-                              }),
+                        CustomFieldInput(
+                          txt: "Area",
+                          inputType: TextInputType.number , maxLen: 10,
+                        ) ,
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomDropDownField(
+                          labelText: "Type",
+                          key: type_key,
+                          list: types,
+                          value: type_val,
+                          onChange: (newValue) {
+                            setState(() {
+                              type_val = newValue.toString();
+                            });
+                          },
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          color: _color,
-                          child: DropdownButtonFormField(
-                              key: cat_key,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Category"),
-                              value: defult_cat,
-                              items: cat
-                                  .map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  defult_cat = newValue.toString();
-                                });
-                              }),
+                        CustomDropDownField(
+                          labelText: "Signal Power",
+                          key: signal_key,
+                          list: signals,
+                          value: signal_val,
+                          onChange: (newValue) {
+                            setState(() {
+                              signal_val = newValue.toString();
+                            });
+                          },
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        buildFormInput("Details", TextInputType.text, 10, 500),
+                        CustomFieldInput(
+                          txt: "Details",
+                          maxLen: 500,
+                          maxLine: 10,
+                        ) ,
                         const SizedBox(
                           height: 20,
                         ),
@@ -185,31 +150,31 @@ class _CreateAdState extends State<CreateAd> {
                                     padding: const EdgeInsets.only(left: 15.0),
                                     child: Text(
                                       "CATEGORY",
-                                      style: _textStyle,
+                                      style: Helper.textStyle,
                                     ),
                                   ),
                                   Row(
                                     children: [
                                       Radio(
                                         value: "RENT",
-                                        groupValue:_value,
+                                        groupValue:cat_value,
                                         onChanged: (value) {
                                           setState(() {
-                                            _value = value;
+                                            cat_value = value;
                                           });
                                         },
                                       ),
-                                      Text("RENT"),
+                                      const Text("RENT"),
                                       Radio(
                                         value: "SELL",
-                                        groupValue: _value,
+                                        groupValue: cat_value,
                                         onChanged: (value) {
                                           setState(() {
-                                            _value = value;
+                                            cat_value = value;
                                           });
                                         },
                                       ),
-                                      Text("SELL"),
+                                      const Text("SELL"),
                                     ],
                                   ),
                                 ],
@@ -223,7 +188,7 @@ class _CreateAdState extends State<CreateAd> {
                                     padding: const EdgeInsets.only(left: 15.0),
                                     child: Text(
                                       "FINISHED",
-                                      style: _textStyle,
+                                      style: Helper.textStyle,
                                     ),
                                   ),
                                   Row(
@@ -260,312 +225,68 @@ class _CreateAdState extends State<CreateAd> {
                           children: [
                             Row(
                               children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "ROOMS",
-                                        style: _textStyle,
-                                      ),
-                                      SizedBox(height: 10,),
-                                      Container(
-                                        decoration:BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                          ),
-                                          borderRadius: BorderRadiusDirectional.circular(10),
-                                        ) ,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(top: 10.0,bottom: 10),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: MaterialButton(
-                                                  padding: EdgeInsets.all(0),
-                                                  minWidth: 50,
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      num_of_rooms = max(num_of_rooms-1 , 0) ;
-                                                    });
-                                                  },
-                                                  color: Colors.white.withRed(230).withGreen(236).withBlue(242),
-                                                  shape: CircleBorder(),
-                                                  textColor: Colors.white.withRed(151).withGreen(162).withBlue(175),
-                                                  child: const Text(
-                                                    "-",
-                                                    style: TextStyle(
-                                                      fontSize: 30,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 20,),
-                                              Text("$num_of_rooms",
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              SizedBox(width: 20,),
-                                              Expanded(
-                                                child: MaterialButton(
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      num_of_rooms = min(num_of_rooms+1 , 10) ;
-                                                    });
-                                                  },
-                                                  padding: EdgeInsets.all(0),
-                                                  minWidth: 50,
-                                                  color: Colors.white.withRed(227).withGreen(244).withBlue(255),
-                                                  shape: CircleBorder(),
-                                                  textColor: Colors.white.withRed(76).withGreen(172).withBlue(232),
-                                                  child: const Text(
-                                                    "+",
-                                                    style: TextStyle(
-                                                      fontSize: 25,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                CustomNumaricDataField(
+                                  txt_value: "ROOMS",
+                                  data: num_of_rooms,
+                                  onMinPressed: (){
+                                    setState(() {
+                                      num_of_rooms = max(num_of_rooms-1 , 0) ;
+                                    });
+                                  },
+                                  onPlusPressed: (){
+                                    setState(() {
+                                      num_of_rooms = min(num_of_rooms+1 , 10) ;
+                                    });
+                                  },
                                 ),
-                                SizedBox(width: 20,),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "BATHROOM",
-                                        style: _textStyle,
-                                      ),
-                                      SizedBox(height: 10,),
-                                      Container(
-                                        decoration:BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                          ),
-                                          borderRadius: BorderRadiusDirectional.circular(10),
-                                        ) ,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(top: 10.0,bottom: 10),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: MaterialButton(
-                                                  padding: EdgeInsets.all(0),
-                                                  minWidth: 50,
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      num_of_bath_rooms = max(num_of_bath_rooms-1 , 1) ;
-                                                    });
-                                                  },
-                                                  color: Colors.white.withRed(230).withGreen(236).withBlue(242),
-                                                  shape: CircleBorder(),
-                                                  textColor: Colors.white.withRed(151).withGreen(162).withBlue(175),
-                                                  child: const Text(
-                                                    "-",
-                                                    style: TextStyle(
-                                                      fontSize: 30,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 20,),
-                                              Text("$num_of_bath_rooms",
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              SizedBox(width: 20,),
-                                              Expanded(
-                                                child: MaterialButton(
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      num_of_bath_rooms = min(num_of_bath_rooms+1 , 10) ;
-                                                    });
-                                                  },
-                                                  padding: EdgeInsets.all(0),
-                                                  minWidth: 50,
-                                                  color: Colors.white.withRed(227).withGreen(244).withBlue(255),
-                                                  shape: CircleBorder(),
-                                                  textColor: Colors.white.withRed(76).withGreen(172).withBlue(232),
-                                                  child: const Text(
-                                                    "+",
-                                                    style: TextStyle(
-                                                      fontSize: 25,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                const SizedBox(width: 20,),
+                                CustomNumaricDataField(
+                                  txt_value: "BATHROOM",
+                                  data: num_of_bath_rooms,
+                                  onMinPressed: (){
+                                    setState(() {
+                                      num_of_bath_rooms = max(num_of_bath_rooms-1 , 1) ;
+                                    });
+                                  },
+                                  onPlusPressed: (){
+                                    setState(() {
+                                      num_of_bath_rooms = min(num_of_bath_rooms+1 , 10) ;
+                                    });
+                                  },
                                 ),
                               ],
                             ),
                             const SizedBox(height: 25,),
                             Row(
                               children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "HOUSE LEVEL",
-                                        style: _textStyle,
-                                      ),
-                                      SizedBox(height: 10,),
-                                      Container(
-                                        decoration:BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                          ),
-                                          borderRadius: BorderRadiusDirectional.circular(10),
-                                        ) ,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(top: 10.0,bottom: 10),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: MaterialButton(
-                                                  padding: EdgeInsets.all(0),
-                                                  minWidth: 50,
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      num_of_level = max(num_of_level-1 , 0) ;
-                                                    });
-                                                  },
-                                                  color: Colors.white.withRed(230).withGreen(236).withBlue(242),
-                                                  shape: CircleBorder(),
-                                                  textColor: Colors.white.withRed(151).withGreen(162).withBlue(175),
-                                                  child: const Text(
-                                                    "-",
-                                                    style: TextStyle(
-                                                      fontSize: 30,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 20,),
-                                              Text("$num_of_level",
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              SizedBox(width: 20,),
-                                              Expanded(
-                                                child: MaterialButton(
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      num_of_level = min(num_of_level+1 , 30) ;
-                                                    });
-                                                  },
-                                                  padding: EdgeInsets.all(0),
-                                                  minWidth: 50,
-                                                  color: Colors.white.withRed(227).withGreen(244).withBlue(255),
-                                                  shape: CircleBorder(),
-                                                  textColor: Colors.white.withRed(76).withGreen(172).withBlue(232),
-                                                  child: const Text(
-                                                    "+",
-                                                    style: TextStyle(
-                                                      fontSize: 25,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                CustomNumaricDataField(
+                                  txt_value: "HOUSE LEVEL",
+                                  data: num_of_level,
+                                  onMinPressed: (){
+                                    setState(() {
+                                      num_of_level = max(num_of_level-1 , 0) ;
+                                    });
+                                  },
+                                  onPlusPressed: (){
+                                    setState(() {
+                                      num_of_level = min(num_of_level+1 , 30) ;
+                                    });
+                                  },
                                 ),
-                                SizedBox(width: 20,),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "HALLS",
-                                        style: _textStyle,
-                                      ),
-                                      SizedBox(height: 10,),
-                                      Container(
-                                        decoration:BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                          ),
-                                          borderRadius: BorderRadiusDirectional.circular(10),
-                                        ) ,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(top: 10.0,bottom: 10),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: MaterialButton(
-                                                  padding: EdgeInsets.all(0),
-                                                  minWidth: 50,
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      num_of_halls = max(num_of_halls-1 , 0) ;
-                                                    });
-                                                  },
-                                                  color: Colors.white.withRed(230).withGreen(236).withBlue(242),
-                                                  shape: CircleBorder(),
-                                                  textColor: Colors.white.withRed(151).withGreen(162).withBlue(175),
-                                                  child: const Text(
-                                                    "-",
-                                                    style: TextStyle(
-                                                      fontSize: 30,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 20,),
-                                              Text("$num_of_halls",
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              SizedBox(width: 20,),
-                                              Expanded(
-                                                child: MaterialButton(
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      num_of_halls = min(num_of_halls+1 , 10) ;
-                                                    });
-                                                  },
-                                                  padding: EdgeInsets.all(0),
-                                                  minWidth: 50,
-                                                  color: Colors.white.withRed(227).withGreen(244).withBlue(255),
-                                                  shape: CircleBorder(),
-                                                  textColor: Colors.white.withRed(76).withGreen(172).withBlue(232),
-                                                  child: const Text(
-                                                    "+",
-                                                    style: TextStyle(
-                                                      fontSize: 25,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                const SizedBox(width: 20,),
+                                CustomNumaricDataField(
+                                  txt_value: "HALLS",
+                                  data: num_of_halls,
+                                  onMinPressed: (){
+                                    setState(() {
+                                      num_of_halls = max(num_of_halls-1 , 0) ;
+                                    });
+                                  },
+                                  onPlusPressed: (){
+                                    setState(() {
+                                      num_of_halls = min(num_of_halls+1 , 10) ;
+                                    });
+                                  },
                                 ),
                               ],
                             ),
@@ -609,7 +330,7 @@ class _CreateAdState extends State<CreateAd> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadiusDirectional.circular(50),
                           ),
-                          child: MaterialButton(onPressed: (){},
+                          child: MaterialButton(onPressed: validator,
                             //rgba(69, 166, 221, 1)
                             color: Colors.white.withRed(69).withGreen(166).withBlue(221),
                             child: const Padding(
@@ -638,75 +359,57 @@ class _CreateAdState extends State<CreateAd> {
   }
   void pick_photo() async{
     ImagePicker _picker = ImagePicker() ;
-    final photo = await _picker.pickImage(source: ImageSource.camera) ;
+    final photo = await _picker.pickImage(source: ImageSource.gallery) ;
     setState(() {
       photos.add(photo!) ;
     });
   }
 
+  void validator(){
+    final form = _formKey.currentState!;
+    if (form.validate()) {
+      //call api
+
+    }
+  }
   Widget list_of_photos(){
     List<Widget> col = [] , row = [];
-    for(int i = 0 ; i<=photos.length ; i++){
-      if(i==photos.length){
-        row.add(Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: InkWell(
-            onTap: pick_photo,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black) ,
-                borderRadius: BorderRadiusDirectional.circular(10),
-              ),
-              width: 120,
-              height: 100,
-              child: Icon(Icons.camera_enhance),
-            ),
-          ),
-        )) ;
-      }else {
-        row.add(Padding(
+    for (var element in photos) { 
+      row.add(Padding(
         padding: const EdgeInsets.all(5.0),
         child: Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey) ,
             ),
-            height: 100, width: 120,
+            height: 100, width: 110,
             child: Image.file(
-              File(photos[i].path,),
+              File(element.path,),
               fit: BoxFit.fitWidth,
             )),
-      ));
-      }
+      )) ;
       if(row.length%3 == 0){
         col.add(Row(children: row,)) ;
         row =[] ;
       }
     }
-    if(row.isNotEmpty) col.add(Row(children: row,)) ;
+    row.add(Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: pick_photo,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black) ,
+            borderRadius: BorderRadiusDirectional.circular(10),
+          ),
+          width: 110,
+          height: 100,
+          child: const Icon(Icons.camera_enhance),
+        ),
+      ),
+    ));
+    col.add(Row(children: row,)) ;
     return Column(
       children: col,
     ) ;
   }
-}
-  Widget buildFormInput(String txt, TextInputType txtInput, int maxLine, int maxLength) {
-  var color = Colors.white.withBlue(251).withGreen(246).withRed(241);
-  return TextFormField(
-    keyboardType: txtInput,
-    initialValue: "",
-    decoration: InputDecoration(
-      border: const OutlineInputBorder(),
-      labelText: txt,
-      filled: true,
-      fillColor: color,
-    ),
-    maxLines: maxLine,
-    maxLength: maxLength,
-    minLines: 1,
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return 'Please enter $txt';
-      }
-      return null;
-    },
-  );
 }
