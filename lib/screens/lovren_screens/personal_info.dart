@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/PasswordInputField.dart';
+import 'package:semsark/lovren_apis/sign_up_api.dart';
 import 'package:semsark/screens/lovren_screens/sign_up.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -14,8 +15,11 @@ import 'package:semsark/components/input_digit.dart';
 import '../../components/email_input.dart';
 
 class personalInfoPage extends StatefulWidget {
-  const personalInfoPage({super.key});
-
+  String? email;
+  personalInfoPage({
+    Key? key,
+    this.email,
+  }) : super(key: key);
   @override
   State<personalInfoPage> createState() => _personalInfoPageState();
 }
@@ -27,7 +31,6 @@ final List<String> genderItems = [
 
 String? gender;
 String? name;
-String? email;
 String? password = '';
 String? confirmPassword = '';
 String? img;
@@ -287,9 +290,8 @@ class _personalInfoPageState extends State<personalInfoPage> {
                             ),
                             EmailInputField(
                                 onChanged: (data) {
-                                  email = data;
                                 },
-                                hintText: 'Email '),
+                                hintText: widget.email,enabled: false),
                             const SizedBox(
                               height: 20,
                             ),
@@ -397,7 +399,9 @@ class _personalInfoPageState extends State<personalInfoPage> {
                               text: "Sign Up",
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
-                                  setState(() {});
+                                  if(await signUp().createUser(name!, widget.email!, "", pass.text, gender!)){
+                                    setState(() {});
+                                  }
                                 } else {}
                               },
                             ),

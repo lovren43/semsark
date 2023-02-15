@@ -19,20 +19,20 @@ class signUp {
 
   Future<bool> verifyOTP(String email, String OTP) async {
     dynamic data = await Api()
-        .post(url: 'email/verifyEmail', body: {"otp": OTP, "email": email});
+        .post(url: 'email/verifyEmail', body: jsonEncode({"otp": OTP, "email": email}));
     return true;
   }
 
   Future<bool> createUser(String name, String email, String img,
       String Password, String gender) async {
-    dynamic data = await Api().post(url: 'insecure/userDetails', body: {
+    dynamic data = await Api().post(url: 'insecure/userDetails', body: jsonEncode({
       "username": name,
       "email": email,
       "social": false,
       "img": img,
       "password": Password,
       "gender": gender
-    });
+    }));
     final storage = const FlutterSecureStorage();
     await storage.write(key: 'token', value: data.token);
     var value = await storage.read(key: 'token');

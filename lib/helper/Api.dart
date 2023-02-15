@@ -13,7 +13,8 @@ class Api {
     http.Response response = await http.get(Uri.parse(base+url), headers: headers);
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      
+      return (response.body.toString().length>0?jsonDecode(response.body):null);
     } else {
       throw Exception(
           'there is a problem with status code ${response.statusCode}');
@@ -24,17 +25,30 @@ class Api {
       {required String url,
       dynamic body,
       String? token}) async {
-    Map<String, String> headers = {};
-
+    Map<String, String> headers = {
+      
+    };
+    headers.addAll({
+      'Access-Control-Allow-Headers':"DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Authorization",
+      'Access-Control-Allow-Origin':"*",
+      'Access-Control-Allow-Credentials':"true",
+      'content-Type':'application/json',
+      'Accept': "application/json"
+    });
     // if (token != null) {
     //   headers.addAll({'Authorization': 'Bearer $token'});
     // }
     http.Response response =
         await http.post(Uri.parse(base+url), body: body, headers: headers);
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
+      if(!response.body.isEmpty){
+              String data = jsonDecode(jsonEncode(response.body));
+                    return data;
+      }
+      else{
+        return null;
+      }
 
-      return data;
     } else {
       throw Exception(
           'there is a problem with status code ${response.statusCode} with body ${jsonDecode(response.body)}');

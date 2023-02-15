@@ -5,7 +5,6 @@ import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
-import 'package:semsark/screens/lovren_screens/verfication_page.dart';
 import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
 import 'package:semsark/components/PasswordInputField.dart';
 import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';

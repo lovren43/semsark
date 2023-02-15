@@ -6,7 +6,6 @@ import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/lovren_apis/sign_up_api.dart';
-import 'package:semsark/screens/lovren_screens/verfication_page.dart';
 import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -19,6 +18,8 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   GlobalKey<FormState> formKey = GlobalKey();
   String? email;
+  TextEditingController inputController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,9 +79,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             EmailInputField(
                                 onChanged: (data) {
-                                  email = data;
+                                  email = data.toString();
                                 },
-                                hintText: 'Email '),
+                                hintText: 'Email ',enabled: true),
                             const SizedBox(
                               height: 10,
                             ),
@@ -91,12 +92,13 @@ class _SignUpPageState extends State<SignUpPage> {
                               text: 'NEXT',
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
-                                  confirmationDialog(context);
-                                  setState(() {});
                                   try {
-                                    signUp().verifyEmail(email!);
+                                    if (await signUp().verifyEmail(email!)) {
+                                      confirmationDialog(context);
+                                      setState(() {});
+                                    }
                                   } catch (ex) {
-                                    print("ex");
+                                    print(ex);
                                   }
                                 } else {}
                               },
@@ -255,11 +257,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: CustomButon(
                         text: "DONE",
                         onTap: () {
+                          signUp().sendOTP(email!);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const PinCodeVerificationScreen();
+                                return PinCodeVerificationScreen(email:email);
                               },
                             ),
                           );

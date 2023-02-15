@@ -8,6 +8,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/button.dart';
+import 'package:semsark/lovren_apis/sign_up_api.dart';
 import 'package:semsark/screens/lovren_screens/personal_info.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/screens/lovren_screens/sign_up.dart';
@@ -15,11 +16,11 @@ import 'package:semsark/screens/lovren_screens/sign_up.dart';
 import 'package:semsark/components/input_digit.dart';
 
 class PinCodeVerificationScreen extends StatefulWidget {
-  final String? phoneNumber;
+  String? email;
 
-  const PinCodeVerificationScreen({
+  PinCodeVerificationScreen({
     Key? key,
-    this.phoneNumber,
+    this.email,
   }) : super(key: key);
 
   @override
@@ -33,7 +34,8 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
 
   // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
-
+  String? OTP;
+  
   bool hasError = false;
   String currentText = "";
   final formKey = GlobalKey<FormState>();
@@ -60,7 +62,6 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,6 +180,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                       //   print("Pressed");
                       // },
                       onChanged: (value) {
+                        OTP = value.toString();
                         debugPrint(value);
                         setState(() {
                           currentText = value;
@@ -227,21 +229,39 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                 const SizedBox(
                   height: 14,
                 ),
+                
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                      child: TextButton(
+                    child: const Text("Clear"),
+                    onPressed: () {
+                      textEditingController.clear();
+                    },
+                  )),
+                ],
+              ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: CustomButon(
                     text: 'Verify',
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const personalInfoPage();
-                            },
-                          ),
-                        );
-                        setState(() {});
+                        if (await signUp().verifyOTP(widget.email!, OTP!)) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return personalInfoPage(email: widget.email);
+                              },
+                            ),
+                          );
+                          setState(() {});
+                        }
+                        else{
+                          ()=> snackBar("Wrong OTP");
+                        }
                       } else {}
                     },
                   ),
