@@ -153,6 +153,8 @@ class _forgetPasswordVerficationCodeState extends State<forgetPasswordVerficatio
                         fieldHeight: 50,
                         fieldWidth: 40,
                         activeFillColor: Colors.white,
+                        inactiveColor: Colors.blueGrey,
+                        inactiveFillColor: Colors.white
                       ),
                       cursorColor: Colors.black,
                       animationDuration: const Duration(milliseconds: 300),
@@ -167,12 +169,7 @@ class _forgetPasswordVerficationCodeState extends State<forgetPasswordVerficatio
                           blurRadius: 10,
                         )
                       ],
-                      onCompleted: (v) {
-                        debugPrint("Completed");
-                      },
-                      // onTap: () {
-                      //   print("Pressed");
-                      // },
+                      
                       onChanged: (value) {
                         debugPrint(value);
                         setState(() {
@@ -223,6 +220,13 @@ class _forgetPasswordVerficationCodeState extends State<forgetPasswordVerficatio
               const SizedBox(
                 height: 14,
               ),
+              Flexible(
+                  child: TextButton(
+                child: const Text("Clear"),
+                onPressed: () {
+                  textEditingController.clear();
+                },
+              )),
               Padding(
                padding: const EdgeInsets.all(15.0),
                       child: CustomButon(

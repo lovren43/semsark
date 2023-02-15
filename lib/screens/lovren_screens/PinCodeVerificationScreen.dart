@@ -159,7 +159,10 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                         fieldHeight: 50,
                         fieldWidth: 40,
                         activeFillColor: Colors.white,
+                        inactiveColor: Colors.blueGrey,
+                        inactiveFillColor: Colors.white
                       ),
+                      
                       cursorColor: Colors.black,
                       animationDuration: const Duration(milliseconds: 300),
                       enableActiveFill: true,
@@ -173,12 +176,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                           blurRadius: 10,
                         )
                       ],
-                      onCompleted: (v) {
-                        debugPrint("Completed");
-                      },
-                      // onTap: () {
-                      //   print("Pressed");
-                      // },
+                      
                       onChanged: (value) {
                         OTP = value.toString();
                         debugPrint(value);
@@ -193,19 +191,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                         return true;
                       },
                     )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: Text(
-                    hasError ? "*Please fill up all the cells properly" : "",
-                    style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -230,18 +216,13 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                   height: 14,
                 ),
                 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                      child: TextButton(
-                    child: const Text("Clear"),
-                    onPressed: () {
-                      textEditingController.clear();
-                    },
-                  )),
-                ],
-              ),
+              Flexible(
+                  child: TextButton(
+                child: const Text("Clear"),
+                onPressed: () {
+                  textEditingController.clear();
+                },
+              )),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: CustomButon(
