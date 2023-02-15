@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
+import 'package:semsark/lovren_apis/forgetPassword_api.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
 
@@ -91,124 +92,15 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
                               text: 'NEXT',
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
-                                  showDialog<String>(
-                                      context: context,
-                                      builder:
-                                          (BuildContext context) => AlertDialog(
-                                                actionsAlignment:
-                                                    MainAxisAlignment.center,
-                                                actions: [
-                                                  Stack(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      children: <Widget>[
-                                                        Column(
-                                                          children: [
-                                                            ClipRRect(
-                                                                borderRadius: const BorderRadius
-                                                                        .only(
-                                                                    bottomLeft:
-                                                                        Radius.circular(
-                                                                            150),
-                                                                    bottomRight:
-                                                                        Radius.circular(
-                                                                            150)),
-                                                                child:
-                                                                    ImageFiltered(
-                                                                  imageFilter:
-                                                                      ImageFilter.blur(
-                                                                          sigmaX:
-                                                                              4,
-                                                                          sigmaY:
-                                                                              4),
-                                                                  child: SizedBox(
-                                                                      height: 100,
-                                                                      width: double.infinity,
-                                                                      child: Image.asset(
-                                                                        'assets/images/back.png',
-                                                                        fit: BoxFit
-                                                                            .fill,
-                                                                      )),
-                                                                )),
-                                                            const SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Positioned(
-                                                            bottom: 0,
-                                                            height: 70,
-                                                            child: Image.asset(
-                                                              'assets/images/emailIcon.png',
-                                                            )),
-                                                      ]),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  const Center(
-                                                    child: Text(
-                                                      "Verification code has been sent to your",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xFF45A6DD),
-                                                          fontSize: 17),
-                                                    ),
-                                                  ),
-                                                  const Center(
-                                                    child: Text(
-                                                      "email adddress, Please check ",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xFF45A6DD),
-                                                          fontSize: 17),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 130,
-                                                        height: 50,
-                                                        child: CustomButon(
-                                                          text: "BACK",
-                                                          onTap: () =>
-                                                              Navigator.pop(
-                                                                  context,
-                                                                  'BACK'),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 0,
-                                                        width: 10,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 130,
-                                                        height: 50,
-                                                        child: CustomButon(
-                                                          text: "DONE",
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) {
-                                                                  return const forgetPasswordVerficationCode();
-                                                                },
-                                                              ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      )
-                                                    ],
-                                                  )
-                                                ],
-                                              ));
-                                  setState(() {});
+                                  try {
+                                    if (await forgetPassword()
+                                        .verifyEmail(email!)) {
+                                      confirmationDialog(context);
+                                      setState(() {});
+                                    }
+                                  } catch (ex) {
+                                    print(ex);
+                                  }
                                 } else {}
                               },
                             ),
@@ -290,5 +182,96 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
         ),
       ),
     );
+  }
+
+  Future<String?> confirmationDialog(BuildContext context) {
+    return showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              actionsAlignment: MainAxisAlignment.center,
+              actions: [
+                Stack(alignment: Alignment.center, children: <Widget>[
+                  Column(
+                    children: [
+                      ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(150),
+                              bottomRight: Radius.circular(150)),
+                          child: ImageFiltered(
+                            imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                            child: SizedBox(
+                                height: 100,
+                                width: double.infinity,
+                                child: Image.asset(
+                                  'assets/images/back.png',
+                                  fit: BoxFit.fill,
+                                )),
+                          )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      height: 70,
+                      child: Image.asset(
+                        'assets/images/emailIcon.png',
+                      )),
+                ]),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Center(
+                  child: Text(
+                    "Verification code has been sent to your",
+                    style: TextStyle(color: Color(0xFF45A6DD), fontSize: 17),
+                  ),
+                ),
+                const Center(
+                  child: Text(
+                    "email adddress, Please check ",
+                    style: TextStyle(color: Color(0xFF45A6DD), fontSize: 17),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 130,
+                      height: 50,
+                      child: CustomButon(
+                        text: "BACK",
+                        onTap: () => Navigator.pop(context, 'BACK'),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 0,
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 130,
+                      height: 50,
+                      child: CustomButon(
+                        text: "DONE",
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return  forgetPasswordVerficationCode(email: email);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ));
   }
 }

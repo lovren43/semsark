@@ -4,13 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
+import 'package:semsark/lovren_apis/forgetPassword_api.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
 import 'package:semsark/components/PasswordInputField.dart';
 import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 
 class newPassword extends StatefulWidget {
-  const newPassword({super.key});
+  String? email;
+  String? OTP;
+  newPassword(
+    {
+      Key? key,
+      this.OTP,
+      this.email,
+    }
+  ):super(key: key);
 
   @override
   State<newPassword> createState() => _newPasswordState();
@@ -153,7 +162,6 @@ final TextEditingController pass = TextEditingController();
                               controller: confirmPass,
                               onChanged: (val) {
                                 confirmPassword = val;
-                                
                               },
                               validator: (val){
                               if(val!.isEmpty) {
@@ -206,8 +214,13 @@ final TextEditingController pass = TextEditingController();
                               text: 'Confirm',
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
-                                  
-                                  setState(() {});
+                                  try{
+                                    forgetPassword().updatePassword(widget.email!, password, widget.OTP!);
+                                  }
+                                  catch(ex){
+                                    print(ex);
+
+                                  }
                                 } else {}
                               },
                             ),
