@@ -5,12 +5,15 @@ class CustomFieldInput extends StatelessWidget {
   CustomFieldInput({
     Key? key,
     required this.txt,
+    required this.controller,
     TextInputType? inputType,
     Color? color,
     int? maxLine,
-    int? maxLen
+    int? maxLen,
+
   }) : super(key: key);
   String txt ;
+  TextEditingController controller ;
   TextInputType? inputType;
   Color? color ;
   int? maxLine, maxLen ;
@@ -18,7 +21,6 @@ class CustomFieldInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       keyboardType: inputType ?? TextInputType.text,
-      initialValue: "",
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: txt,
@@ -34,6 +36,7 @@ class CustomFieldInput extends StatelessWidget {
         }
         return null;
       },
+      controller: controller,
     );
   }
 }
