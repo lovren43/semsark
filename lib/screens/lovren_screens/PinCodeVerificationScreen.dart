@@ -64,7 +64,9 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
       backgroundColor: Colors.white,
       body: Form(
         key: formKey,
@@ -252,6 +254,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
           ),
         ),
       ),
+    ),
     );
   }
 }

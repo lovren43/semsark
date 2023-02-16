@@ -277,6 +277,7 @@ class _personalInfoPageState extends State<personalInfoPage> {
                                     }
                                   },
                                   onChanged: (value) {
+                                    gender=value.toString();
                                     //Do something when changing the item if you want.
                                   },
                                   onSaved: (value) {
@@ -399,7 +400,7 @@ class _personalInfoPageState extends State<personalInfoPage> {
                               text: "Sign Up",
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
-                                  if(await signUp().createUser(name!, widget.email!, "", pass.text, gender!)){
+                                  if(await signUp().createUser(name!, widget.email!, "", pass.text, gender!,phoneNumber!)){
                                     setState(() {});
                                   }
                                 } else {}

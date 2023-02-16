@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:http/http.dart';
@@ -24,19 +25,20 @@ class signUp {
   }
 
   Future<bool> createUser(String name, String email, String img,
-      String Password, String gender) async {
-    dynamic data = await Api().post(url: 'insecure/userDetails', body: jsonEncode({
+      String Password, String gender,String phoneNumber) async {
+    String data = await Api().post(url: 'insecure/userDetails', body: jsonEncode({
       "username": name,
       "email": email,
       "social": false,
       "img": img,
       "password": Password,
-      "gender": gender
+      "gender": gender,
+      "phone": phoneNumber
     }));
+    String token=data.substring(10,data.length-2);
     final storage = const FlutterSecureStorage();
-    await storage.write(key: 'token', value: data.token);
+    await storage.write(key: 'token', value: token);
     var value = await storage.read(key: 'token');
-    print(value);
     return true;
   }
 }

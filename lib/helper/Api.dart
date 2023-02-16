@@ -42,7 +42,7 @@ class Api {
         await http.post(Uri.parse(base+url), body: body, headers: headers);
     if (response.statusCode == 200) {
       if(!response.body.isEmpty){
-              String data = jsonDecode(jsonEncode(response.body));
+              var data = jsonDecode(jsonEncode(response.body));
                     return data;
       }
       else{
