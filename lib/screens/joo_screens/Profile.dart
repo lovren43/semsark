@@ -13,7 +13,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,
-        children: <Widget> [
+        children:[
           buildTop(),
           buildContent(),
         ],
@@ -24,8 +24,8 @@ class _ProfileState extends State<Profile> {
   Widget buildContent(){
     return Column(
       children: [
-        Padding(padding: EdgeInsets.all(26)),
-        Text(
+        //ProfileImage(),
+        const Text(
             'YOUSSEF',
           style: TextStyle(
             fontSize: 20,
@@ -33,8 +33,8 @@ class _ProfileState extends State<Profile> {
             color: Color.fromRGBO(129, 137, 176, 1)
           ),
         ),
-        SizedBox(height: 5,),
-        Text(
+        const SizedBox(height: 5,),
+        const Text(
           'YOUSSEF@GMAIL.COM',
           style: TextStyle(
               fontSize: 14,
@@ -42,7 +42,7 @@ class _ProfileState extends State<Profile> {
             letterSpacing: 5
           ),
         ),
-        SizedBox(height: 100,),
+        const SizedBox(height: 100,),
         Container(
           width: 400,
           height: 60,
@@ -92,59 +92,63 @@ class _ProfileState extends State<Profile> {
   Widget buildTop() {
     return Stack(
         clipBehavior: Clip.none,
-        alignment: Alignment.center,
+        alignment: Alignment.bottomCenter,
         children: [
           TopContainer(),
-          Positioned(
-              top: 175,
-              child: ProfileImage()
-          ),
+          ProfileImage(),
         ],
     );
   }
 
-  Widget TopContainer() => Container  (
-    height: 270,
-    decoration: const BoxDecoration(
-        color: Color.fromRGBO(241, 246, 251, 1),
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(90.0),
-          bottomLeft: Radius.circular(90.0),
+  Widget TopContainer() => Column(
+    children: [
+      Container  (
+        height: 270,
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(241, 246, 251, 1),
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(90.0),
+              bottomLeft: Radius.circular(90.0),
+            )
+        ),
+        padding: EdgeInsets.only(left: 10 , right: 10),
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 50),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                  onPressed: (){},
+                  icon: const Icon(
+                    Icons.settings,
+                    color: Color.fromRGBO(241, 246, 251, 1),
+                  )
+              ),
+              const Expanded(
+                child: Center(
+                  child: Text(
+                    'PROFILE',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(129, 137, 176, 1),
+                    ),
+                  ),
+                ),
+              ),
+              IconButton(
+                  onPressed: (){},
+                  icon: const Icon(
+                    Icons.settings,
+                    color: Color.fromRGBO(129, 137, 176, 1),
+                  )
+              ),
+            ],
+          ),
         )
-    ),
-    child: Padding(
-      padding: EdgeInsets.only(bottom: 50),
-      child: Row(
-        children: [
-          SizedBox(width: 15),
-          IconButton(
-              onPressed: (){},
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Color.fromRGBO(129, 137, 176, 1),
-              )
-          ),
-          SizedBox(width: 120,),
-          Text(
-            'PROFILE',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(129, 137, 176, 1),
-            ),
-          ),
-          SizedBox(width: 100,),
-          IconButton(
-              onPressed: (){},
-              icon: const Icon(
-                Icons.settings,
-                color: Color.fromRGBO(129, 137, 176, 1),
-              )
-          ),
-
-        ],
       ),
-    )
+      const SizedBox(height: 70,)
+    ],
   );
 
   Widget ProfileImage() => CircleAvatar(
@@ -155,7 +159,7 @@ class _ProfileState extends State<Profile> {
       backgroundColor: Colors.white,
       child: CircleAvatar(
         radius: 65,
-        backgroundImage: AssetImage("assets/images/haha.JPG"),
+        backgroundImage: AssetImage("assets/images/hah.JPG"),
       ),
     ),
   );
