@@ -13,6 +13,7 @@ class _PassordInputFieldState extends State<PassordInputField> {
   final textFieldFocusNode = FocusNode();
   bool _obscured = true;
     TextEditingController? pass = TextEditingController();
+    
 
   
 
@@ -37,6 +38,7 @@ class _PassordInputFieldState extends State<PassordInputField> {
           return "Field is required";
         }
       },
+      
       keyboardType: TextInputType.visiblePassword,
       obscureText: _obscured,
       focusNode: textFieldFocusNode,

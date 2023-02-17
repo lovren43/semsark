@@ -3,6 +3,7 @@ import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/PasswordInputField.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
+import 'package:semsark/lovren_apis/login_api.dart';
 import 'package:semsark/screens/lovren_screens/sign_up.dart';
 import 'package:semsark/screens/lovren_screens/forgetPassword.dart';
 
@@ -18,11 +19,24 @@ class _SignInPageState extends State<SignInPage> {
 
   String? password;
 
-  final _passwordFieldKey = GlobalKey<FormFieldState<String>>();
-
   bool isLoading = false;
 
   GlobalKey<FormState> formKey = GlobalKey();
+  final TextEditingController pass = TextEditingController();
+
+  final textFieldFocusNode = FocusNode();
+
+  bool _obscured = true;
+  void _toggleObscured() {
+    setState(() {
+      _obscured = !_obscured;
+      if (textFieldFocusNode.hasPrimaryFocus) {
+        return;
+      } // If focus is on text field, dont unfocus
+      textFieldFocusNode.canRequestFocus = false;
+      // Prevents focus if tap on eye
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +68,49 @@ class _SignInPageState extends State<SignInPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                PassordInputField(
-                    onChanged: (data) {
-                      password = data;
-                    },
-                    hintText: 'Password'),
+                TextFormField(
+                  controller: pass,
+                  onChanged: (data) {
+                    password = data;
+                  },
+                  validator: (data) {
+                    if (data!.isEmpty) {
+                      return "Field is required";
+                    }
+                  },
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: _obscured,
+                  focusNode: textFieldFocusNode,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: const Color(0xFFF1F6FB),
+                    prefixIcon: const Icon(Icons.lock_outlined),
+                    hintText: "Password",
+                    hintStyle: const TextStyle(color: Color(0xFF8189B0)),
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.white,
+                    )),
+                    border: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.white,
+                    )),
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                      child: GestureDetector(
+                        onTap: _toggleObscured,
+                        child: Icon(
+                          _obscured
+                              ? Icons.visibility_off_rounded
+                              : Icons.visibility_rounded,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -91,8 +143,11 @@ class _SignInPageState extends State<SignInPage> {
                   text: 'Login',
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
-                      isLoading = true;
-                      setState(() {});
+                      try {
+                        await signIN().login(email!, password!);
+                      } catch (ex) {
+                        print(ex);
+                      }
                     } else {}
                   },
                 ),

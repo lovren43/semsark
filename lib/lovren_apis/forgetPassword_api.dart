@@ -5,7 +5,7 @@ import '../helper/Api.dart';
 class forgetPassword{
   Future<bool> verifyEmail(String email) async {
     dynamic data =
-        await Api().post(url: 'forgetPassword/' + email);
+        await Api().post(url: 'forgetPassword/', body: jsonEncode({"email":email}));
     return true;
   }
 

@@ -40,7 +40,7 @@ class Api {
     // }
     http.Response response =
         await http.post(Uri.parse(base+url), body: body, headers: headers);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       if(!response.body.isEmpty){
               var data = jsonDecode(jsonEncode(response.body));
                     return data;
