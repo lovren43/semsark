@@ -11,7 +11,6 @@ Future<void> main() async {
 class Semsark extends StatelessWidget {
   const Semsark({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

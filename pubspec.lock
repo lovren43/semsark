@@ -128,7 +128,7 @@ packages:
     source: hosted
     version: "6.1.4"
   firebase_core:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_core
       url: "https://pub.dartlang.org"
@@ -149,7 +149,7 @@ packages:
     source: hosted
     version: "2.1.1"
   firebase_storage:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_storage
       url: "https://pub.dartlang.org"
@@ -205,13 +205,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  geocoder2:
+  geocode:
     dependency: "direct main"
     description:
-      name: geocoder2
+      name: geocode
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.0"
+    version: "1.0.2"
   geocoding:
     dependency: "direct main"
     description:
@@ -304,7 +304,7 @@ packages:
     source: hosted
     version: "2.2.5"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -318,7 +318,7 @@ packages:
     source: hosted
     version: "4.0.2"
   image_picker:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: image_picker
       url: "https://pub.dartlang.org"

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocode/geocode.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:semsark/screens/islam_screens/HomeScreen.dart';
 
@@ -47,19 +48,21 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     return true;
   }
+
   Future<void> _getCurrentPosition() async {
     final hasPermission = await _handleLocationPermission();
     if (!hasPermission) SystemNavigator.pop();
-    await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => HomeScreen(currentPosition: position,))
-        )
-      });
-    }).catchError((e) {
-      debugPrint(e);
+    final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    GeoCode code = GeoCode(
+    );
+    final addresses = await code.reverseGeocoding(latitude:30.000377975611677, longitude: 31.13657265803834);
+    print('${addresses}');
+
+    setState(() => {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => HomeScreen(currentPosition: position,))
+      )
     });
   }
   @override

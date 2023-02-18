@@ -7,6 +7,8 @@ import 'package:semsark/ad_model.dart';
 class CreateAdServices {
   String token =
       "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpc2xhbUBpc2xhbS5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjc4MzE1MTc4LCJpYXQiOjE2NzY1MTUxNzh9.RYUN5yn-BCUX_PCMwOoPB0z6HP1wE1o3x6LZLVxgLZ6uXaPWxL6r9LSU4cZnPSQVbNoMIi0lErd0WtCDysqaAQ";
+
+
   Future<void> postAd(CreateAdModel model) async {
     var uri = Uri.parse(ApiEndPoints.baseURL + ApiEndPoints.createAd);
     try {
