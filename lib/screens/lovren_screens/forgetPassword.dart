@@ -20,6 +20,8 @@ class forgetPasswordEmail extends StatefulWidget {
 class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
   GlobalKey<FormState> formKey = GlobalKey();
   String? email;
+  double width = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,16 +38,20 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
                     children: [
                       Stack(alignment: Alignment.center, children: <Widget>[
                         ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(150),
+                                bottomRight: Radius.circular(150)),
                             child: ImageFiltered(
-                          imageFilter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
-                          child: SizedBox(
-                              height: 350,
-                              width: double.infinity,
-                              child: Image.asset(
-                                'assets/images/back.png',
-                                fit: BoxFit.fill,
-                              )),
-                        )),
+                              imageFilter:
+                                  ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+                              child: SizedBox(
+                                  height: 350,
+                                  width: double.infinity,
+                                  child: Image.asset(
+                                    'assets/images/back.png',
+                                    fit: BoxFit.fill,
+                                  )),
+                            )),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
@@ -185,6 +191,8 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
   }
 
   Future<String?> confirmationDialog(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+
     return showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -224,13 +232,13 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
                 ),
                 const Center(
                   child: Text(
-                    "Verification code has been sent to your",
+                    "Verification code has been sent to",
                     style: TextStyle(color: Color(0xFF45A6DD), fontSize: 17),
                   ),
                 ),
                 const Center(
                   child: Text(
-                    "email adddress, Please check ",
+                    "your email adddress, Please check ",
                     style: TextStyle(color: Color(0xFF45A6DD), fontSize: 17),
                   ),
                 ),
@@ -240,33 +248,38 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 130,
-                      height: 50,
-                      child: CustomButon(
-                        text: "BACK",
-                        onTap: () => Navigator.pop(context, 'BACK'),
+                    Flexible(
+                      child: SizedBox(
+                        width: 0.3 * width,
+                        height: 50,
+                        child: CustomButon(
+                          text: "BACK",
+                          onTap: () => Navigator.pop(context, 'BACK'),
+                        ),
                       ),
                     ),
                     const SizedBox(
                       height: 0,
                       width: 10,
                     ),
-                    SizedBox(
-                      width: 130,
-                      height: 50,
-                      child: CustomButon(
-                        text: "DONE",
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return  forgetPasswordVerficationCode(email: email);
-                              },
-                            ),
-                          );
-                        },
+                    Flexible(
+                      child: SizedBox(
+                        width: 0.3 * width,
+                        height: 50,
+                        child: CustomButon(
+                          text: "DONE",
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return forgetPasswordVerficationCode(
+                                      email: email);
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     )
                   ],

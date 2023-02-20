@@ -77,6 +77,7 @@ class _SignInPageState extends State<SignInPage> {
                     if (data!.isEmpty) {
                       return "Field is required";
                     }
+                    
                   },
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: _obscured,
@@ -157,21 +158,24 @@ class _SignInPageState extends State<SignInPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Dont't have an account?"),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const SignUpPage();
-                            },
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        '    Sign Up',
-                        style: TextStyle(color: Color(0xFF45A6DD)),
+                    const Flexible(child: Text("Dont't have an account?",)),
+                    Flexible(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const SignUpPage();
+                              },
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          overflow: TextOverflow.ellipsis,
+                          '    Sign Up',
+                          style: TextStyle(color: Color(0xFF45A6DD)),
+                        ),
                       ),
                     ),
                   ],

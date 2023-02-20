@@ -13,13 +13,11 @@ import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 class newPassword extends StatefulWidget {
   String? email;
   String? OTP;
-  newPassword(
-    {
-      Key? key,
-      this.OTP,
-      this.email,
-    }
-  ):super(key: key);
+  newPassword({
+    Key? key,
+    this.OTP,
+    this.email,
+  }) : super(key: key);
 
   @override
   State<newPassword> createState() => _newPasswordState();
@@ -28,10 +26,10 @@ class newPassword extends StatefulWidget {
 class _newPasswordState extends State<newPassword> {
   final textFieldFocusNode = FocusNode();
   final textFieldFocusNode2 = FocusNode();
-final TextEditingController pass = TextEditingController();
+  final TextEditingController pass = TextEditingController();
   final TextEditingController confirmPass = TextEditingController();
   bool _obscured = true;
-  
+
   void _toggleObscured() {
     setState(() {
       _obscured = !_obscured;
@@ -112,13 +110,14 @@ final TextEditingController pass = TextEditingController();
                               controller: pass,
                               onChanged: (data) {
                                 password = data;
-                                
                               },
                               validator: (data) {
                                 if (data!.isEmpty) {
                                   return "Field is required";
                                 }
-                                
+                                if (data.length < 7) {
+                                  return "Password must be longer that seven numbers";
+                                }
                               },
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: _obscured,
@@ -163,14 +162,14 @@ final TextEditingController pass = TextEditingController();
                               onChanged: (val) {
                                 confirmPassword = val;
                               },
-                              validator: (val){
-                              if(val!.isEmpty) {
-                                return 'Empty';
-                              }
-                              if(val != pass.text) {
-                                return 'Password must match';
-                              }
-                              return null;
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return 'Empty';
+                                }
+                                if (val != pass.text) {
+                                  return 'Password must match';
+                                }
+                                return null;
                               },
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: _obscured,
@@ -214,18 +213,15 @@ final TextEditingController pass = TextEditingController();
                               text: 'Confirm',
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
-                                  try{
-                                    forgetPassword().updatePassword(widget.email!, password, widget.OTP!);
-                                  }
-                                  catch(ex){
+                                  try {
+                                    forgetPassword().updatePassword(
+                                        widget.email!, password, widget.OTP!);
+                                  } catch (ex) {
                                     print(ex);
-
                                   }
                                 } else {}
                               },
                             ),
-                            
-                           
                           ],
                         ),
                       )
@@ -255,7 +251,4 @@ final TextEditingController pass = TextEditingController();
       ),
     );
   }
-
-  
-  
 }

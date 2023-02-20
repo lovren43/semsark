@@ -1,16 +1,12 @@
 import 'dart:ui';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:semsark/components/InputField.dart';
-import 'package:semsark/components/PasswordInputField.dart';
 import 'package:semsark/lovren_apis/sign_up_api.dart';
-import 'package:semsark/screens/lovren_screens/sign_up.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:semsark/components/button.dart';
-import 'package:semsark/components/input_digit.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../components/email_input.dart';
 
@@ -34,7 +30,7 @@ String? name;
 String? password = '';
 String? confirmPassword = '';
 String? img;
-String? phoneNumber;
+PhoneNumber? phoneNumber;
 final formKey = GlobalKey<FormState>();
 final TextEditingController pass = TextEditingController();
 final TextEditingController confirmPass = TextEditingController();
@@ -58,7 +54,10 @@ class _personalInfoPageState extends State<personalInfoPage> {
   XFile? image;
 
   final ImagePicker picker = ImagePicker();
+  String initialCountry = 'EG';
+  final TextEditingController controller = TextEditingController();
 
+  PhoneNumber number = PhoneNumber(isoCode: 'EG');
   //we can upload image from camera or from gallery based on parameter
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
@@ -88,7 +87,7 @@ class _personalInfoPageState extends State<personalInfoPage> {
                       getImage(ImageSource.gallery);
                     },
                     child: Row(
-                      children:const [
+                      children: const [
                         Icon(Icons.image),
                         SizedBox(
                           width: 2,
@@ -98,7 +97,7 @@ class _personalInfoPageState extends State<personalInfoPage> {
                     ),
                   ),
                   const SizedBox(
-                  height: 10,
+                    height: 10,
                   ),
                   ElevatedButton(
                     //if user click this button. user can upload image from camera
@@ -215,12 +214,45 @@ class _personalInfoPageState extends State<personalInfoPage> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                InputField(
-                                    onChanged: (data) {
-                                      phoneNumber = data;
-                                    },
-                                    hintText: "Phone Number",
-                                    inputIcon: const Icon(Icons.phone)),
+                                // InputField(
+                                //     onChanged: (data) {
+                                //       phoneNumber = data;
+                                //     },
+                                //     hintText: "Phone Number",
+                                //     inputIcon: const Icon(Icons.phone)),
+                                InternationalPhoneNumberInput(
+                                  maxLength: 10,
+                                  
+                                  onInputChanged: (PhoneNumber number) {
+                                    phoneNumber=number;
+                                    print(phoneNumber!.phoneNumber);
+                                  },
+                                  onInputValidated: (bool value) {
+                                    print(value);
+                                  },
+                                  inputDecoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Color(0xFFf1f6fb)
+                                  ),
+                                  validator: _phoneValidator, 
+                                  selectorConfig: const SelectorConfig(
+                                    selectorType:
+                                        PhoneInputSelectorType.BOTTOM_SHEET,
+                                  ),
+                                  ignoreBlank: false,
+                                  autoValidateMode: AutovalidateMode.disabled,
+                                  selectorTextStyle:
+                                      const TextStyle(color: Colors.black),
+                                  initialValue: number,
+                                  textFieldController: controller,
+                                  formatInput: true,
+                                  keyboardType: const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
+                                  inputBorder: OutlineInputBorder(),
+                                  onSaved: (PhoneNumber number) {
+                                    print('On Saved: $number');
+                                  },
+                                ),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -277,7 +309,7 @@ class _personalInfoPageState extends State<personalInfoPage> {
                                     }
                                   },
                                   onChanged: (value) {
-                                    gender=value.toString();
+                                    gender = value.toString();
                                     //Do something when changing the item if you want.
                                   },
                                   onSaved: (value) {
@@ -290,9 +322,9 @@ class _personalInfoPageState extends State<personalInfoPage> {
                               height: 20,
                             ),
                             EmailInputField(
-                                onChanged: (data) {
-                                },
-                                hintText: widget.email,enabled: false),
+                                onChanged: (data) {},
+                                hintText: widget.email,
+                                enabled: false),
                             const SizedBox(
                               height: 20,
                             ),
@@ -304,6 +336,9 @@ class _personalInfoPageState extends State<personalInfoPage> {
                               validator: (data) {
                                 if (data!.isEmpty) {
                                   return "Field is required";
+                                }
+                                if (data.length < 7) {
+                                  return "Password must be longer that seven numbers";
                                 }
                               },
                               keyboardType: TextInputType.visiblePassword,
@@ -400,7 +435,13 @@ class _personalInfoPageState extends State<personalInfoPage> {
                               text: "Sign Up",
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
-                                  if(await signUp().createUser(name!, widget.email!, "", pass.text, gender!,phoneNumber!)){
+                                  if (await signUp().createUser(
+                                      name!,
+                                      widget.email!,
+                                      "",
+                                      pass.text,
+                                      gender!,
+                                      phoneNumber!.phoneNumber.toString())) {
                                     setState(() {});
                                   }
                                 } else {}
@@ -468,5 +509,12 @@ class _personalInfoPageState extends State<personalInfoPage> {
         ),
       ),
     );
+  }
+
+  String? _phoneValidator(String? p1) {
+    if (p1!.startsWith("1")){return null;}
+    else{
+      return "invalid phone number";
+    }
   }
 }

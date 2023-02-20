@@ -39,7 +39,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
   bool hasError = false;
   String currentText = "";
   final formKey = GlobalKey<FormState>();
-
+  double width=0;
   @override
   void initState() {
     errorController = StreamController<ErrorAnimationType>();
@@ -64,6 +64,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    width= MediaQuery.of(context).size.width;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -128,88 +129,98 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 30),
-                    child: PinCodeTextField(
-                      autoDismissKeyboard: true,
-                      backgroundColor: Colors.white,
-                      appContext: context,
-                      pastedTextStyle: const TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      length: 6,
-                      obscureText: true,
-                      obscuringCharacter: '*',
-                      obscuringWidget: Image.asset('assets/images/logo.png'),
-                      blinkWhenObscuring: true,
-                      animationType: AnimationType.fade,
-                      validator: (v) {
-                        if (v!.isEmpty) {
-                          return "Feild is required";
-                        }
-                        if (v.length < 6) {
-                          return "Enter full code";
-                        } else {
-                          return null;
-                        }
-                      },
-                      pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.box,
-                        borderRadius: BorderRadius.circular(5),
-                        fieldHeight: 50,
-                        fieldWidth: 40,
-                        activeFillColor: Colors.white,
-                        inactiveColor: Colors.blueGrey,
-                        inactiveFillColor: Colors.white
-                      ),
-                      
-                      cursorColor: Colors.black,
-                      animationDuration: const Duration(milliseconds: 300),
-                      enableActiveFill: true,
-                      errorAnimationController: errorController,
-                      controller: textEditingController,
-                      keyboardType: TextInputType.number,
-                      boxShadows: const [
-                        BoxShadow(
-                          offset: Offset(0, 1),
-                          color: Colors.black12,
-                          blurRadius: 10,
-                        )
-                      ],
-                      
-                      onChanged: (value) {
-                        OTP = value.toString();
-                        debugPrint(value);
-                        setState(() {
-                          currentText = value;
-                        });
-                      },
-                      beforeTextPaste: (text) {
-                        debugPrint("Allowing to paste $text");
-                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                        return true;
-                      },
-                    )),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 30),
+                          child: PinCodeTextField(
+                            autoDismissKeyboard: true,
+                            backgroundColor: Colors.white,
+                            appContext: context,
+                            pastedTextStyle: const TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            length: 6,
+                            obscureText: true,
+                            obscuringCharacter: '*',
+                            obscuringWidget: Image.asset('assets/images/logo.png'),
+                            blinkWhenObscuring: true,
+                            animationType: AnimationType.fade,
+                            validator: (v) {
+                              if (v!.isEmpty) {
+                                return "Feild is required";
+                              }
+                              if (v.length < 6) {
+                                return "Enter full code";
+                              } else {
+                                return null;
+                              }
+                            },
+                            pinTheme: PinTheme(
+                              shape: PinCodeFieldShape.box,
+                              borderRadius: BorderRadius.circular(5),
+                              fieldHeight: 50,
+                              fieldWidth: 0.1*width,
+                              activeFillColor: Colors.white,
+                              inactiveColor: Colors.blueGrey,
+                              inactiveFillColor: Colors.white
+                            ),
+                            
+                            cursorColor: Colors.black,
+                            animationDuration: const Duration(milliseconds: 300),
+                            enableActiveFill: true,
+                            errorAnimationController: errorController,
+                            controller: textEditingController,
+                            keyboardType: TextInputType.number,
+                            boxShadows: const [
+                              BoxShadow(
+                                offset: Offset(0, 1),
+                                color: Colors.black12,
+                                blurRadius: 10,
+                              )
+                            ],
+                            
+                            onChanged: (value) {
+                              OTP = value.toString();
+                              debugPrint(value);
+                              setState(() {
+                                currentText = value;
+                              });
+                            },
+                            beforeTextPaste: (text) {
+                              debugPrint("Allowing to paste $text");
+                              //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                              //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                              return true;
+                            },
+                          )),
+                    ),
+                  ],
+                ),
                 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Didn't receive the code? ",
-                        style: TextStyle(
-                          color: Color(0xFF7f88b3),
-                          fontSize: 17,
-                        )),
-                    TextButton(
-                      onPressed: () => snackBar("OTP resend!!"),
-                      child: const Text(
-                        "RESEND",
-                        style: TextStyle(
-                            color: Color(0xFFe87476),
+                    const Flexible(
+                      child: Text("Didn't receive the code? ",
+                          style: TextStyle(
+                            color: Color(0xFF7f88b3),
                             fontSize: 17,
-                            decoration: TextDecoration.underline),
+                          )),
+                    ),
+                    Flexible(
+                      child: TextButton(
+                        onPressed: () => snackBar("OTP resend!!"),
+                        child: const Text(
+                          "RESEND",
+                          style: TextStyle(
+                              color: Color(0xFFe87476),
+                              fontSize: 17,
+                              decoration: TextDecoration.underline),
+                        ),
                       ),
                     )
                   ],
@@ -218,13 +229,18 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                   height: 14,
                 ),
                 
-              Flexible(
-                  child: TextButton(
-                child: const Text("Clear"),
-                onPressed: () {
-                  textEditingController.clear();
-                },
-              )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child: TextButton(
+                    child: const Text("Clear"),
+                    onPressed: () {
+                      textEditingController.clear();
+                    },
+                  )),
+                ],
+              ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: CustomButon(
