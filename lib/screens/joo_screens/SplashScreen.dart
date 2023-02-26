@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geocode/geocode.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:semsark/screens/islam_screens/HomeScreen.dart';
 
@@ -54,11 +53,6 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!hasPermission) SystemNavigator.pop();
     final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-    GeoCode code = GeoCode(
-    );
-    final addresses = await code.reverseGeocoding(latitude:30.000377975611677, longitude: 31.13657265803834);
-    print('${addresses}');
-
     setState(() => {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => HomeScreen(currentPosition: position,))
@@ -71,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
         body: Container(
             width: double.infinity,
             height: double.infinity,
-            color: Color.fromRGBO(69, 166, 221, 1),
+            color: const Color.fromRGBO(69, 166, 221, 1),
             child: Column(children: [
               Expanded(
                   child: Center(

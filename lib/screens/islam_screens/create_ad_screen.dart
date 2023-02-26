@@ -3,13 +3,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:semsark/ad_model.dart';
+import 'package:semsark/models/ad_model.dart';
 import 'package:semsark/components/custom_drop_down_field.dart';
 import 'package:semsark/components/custom_input_field.dart';
 import 'package:semsark/components/numaric_data_field.dart';
 import 'package:semsark/screens/islam_screens/helper.dart';
-import 'package:semsark/sevices/create_ad_services.dart';
-import 'package:semsark/sevices/firebase_services.dart';
+
+import '../../Api/islam_services/create_ad_services.dart';
+import '../../Api/islam_services/firebase_services.dart';
+
+
 
 class CreateAd extends StatefulWidget {
   CreateAd({Key? key}) : super(key: key);

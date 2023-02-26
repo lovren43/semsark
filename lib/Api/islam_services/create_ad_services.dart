@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:semsark/Api/end_point.dart';
-import 'package:semsark/ad_model.dart';
+import 'package:semsark/models/ad_model.dart';
 
 class CreateAdServices {
   String token =

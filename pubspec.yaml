@@ -51,6 +51,7 @@ dependencies:
   passwordfield: ^0.1.0
   firebase_core: ^2.5.0
   flutter_secure_storage: ^8.0.0
+  firebase_storage: ^11.0.14
   intl_phone_number_input: ^0.7.2
   image_picker: ^0.8.6+2
 

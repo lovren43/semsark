@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import '../helper/Api.dart';
+import '../../helper/Api.dart';
 
-class forgetPassword{
+class ForgetPassword{
   Future<bool> verifyEmail(String email) async {
     dynamic data =
         await Api().post(url: 'forgetPassword/', body: jsonEncode({"email":email}));

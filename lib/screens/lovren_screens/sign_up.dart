@@ -1,21 +1,20 @@
 import 'dart:ui';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
-import 'package:semsark/lovren_apis/sign_up_api.dart';
 import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+import '../../Api/lovren_apis/sign_up_api.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpScreenState extends State<SignUpScreen> {
   GlobalKey<FormState> formKey = GlobalKey();
   String? email;
   double width = 0;
@@ -98,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   try {
-                                    if (await signUp().verifyEmail(email!)) {
+                                    if (await SignUpServices().verifyEmail(email!)) {
                                       confirmationDialog(context);
                                       setState(() {});
                                     }
@@ -176,7 +175,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignInPage();
+                      return LoginScreen();
                     },
                   ),
                 );
@@ -236,7 +235,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const Center(
                   child: Text(
-                    "your email adddress, Please check ",
+                    "your email address, Please check ",
                     style: TextStyle(color: Color(0xFF45A6DD), fontSize: 17),
                   ),
                 ),
@@ -267,7 +266,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: CustomButon(
                           text: "DONE",
                           onTap: () {
-                            signUp().sendOTP(email!);
+                            SignUpServices().sendOTP(email!);
                             Navigator.push(
                               context,
                               MaterialPageRoute(

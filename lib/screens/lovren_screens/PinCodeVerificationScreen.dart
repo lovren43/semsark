@@ -4,16 +4,10 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 
 import 'package:pin_code_fields/pin_code_fields.dart';
-
-import 'package:flutter/material.dart';
-import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/button.dart';
-import 'package:semsark/lovren_apis/sign_up_api.dart';
 import 'package:semsark/screens/lovren_screens/personal_info.dart';
-import 'package:semsark/screens/lovren_screens/sign_in.dart';
-import 'package:semsark/screens/lovren_screens/sign_up.dart';
 
-import 'package:semsark/components/input_digit.dart';
+import '../../Api/lovren_apis/sign_up_api.dart';
 
 class PinCodeVerificationScreen extends StatefulWidget {
   String? email;
@@ -151,7 +145,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                             animationType: AnimationType.fade,
                             validator: (v) {
                               if (v!.isEmpty) {
-                                return "Feild is required";
+                                return "Field is required";
                               }
                               if (v.length < 6) {
                                 return "Enter full code";
@@ -247,12 +241,12 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                     text: 'Verify',
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        if (await signUp().verifyOTP(widget.email!, OTP!)) {
+                        if (await SignUpServices().verifyOTP(widget.email!, OTP!)) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return personalInfoPage(email: widget.email);
+                                return PersonalInfoScreen(email: widget.email);
                               },
                             ),
                           );

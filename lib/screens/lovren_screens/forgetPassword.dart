@@ -1,23 +1,19 @@
 import 'dart:ui';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
-import 'package:semsark/lovren_apis/forgetPassword_api.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
+import '../../Api/lovren_apis/forgetPassword_api.dart';
 
-import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
-
-class forgetPasswordEmail extends StatefulWidget {
-  const forgetPasswordEmail({super.key});
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({super.key});
 
   @override
-  State<forgetPasswordEmail> createState() => _forgetPasswordEmailState();
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
 }
 
-class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   GlobalKey<FormState> formKey = GlobalKey();
   String? email;
   double width = 0;
@@ -99,7 +95,7 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   try {
-                                    if (await forgetPassword()
+                                    if (await ForgetPassword()
                                         .verifyEmail(email!)) {
                                       confirmationDialog(context);
                                       setState(() {});
@@ -178,7 +174,7 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignInPage();
+                      return LoginScreen();
                     },
                   ),
                 );
@@ -273,7 +269,7 @@ class _forgetPasswordEmailState extends State<forgetPasswordEmail> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return forgetPasswordVerficationCode(
+                                  return ForgetPasswordVerficationScreen(
                                       email: email);
                                 },
                               ),

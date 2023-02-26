@@ -1,29 +1,24 @@
 import 'dart:ui';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/button.dart';
-import 'package:semsark/components/email_input.dart';
-import 'package:semsark/lovren_apis/forgetPassword_api.dart';
-import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
-import 'package:semsark/components/PasswordInputField.dart';
-import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 
-class newPassword extends StatefulWidget {
+import '../../Api/lovren_apis/forgetPassword_api.dart';
+
+class NewPasswordScreen extends StatefulWidget {
   String? email;
   String? OTP;
-  newPassword({
+  NewPasswordScreen({
     Key? key,
     this.OTP,
     this.email,
   }) : super(key: key);
 
   @override
-  State<newPassword> createState() => _newPasswordState();
+  State<NewPasswordScreen> createState() => _NewPasswordScreenState();
 }
 
-class _newPasswordState extends State<newPassword> {
+class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final textFieldFocusNode = FocusNode();
   final textFieldFocusNode2 = FocusNode();
   final TextEditingController pass = TextEditingController();
@@ -214,7 +209,7 @@ class _newPasswordState extends State<newPassword> {
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   try {
-                                    forgetPassword().updatePassword(
+                                    ForgetPassword().updatePassword(
                                         widget.email!, password, widget.OTP!);
                                   } catch (ex) {
                                     print(ex);
@@ -240,7 +235,7 @@ class _newPasswordState extends State<newPassword> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return forgetPasswordVerficationCode();
+                      return ForgetPasswordVerficationScreen();
                     },
                   ),
                 );

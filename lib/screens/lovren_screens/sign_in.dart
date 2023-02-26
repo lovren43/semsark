@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:semsark/components/InputField.dart';
-import 'package:semsark/components/PasswordInputField.dart';
+
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
-import 'package:semsark/lovren_apis/login_api.dart';
 import 'package:semsark/screens/lovren_screens/sign_up.dart';
 import 'package:semsark/screens/lovren_screens/forgetPassword.dart';
 
-class SignInPage extends StatefulWidget {
-  SignInPage({super.key});
+import '../../Api/lovren_apis/login_api.dart';
+
+class LoginScreen extends StatefulWidget {
+  LoginScreen({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _LoginScreenState extends State<LoginScreen> {
   String? email;
 
   String? password;
@@ -32,7 +32,7 @@ class _SignInPageState extends State<SignInPage> {
       _obscured = !_obscured;
       if (textFieldFocusNode.hasPrimaryFocus) {
         return;
-      } // If focus is on text field, dont unfocus
+      }
       textFieldFocusNode.canRequestFocus = false;
       // Prevents focus if tap on eye
     });
@@ -121,13 +121,13 @@ class _SignInPageState extends State<SignInPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const forgetPasswordEmail();
+                          return const ForgetPasswordScreen();
                         },
                       ),
                     );
                   },
                   child: const Text(
-                    'Forget passowrd?',
+                    'Forget password?',
                     style: TextStyle(
                       color: Color(0xFFFF6A6A),
                       decoration: TextDecoration.underline,
@@ -145,7 +145,7 @@ class _SignInPageState extends State<SignInPage> {
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
                       try {
-                        await signIN().login(email!, password!);
+                        await LoginServices().login(email!, password!);
                       } catch (ex) {
                         print(ex);
                       }
@@ -158,7 +158,7 @@ class _SignInPageState extends State<SignInPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Flexible(child: Text("Dont't have an account?",)),
+                    const Flexible(child: Text("Don't have an account?",)),
                     Flexible(
                       child: GestureDetector(
                         onTap: () {
@@ -166,7 +166,7 @@ class _SignInPageState extends State<SignInPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const SignUpPage();
+                                return const SignUpScreen();
                               },
                             ),
                           );
