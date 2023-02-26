@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:semsark/components/button.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:semsark/screens/islam_screens/HomeScreen.dart';
+import 'package:semsark/screens/location_services.dart';
 
 import '../../Api/lovren_apis/sign_up_api.dart';
 import '../../components/email_input.dart';
@@ -41,6 +42,8 @@ final TextEditingController confirmPass = TextEditingController();
 class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   final textFieldFocusNode = FocusNode();
   final textFieldFocusNode2 = FocusNode();
+
+  final LocationServices _locationServices = LocationServices();
 
   bool _obscured = true;
   void _toggleObscured() {
@@ -439,8 +442,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                         pass.text,
                                         gender!,
                                         phoneNumber!.phoneNumber.toString())) {
-                                      setState(() {
-                                        _getCurrentPosition();
+                                        Position position = await _locationServices.getCurrentPosition(context);
+                                        setState((){
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder:
+                                              (context) => HomeScreen(currentPosition: position))) ;
                                       });
                                     }
                                   } else {}

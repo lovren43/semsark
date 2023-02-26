@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
+import 'package:semsark/screens/islam_screens/HomeScreen.dart';
+import 'package:semsark/screens/joo_screens/Profile.dart';
+import 'package:semsark/screens/location_services.dart';
 import 'package:semsark/screens/lovren_screens/sign_up.dart';
 import 'package:semsark/screens/lovren_screens/forgetPassword.dart';
+import 'package:semsark/globals.dart' as global;
 
 import '../../Api/lovren_apis/login_api.dart';
 
@@ -20,6 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String? password;
 
   bool isLoading = false;
+
+  LocationServices _locationServices = LocationServices() ;
 
   GlobalKey<FormState> formKey = GlobalKey();
   final TextEditingController pass = TextEditingController();
@@ -40,7 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return global.tokken!="islam" ?  Profile() : Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
@@ -145,7 +153,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
                       try {
-                        await LoginServices().login(email!, password!);
+                        await LoginServices().login(email!, password!).then((value) async {
+                          if(value){
+                            Position position = await _locationServices.getCurrentPosition(context);
+                            setState((){
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder:
+                                  (context) => HomeScreen(currentPosition: position))) ;
+                            });
+                          }
+                        });
                       } catch (ex) {
                         print(ex);
                       }
@@ -187,4 +203,5 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
 }

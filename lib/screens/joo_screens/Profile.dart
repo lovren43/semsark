@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:semsark/Api/islam_services/user_services.dart';
 
 class Profile extends StatefulWidget{
   const Profile({super.key});
@@ -9,7 +10,15 @@ class Profile extends StatefulWidget{
 }
 
 class _ProfileState extends State<Profile> {
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
   final double profileHeight = 144;
+  String name = ' ' ;
+  String email = ' ' ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,18 +36,18 @@ class _ProfileState extends State<Profile> {
     return Column(
       children: [
         //ProfileImage(),
-        const Text(
-            'YOUSSEF',
-          style: TextStyle(
+        Text(
+            name,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Color.fromRGBO(129, 137, 176, 1)
           ),
         ),
         const SizedBox(height: 5,),
-        const Text(
-          'YOUSSEF@GMAIL.COM',
-          style: TextStyle(
+        Text(
+          email,
+          style: const TextStyle(
               fontSize: 14,
               color: Color.fromRGBO(129, 137, 176, 1),
             letterSpacing: 5
@@ -48,36 +57,36 @@ class _ProfileState extends State<Profile> {
         Container(
           width: 400,
           height: 60,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color.fromRGBO(241, 246, 251, 1),
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Row(
             children: [
-              Padding(padding: EdgeInsets.only(left: 10)),
+              const Padding(padding: EdgeInsets.only(left: 10)),
               TextButton(
                   onPressed:(){},
-                  child: Text(
+                  child: const Text(
                       'YOUR ADS',
                     style: TextStyle(
                       fontWeight: FontWeight.normal
                     ),
                   ),
               ),
-              Padding(padding: EdgeInsets.only(left: 60)),
+              const Padding(padding: EdgeInsets.only(left: 60)),
               TextButton(
                   onPressed:(){},
-                  child: Text(
+                  child: const Text(
                     'PAYMENTS',
                     style: TextStyle(
                         fontWeight: FontWeight.normal
                     ),
                   ),
               ),
-              Padding(padding: EdgeInsets.only(left: 60)),
+              const Padding(padding: EdgeInsets.only(left: 60)),
               TextButton(
                   onPressed:(){},
-                  child: Text(
+                  child: const Text(
                     'HISTORY',
                     style: TextStyle(
                         fontWeight: FontWeight.normal
@@ -101,7 +110,16 @@ class _ProfileState extends State<Profile> {
         ],
     );
   }
-
+  void getUser(){
+    UserApi user = UserApi() ;
+    user.getUser().then((value){
+      print(value) ;
+      setState(() {
+        name = value['username'];
+        email = value['email'];
+      });
+    }) ;
+  }
   Widget TopContainer() => Column(
     children: [
       Container  (
@@ -113,9 +131,9 @@ class _ProfileState extends State<Profile> {
               bottomLeft: Radius.circular(90.0),
             )
         ),
-        padding: EdgeInsets.only(left: 10 , right: 10),
+        padding: const EdgeInsets.only(left: 10 , right: 10),
         child: Padding(
-          padding: EdgeInsets.only(bottom: 50),
+          padding: const EdgeInsets.only(bottom: 50),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -155,13 +173,13 @@ class _ProfileState extends State<Profile> {
 
   Widget ProfileImage() => CircleAvatar(
     radius: profileHeight / 2,
-    backgroundColor: Color.fromRGBO(241, 246, 251, 1),
+    backgroundColor: const Color.fromRGBO(241, 246, 251, 1),
     child: const CircleAvatar(
       radius: 68,
       backgroundColor: Colors.white,
       child: CircleAvatar(
         radius: 65,
-        backgroundImage: AssetImage("assets/images/hah.JPG"),
+        backgroundImage: AssetImage("assets/images/Mask.png"),
       ),
     ),
   );

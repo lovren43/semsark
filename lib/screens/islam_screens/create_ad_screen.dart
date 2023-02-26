@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:geolocator/geolocator.dart';
+import 'package:semsark/globals.dart' as global;
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,10 +9,14 @@ import 'package:semsark/models/ad_model.dart';
 import 'package:semsark/components/custom_drop_down_field.dart';
 import 'package:semsark/components/custom_input_field.dart';
 import 'package:semsark/components/numaric_data_field.dart';
+import 'package:semsark/screens/islam_screens/HomeScreen.dart';
 import 'package:semsark/screens/islam_screens/helper.dart';
+import 'package:semsark/screens/joo_screens/Profile.dart';
+import 'package:semsark/screens/lovren_screens/sign_in.dart';
 
 import '../../Api/islam_services/create_ad_services.dart';
 import '../../Api/islam_services/firebase_services.dart';
+import '../location_services.dart';
 
 
 
@@ -23,6 +29,7 @@ class CreateAd extends StatefulWidget {
 
 class _CreateAdState extends State<CreateAd> {
   CreateAdServices createAdServices = CreateAdServices();
+  final LocationServices _locationServices = LocationServices() ;
 
   var type_val = "ALL";
   var signal_val = "ALL";
@@ -65,7 +72,7 @@ class _CreateAdState extends State<CreateAd> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return global.tokken !="islam" ? SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Column(
@@ -444,7 +451,7 @@ class _CreateAdState extends State<CreateAd> {
           ],
         ),
       ),
-    );
+    ) : LoginScreen();
   }
 
   Future<void> upload_photo(XFile element) async {
@@ -500,11 +507,15 @@ class _CreateAdState extends State<CreateAd> {
         isFinshed,
         true,
         type_val);
-    createAdServices.postAd(model).then((value) {
+    createAdServices.postAd(model).then((value) async {
       print("sucsessfully");
       setState(() {
         is_progress = false ;
       });
+      Position position = await _locationServices.getCurrentPosition(context);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) =>
+          HomeScreen(currentPosition: position)
+      ));
     }).catchError((e){
       print(enable) ;
       setState(() {

@@ -3,12 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:semsark/Api/end_point.dart';
 import 'package:semsark/models/ad_model.dart';
+import 'package:semsark/globals.dart' as global;
 
 class CreateAdServices {
-  String token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpc2xhbUBpc2xhbS5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjc4MzE1MTc4LCJpYXQiOjE2NzY1MTUxNzh9.RYUN5yn-BCUX_PCMwOoPB0z6HP1wE1o3x6LZLVxgLZ6uXaPWxL6r9LSU4cZnPSQVbNoMIi0lErd0WtCDysqaAQ";
-
-
+  String token = global.tokken ;
   Future<void> postAd(CreateAdModel model) async {
     var uri = Uri.parse(ApiEndPoints.baseURL + ApiEndPoints.createAd);
     try {

@@ -25,7 +25,7 @@ class AdItem extends StatelessWidget {
                     topRight: Radius.circular(20),
                   ),
                   child: Image.asset(
-                    "assets/images/haha.JPG",
+                    "assets/images/haha.jpeg",
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 250,
