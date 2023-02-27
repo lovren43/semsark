@@ -23,6 +23,7 @@ class PinCodeVerificationScreen extends StatefulWidget {
     this.email,
   }) : super(key: key);
 
+
   @override
   _PinCodeVerificationScreenState createState() =>
       _PinCodeVerificationScreenState();
