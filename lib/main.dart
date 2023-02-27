@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:semsark/screens/islam_screens/HomeScreen.dart';
-import 'package:semsark/screens/islam_screens/create_ad_screen.dart';
-import 'package:semsark/screens/islam_screens/helper.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:semsark/screens/joo_screens/SplashScreen.dart';
-import 'package:semsark/screens/lovren_screens/sign_in.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp() ;
   runApp(const Semsark());
 }
 
@@ -14,6 +13,6 @@ class Semsark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: SignInPage());
+    return const MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen());
   }
 }

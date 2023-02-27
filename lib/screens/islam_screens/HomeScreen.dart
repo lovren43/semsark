@@ -5,7 +5,7 @@ import 'package:semsark/screens/islam_screens/chat.dart';
 import 'package:semsark/screens/islam_screens/create_ad_screen.dart';
 import 'package:semsark/screens/islam_screens/map_screen.dart';
 import 'package:semsark/screens/islam_screens/helper.dart';
-import 'package:semsark/screens/joo_screens/Profile.dart';
+import 'package:semsark/screens/lovren_screens/sign_in.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -25,7 +25,7 @@ class _HomeScreen extends State<HomeScreen> {
     ChatScreen(res: 'Chat Screen'),
     CreateAd(),
     ChatScreen(res :"Notifications screen"),
-    Profile()
+    LoginScreen()
   ];
 
   @override

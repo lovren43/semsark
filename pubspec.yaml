@@ -43,7 +43,7 @@ dependencies:
   flutter_svg: ^1.1.6
   geolocator: ^9.0.2
   geocoding: ^2.0.5
-  geocoder2: ^1.4.0
+  geocode: ^1.0.2
   location: ^4.4.0
   intl_utils: ^2.8.1
   curved_navigation_bar: ^1.0.3
@@ -51,9 +51,10 @@ dependencies:
   passwordfield: ^0.1.0
   firebase_core: ^2.5.0
   flutter_secure_storage: ^8.0.0
+  firebase_storage: ^11.0.14
   intl_phone_number_input: ^0.7.2
   image_picker: ^0.8.6+2
-
+  hive: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -65,8 +66,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  image_picker:
-  
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -85,17 +86,6 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
       - assets/images/
-      - assets/images/c.png 
-      - assets/images/CAM.png 
-      - assets/images/logo.png 
-      - assets/images/back.png 
-      - assets/images/dot.png 
-      - assets/images/googleIcon.png
-      - assets/images/emailIcon.png
-      - assets/images/Mask.png
-      - assets/images/gender.png
-      - assets/images/zzz.png
-      - assets/images/ttt.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

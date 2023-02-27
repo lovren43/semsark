@@ -1,12 +1,9 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../../helper/Api.dart';
+import 'package:semsark/globals.dart' as global;
 
-import 'package:http/http.dart';
-
-import '../helper/Api.dart';
-
-class signUp {
+class SignUpServices {
   Future<bool> verifyEmail(String email) async {
     dynamic data =
         await Api().get(url: 'insecure/userDetails/checkEmail/' + email);
@@ -25,18 +22,19 @@ class signUp {
   }
 
   Future<bool> createUser(String name, String email, String img,
-      String Password, String gender,String phoneNumber) async {
+      String password, String gender,String phoneNumber) async {
     String data = await Api().post(url: 'insecure/userDetails', body: jsonEncode({
       "username": name,
       "email": email,
       "social": false,
       "img": img,
-      "password": Password,
+      "password": password,
       "gender": gender,
       "phone": phoneNumber
     }));
     String token=data.substring(10,data.length-2);
-    final storage = const FlutterSecureStorage();
+    global.tokken = token ;
+    const storage = FlutterSecureStorage();
     await storage.write(key: 'token', value: token);
     var value = await storage.read(key: 'token');
     return true;

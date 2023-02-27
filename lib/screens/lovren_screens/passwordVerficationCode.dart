@@ -4,33 +4,27 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 
 import 'package:pin_code_fields/pin_code_fields.dart';
-
-import 'package:flutter/material.dart';
-import 'package:semsark/components/InputField.dart';
 import 'package:semsark/components/button.dart';
-import 'package:semsark/lovren_apis/forgetPassword_api.dart';
-import 'package:semsark/screens/lovren_screens/personal_info.dart';
-import 'package:semsark/screens/lovren_screens/sign_in.dart';
-import 'package:semsark/screens/lovren_screens/sign_up.dart';
 import 'package:semsark/screens/lovren_screens/newPassword.dart';
 
-import 'package:semsark/components/input_digit.dart';
+import '../../Api/lovren_apis/forgetPassword_api.dart';
 
-class forgetPasswordVerficationCode extends StatefulWidget {
+
+class ForgetPasswordVerficationScreen extends StatefulWidget {
   final String? email;
 
-  const forgetPasswordVerficationCode({
+  const ForgetPasswordVerficationScreen({
     Key? key,
     this.email,
   }) : super(key: key);
 
   @override
-  _forgetPasswordVerficationCodeState createState() =>
-      _forgetPasswordVerficationCodeState();
+  _ForgetPasswordVerficationScreenState createState() =>
+      _ForgetPasswordVerficationScreenState();
 }
 
-class _forgetPasswordVerficationCodeState
-    extends State<forgetPasswordVerficationCode> {
+class _ForgetPasswordVerficationScreenState
+    extends State<ForgetPasswordVerficationScreen> {
   TextEditingController textEditingController = TextEditingController();
   // ..text = "123456";
 
@@ -175,12 +169,12 @@ class _forgetPasswordVerficationCodeState
                   text: 'Verify',
                   onTap: () async {
                     try {
-                      if (await forgetPassword().checkOtp(widget.email!, OTP)) {
+                      if (await ForgetPassword().checkOtp(widget.email!, OTP)) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return newPassword(email: widget.email,OTP: OTP,);
+                              return NewPasswordScreen(email: widget.email,OTP: OTP,);
                             },
                           ),
                         );
