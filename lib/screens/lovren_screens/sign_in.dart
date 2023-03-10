@@ -10,7 +10,7 @@ import 'package:semsark/screens/lovren_screens/sign_up.dart';
 import 'package:semsark/screens/lovren_screens/forgetPassword.dart';
 import 'package:semsark/globals.dart' as global;
 
-import '../../Api/lovren_apis/login_api.dart';
+import '../../Repo/Api/lovren_apis/login_api.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});

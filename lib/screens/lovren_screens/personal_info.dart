@@ -11,7 +11,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:semsark/screens/islam_screens/HomeScreen.dart';
 import 'package:semsark/screens/location_services.dart';
 
-import '../../Api/lovren_apis/sign_up_api.dart';
+import '../../Repo/Api/lovren_apis/sign_up_api.dart';
 import '../../components/email_input.dart';
 
 class PersonalInfoScreen extends StatefulWidget {

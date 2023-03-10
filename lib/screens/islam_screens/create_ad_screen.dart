@@ -14,8 +14,8 @@ import 'package:semsark/screens/islam_screens/helper.dart';
 import 'package:semsark/screens/joo_screens/Profile.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 
-import '../../Api/islam_services/create_ad_services.dart';
-import '../../Api/islam_services/firebase_services.dart';
+import '../../Repo/Api/islam_services/create_ad_services.dart';
+import '../../Repo/Api/islam_services/firebase_services.dart';
 import '../location_services.dart';
 
 
