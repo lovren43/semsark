@@ -7,6 +7,8 @@ import 'package:semsark/screens/islam_screens/map_screen.dart';
 import 'package:semsark/screens/islam_screens/helper.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 
+import 'notification_screen.dart';
+
 class HomeScreen extends StatefulWidget {
 
   late Position currentPosition;
@@ -24,7 +26,7 @@ class _HomeScreen extends State<HomeScreen> {
   var widgets = [
     ChatScreen(res: 'Chat Screen'),
     CreateAd(),
-    ChatScreen(res :"Notifications screen"),
+    NotificationScreen(),
     LoginScreen()
   ];
 
