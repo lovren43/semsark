@@ -15,3 +15,4 @@ const NOTIFICATION_PAGE = 3;
 const PROFILE_PAGE = 4;
 
 
+const String AD_BOX = "ad_box";
