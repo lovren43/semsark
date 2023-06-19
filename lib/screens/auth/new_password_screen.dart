@@ -1,9 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:semsark/components/button.dart';
-import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
+import 'package:semsark/screens/auth/password_verfication_code.dart';
 
-import '../../Repo/Api/lovren_apis/forgetPassword_api.dart';
+
+import '../../Repo/remote/lovren_apis/forgetPassword_api.dart';
 
 
 class NewPasswordScreen extends StatefulWidget {

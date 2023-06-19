@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:semsark/globals.dart' as global;
 
-import '../../../helper/Api.dart';
+import '../../../Api.dart';
 
 class SignUpServices {
   Future<bool> verifyEmail(String email) async {
@@ -34,7 +33,6 @@ class SignUpServices {
       "phone": phoneNumber
     }));
     String token=data.substring(10,data.length-2);
-    global.tokken = token ;
     const storage = FlutterSecureStorage();
     await storage.write(key: 'token', value: token);
     var value = await storage.read(key: 'token');

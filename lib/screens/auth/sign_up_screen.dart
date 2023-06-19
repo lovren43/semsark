@@ -2,23 +2,26 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
-import 'package:semsark/screens/lovren_screens/sign_in.dart';
-import 'package:semsark/screens/lovren_screens/passwordVerficationCode.dart';
+import 'package:semsark/screens/auth/pin_code_verification_screen.dart';
+import 'package:semsark/screens/auth/sign_in_screen.dart';
 
-import '../../Repo/Api/lovren_apis/forgetPassword_api.dart';
 
-class ForgetPasswordScreen extends StatefulWidget {
-  const ForgetPasswordScreen({super.key});
+
+import '../../Repo/remote/lovren_apis/sign_up_api.dart';
+
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   GlobalKey<FormState> formKey = GlobalKey();
   String? email;
   double width = 0;
-
+  TextEditingController inputController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +38,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     children: [
                       Stack(alignment: Alignment.center, children: <Widget>[
                         ClipRRect(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(150),
                                 bottomRight: Radius.circular(150)),
                             child: ImageFiltered(
                               imageFilter:
                                   ImageFilter.blur(sigmaX: 7, sigmaY: 7),
                               child: SizedBox(
-                                  height: 350,
+                                  height: 320,
                                   width: double.infinity,
                                   child: Image.asset(
                                     'assets/images/back.png',
@@ -82,9 +85,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             ),
                             EmailInputField(
                                 onChanged: (data) {
-                                  email = data;
+                                  email = data.toString();
                                 },
-                                hintText: 'Email '),
+                                hintText: 'Email ',
+                                enabled: true),
                             const SizedBox(
                               height: 10,
                             ),
@@ -96,8 +100,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   try {
-                                    if (await ForgetPassword()
-                                        .verifyEmail(email!)) {
+                                    if (await SignUpServices().verifyEmail(email!)) {
                                       confirmationDialog(context);
                                       setState(() {});
                                     }
@@ -235,7 +238,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 const Center(
                   child: Text(
-                    "your email adddress, Please check ",
+                    "your email address, Please check ",
                     style: TextStyle(color: Color(0xFF45A6DD), fontSize: 17),
                   ),
                 ),
@@ -266,11 +269,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         child: CustomButon(
                           text: "DONE",
                           onTap: () {
+                            SignUpServices().sendOTP(email!);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return ForgetPasswordVerficationScreen(
+                                  return PinCodeVerificationScreen(
                                       email: email);
                                 },
                               ),

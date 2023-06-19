@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:semsark/screens/joo_screens/Profile.dart';
-import 'package:semsark/screens/joo_screens/SplashScreen.dart';
+import 'package:semsark/screens/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

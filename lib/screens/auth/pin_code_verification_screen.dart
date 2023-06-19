@@ -5,9 +5,10 @@ import 'dart:ui';
 
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:semsark/components/button.dart';
-import 'package:semsark/screens/lovren_screens/personal_info.dart';
+import 'package:semsark/screens/auth/personal_info_screen.dart';
 
-import '../../Repo/Api/lovren_apis/sign_up_api.dart';
+
+import '../../Repo/remote/lovren_apis/sign_up_api.dart';
 
 
 class PinCodeVerificationScreen extends StatefulWidget {

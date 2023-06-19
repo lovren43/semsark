@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:semsark/Repo/Api/islam_services/user_repo_api.dart';
-import 'package:semsark/viewModels/profile_view_model.dart';
+
+import 'package:semsark/provider/home_provider.dart';
 
 
 class Profile extends StatefulWidget{
@@ -15,10 +15,9 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    viewModel.getUser();
   }
   final double profileHeight = 144;
-  ProfileViewModel viewModel = ProfileViewModel(ApiUserRepo());
+  HomeProvider viewModel = HomeProvider();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,23 +35,23 @@ class _ProfileState extends State<Profile> {
     return Column(
       children: [
         //ProfileImage(),
-        Text(
-            "${viewModel.model!.name}",
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(129, 137, 176, 1)
-          ),
-        ),
+        // Text(
+        //     "${viewModel.model!.name}",
+        //   style: const TextStyle(
+        //     fontSize: 20,
+        //     fontWeight: FontWeight.bold,
+        //     color: Color.fromRGBO(129, 137, 176, 1)
+        //   ),
+        // ),
         const SizedBox(height: 5,),
-        Text(
-          "${viewModel.model!.email}",
-          style: const TextStyle(
-              fontSize: 14,
-              color: Color.fromRGBO(129, 137, 176, 1),
-            letterSpacing: 5
-          ),
-        ),
+        // Text(
+        //   "${viewModel.model!.email}",
+        //   style: const TextStyle(
+        //       fontSize: 14,
+        //       color: Color.fromRGBO(129, 137, 176, 1),
+        //     letterSpacing: 5
+        //   ),
+        // ),
         const SizedBox(height: 100,),
         Container(
           width: 400,
@@ -165,18 +164,18 @@ class _ProfileState extends State<Profile> {
   Widget ProfileImage() => CircleAvatar(
     radius: profileHeight / 2,
     backgroundColor: const Color.fromRGBO(241, 246, 251, 1),
-    child: CircleAvatar(
-      radius: 68,
-      backgroundColor: Colors.white,
-      child:  viewModel.model!.img == "string" ?
-      const CircleAvatar(
-        radius: 65,
-        backgroundImage: AssetImage("assets/images/Mask.png"),
-      ) :
-      CircleAvatar(
-        radius: 65,
-        backgroundImage: NetworkImage(viewModel.model!.img),
-      ),
-    ),
+    // child: CircleAvatar(
+    //   radius: 68,
+    //   backgroundColor: Colors.white,
+    //   child:  viewModel.model!.img == "string" ?
+    //   const CircleAvatar(
+    //     radius: 65,
+    //     backgroundImage: AssetImage("assets/images/Mask.png"),
+    //   ) :
+    //   CircleAvatar(
+    //     radius: 65,
+    //     backgroundImage: NetworkImage(viewModel.model!.img),
+    //   ),
+    // ),
   );
 }

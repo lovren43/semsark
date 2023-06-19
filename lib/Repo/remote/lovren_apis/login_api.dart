@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:semsark/globals.dart' as global;
 
-import '../../../helper/Api.dart';
+import '../../../Api.dart';
 
 class LoginServices{
 
@@ -13,7 +12,6 @@ class LoginServices{
     String data =
         await Api().post(url: 'insecure/authenticate', body: jsonEncode({"email":email, "password":password, "social":true}));
     String token=data.substring(10,data.length-2);
-    global.tokken = token ;
     const storage = FlutterSecureStorage();
     await storage.write(key: 'token', value: token);
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/islam_screens/helper.dart';
+import '../utils/helper.dart';
 
 class CustomNumaricDataField extends StatelessWidget {
   CustomNumaricDataField({

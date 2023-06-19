@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:semsark/screens/islam_screens/HomeScreen.dart';
-import 'package:semsark/screens/location_services.dart';
+
+import 'package:semsark/Repo/location_services.dart';
+
+import 'home/home_screen.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

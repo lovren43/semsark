@@ -1,22 +1,20 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:geolocator/geolocator.dart';
-import 'package:semsark/globals.dart' as global;
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:semsark/Repo/fake_data.dart';
+import 'package:semsark/Repo/remote/reomte_home_services.dart';
 import 'package:semsark/models/ad_model.dart';
 import 'package:semsark/components/custom_drop_down_field.dart';
 import 'package:semsark/components/custom_input_field.dart';
 import 'package:semsark/components/numaric_data_field.dart';
-import 'package:semsark/screens/islam_screens/HomeScreen.dart';
-import 'package:semsark/screens/islam_screens/helper.dart';
-import 'package:semsark/screens/joo_screens/Profile.dart';
-import 'package:semsark/screens/lovren_screens/sign_in.dart';
-
-import '../../Repo/Api/islam_services/create_ad_services.dart';
-import '../../Repo/Api/islam_services/firebase_services.dart';
-import '../location_services.dart';
+import 'package:semsark/utils/helper.dart';
+import '../../Repo/location_services.dart';
+import '../../Repo/remote/firebase_services.dart';
+import '../auth/sign_in_screen.dart';
+import 'home_screen.dart';
 
 
 
@@ -28,7 +26,7 @@ class CreateAd extends StatefulWidget {
 }
 
 class _CreateAdState extends State<CreateAd> {
-  CreateAdServices createAdServices = CreateAdServices();
+  RemoteHomeServices createAdServices = RemoteHomeServices();
   final LocationServices _locationServices = LocationServices() ;
 
   var type_val = "ALL";
@@ -72,7 +70,8 @@ class _CreateAdState extends State<CreateAd> {
 
   @override
   Widget build(BuildContext context) {
-    return global.tokken !="islam" ? SafeArea(
+    String tmp = " ";
+    return tmp !="islam" ? SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Column(

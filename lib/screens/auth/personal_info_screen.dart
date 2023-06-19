@@ -8,11 +8,13 @@ import 'package:semsark/components/InputField.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:semsark/components/button.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:semsark/screens/islam_screens/HomeScreen.dart';
-import 'package:semsark/screens/location_services.dart';
 
-import '../../Repo/Api/lovren_apis/sign_up_api.dart';
+import 'package:semsark/Repo/location_services.dart';
+
+
+import '../../Repo/remote/lovren_apis/sign_up_api.dart';
 import '../../components/email_input.dart';
+import '../home/home_screen.dart';
 
 class PersonalInfoScreen extends StatefulWidget {
   String? email;

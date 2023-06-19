@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../screens/islam_screens/helper.dart';
+import '../utils/helper.dart';
 
 class AdItem extends StatelessWidget {
   const AdItem({Key? key}) : super(key: key);

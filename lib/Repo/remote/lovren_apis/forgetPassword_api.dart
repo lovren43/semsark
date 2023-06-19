@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../helper/Api.dart';
+import '../../../Api.dart';
 
 
 class ForgetPassword{

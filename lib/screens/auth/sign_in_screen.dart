@@ -3,14 +3,17 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
-import 'package:semsark/screens/islam_screens/HomeScreen.dart';
-import 'package:semsark/screens/joo_screens/Profile.dart';
-import 'package:semsark/screens/location_services.dart';
-import 'package:semsark/screens/lovren_screens/sign_up.dart';
-import 'package:semsark/screens/lovren_screens/forgetPassword.dart';
-import 'package:semsark/globals.dart' as global;
 
-import '../../Repo/Api/lovren_apis/login_api.dart';
+import 'package:semsark/Repo/location_services.dart';
+
+import 'package:semsark/screens/auth/forget_password_screen.dart';
+import 'package:semsark/screens/auth/sign_up_screen.dart';
+
+import '../../Repo/remote/lovren_apis/login_api.dart';
+import '../home/home_screen.dart';
+import '../home/profile_screen.dart';
+
+
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -48,7 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return global.tokken!="islam" ?  Profile() : Scaffold(
+    String tmp= " ";
+    return tmp!="islam" ?  Profile() : Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
