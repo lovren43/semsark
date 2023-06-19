@@ -157,18 +157,18 @@ class AdItem extends StatelessWidget {
                     ),
                   ),
                 )),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(
-                    onPressed: () {},
-                    child: const Icon(
-                      Icons.whatsapp_rounded,
-                      color: Colors.green,
-                      size: 30,
-                    ),
-                  ),
-                )),
+                // Expanded(
+                //     child: Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: MaterialButton(
+                //     onPressed: () {},
+                //     child: const Icon(
+                //       Icons.whatsapp_rounded,
+                //       color: Colors.green,
+                //       size: 30,
+                //     ),
+                //   ),
+                // )),
               ],
             ),
           ],
