@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-<<<<<<< Updated upstream
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:semsark/adapters/local_ad_adapter.dart';
-import 'package:semsark/screens/splash_screen.dart';
-=======
-import 'package:semsark/screens/joo_screens/Profile.dart';
-import 'package:semsark/screens/joo_screens/SplashScreen.dart';
-import 'package:semsark/screens/lovren_screens/sign_in.dart';
->>>>>>> Stashed changes
+import 'package:semsark/provider/auth_provider.dart';
+import 'package:semsark/provider/home_provider.dart';
+import 'package:semsark/screens/auth/sign_in_screen.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,9 +21,16 @@ class Semsark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: LoginScreen()
+
+    return  MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_)=> LoginProvider()),
+        ChangeNotifierProvider(create: (_)=> HomeProvider()),
+      ],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: LoginScreen()
+      ),
     );
   }
 }

@@ -1,3 +1,124 @@
-class AuthServices{
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
+import 'package:semsark/Repo/remote/remote_status.dart';
+import '../../Api.dart';
+import '../../utils/constants.dart';
+
+class AuthServices {
+  var headers = {
+    'Access-Control-Allow-Headers':
+        "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Authorization",
+    'Access-Control-Allow-Origin': "*",
+    'Access-Control-Allow-Credentials': "true",
+    'content-Type': 'application/json',
+    'Accept': "application/json"
+  };
+  // Future<bool> forgetPassVerification(String email) async {
+  //   dynamic data = await Api()
+  //       .post(url: 'forgetPassword/', body: jsonEncode({"email": email}));
+  //   return true;
+  // }
+  //
+  // Future<bool> checkOtp(String email, String OTP) async {
+  //   dynamic data = await Api().post(
+  //       url: 'forgetPassword/checkOtp',
+  //       body: jsonEncode({"otp": OTP, "email": email}));
+  //   return true;
+  // }
+  //
+  // Future<bool> updatePassword(String email, String password, String OTP) async {
+  //   dynamic data = await Api().post(
+  //       url: 'forgetPassword/updatePassword',
+  //       body: jsonEncode({"email": email, "password": password, "otp": OTP}));
+  //   return true;
+  // }
+  //
+  // Future<bool> verifyEmail(String email) async {
+  //   dynamic data =
+  //       await Api().get(url: 'insecure/userDetails/checkEmail/' + email);
+  //   return true;
+  // }
+  //
+  // Future<bool> sendOTP(String email) async {
+  //   dynamic data = await Api().post(url: 'email/sendOtp/' + email);
+  //   return true;
+  // }
+  //
+  // Future<bool> verifyOTP(String email, String OTP) async {
+  //   dynamic data = await Api().post(
+  //       url: 'email/verifyEmail',
+  //       body: jsonEncode({"otp": OTP, "email": email}));
+  //   return true;
+  // }
+  //
+  // Future<bool> createUser(String name, String email, String img,
+  //     String password, String gender, String phoneNumber) async {
+  //   String data = await Api().post(
+  //       url: 'insecure/userDetails',
+  //       body: jsonEncode({
+  //         "username": name,
+  //         "email": email,
+  //         "social": false,
+  //         "img": img,
+  //         "password": password,
+  //         "gender": gender,
+  //         "phone": phoneNumber
+  //       }));
+  //   String token = data.substring(10, data.length - 2);
+  //   const storage = FlutterSecureStorage();
+  //   await storage.write(key: 'token', value: token);
+  //   var value = await storage.read(key: 'token');
+  //   return true;
+  // }
+  //
+  // Future getAllFavServices() async {
+  //   String token = await getToken();
+  //   final response = await http.get(
+  //     Uri.parse('$baseURL/getFavList'),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer $token'
+  //     },
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     List<Service> services = favServiceFromJson(response.body);
+  //     List<int> id = [];
+  //     services.forEach((element) {
+  //       id.add(element.id);
+  //     });
+  //     return Success(code: 200, response: id);
+  //   } else {
+  //     throw Exception('Failed to load services');
+  //   }
+  // }
+
+  Future login(email, password) async {
+    String url = '$baseURL/insecure/authenticate/';
+    print(email+password);
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode({"email": email, "password": password,"social":true})
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: jsonDecode(response.body)['token'],
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
 }

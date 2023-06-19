@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
 class EmailInputField extends StatelessWidget {
-  EmailInputField({this.hintText,this.onChanged, this.enabled});
+  EmailInputField({this.hintText,this.onChanged, this.enabled, this.inputController});
   String? hintText;
   bool? enabled;
   Function(String)? onChanged;
- TextEditingController inputController = TextEditingController();
+ TextEditingController? inputController ;
 
   
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: inputController,
       onChanged: onChanged,
       enabled: enabled,
       validator: (value) =>
