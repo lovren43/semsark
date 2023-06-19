@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import '../../helper/Api.dart';
+import '../../../helper/Api.dart';
+
 
 class ForgetPassword{
   Future<bool> verifyEmail(String email) async {

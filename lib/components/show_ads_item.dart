@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../screens/islam_screens/helper.dart';
 
@@ -41,14 +42,6 @@ class AdItem extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       minWidth: 50,
                       child: const Icon(Icons.favorite_outline),
-                    ),
-                    MaterialButton(
-                      onPressed: () {},
-                      shape: const CircleBorder(),
-                      color: Colors.white,
-                      padding: EdgeInsets.zero,
-                      minWidth: 50,
-                      child: const Icon(Icons.list),
                     ),
                   ],
                 ),
@@ -157,18 +150,18 @@ class AdItem extends StatelessWidget {
                     ),
                   ),
                 )),
-                // Expanded(
-                //     child: Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: MaterialButton(
-                //     onPressed: () {},
-                //     child: const Icon(
-                //       Icons.whatsapp_rounded,
-                //       color: Colors.green,
-                //       size: 30,
-                //     ),
-                //   ),
-                // )),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: MaterialButton(
+                    onPressed: () {},
+                    child: const Icon(
+                      Icons.message,
+                      color: Colors.green,
+                      size: 30,
+                    ),
+                  ),
+                )),
               ],
             ),
           ],

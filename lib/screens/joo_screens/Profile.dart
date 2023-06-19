@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:semsark/Api/islam_services/user_services.dart';
+import 'package:semsark/Repo/Api/islam_services/user_repo_api.dart';
+import 'package:semsark/viewModels/profile_view_model.dart';
+
 
 class Profile extends StatefulWidget{
   const Profile({super.key});
@@ -13,12 +14,11 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    getUser();
     super.initState();
+    viewModel.getUser();
   }
   final double profileHeight = 144;
-  String name = ' ' ;
-  String email = ' ' ;
+  ProfileViewModel viewModel = ProfileViewModel(ApiUserRepo());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +37,7 @@ class _ProfileState extends State<Profile> {
       children: [
         //ProfileImage(),
         Text(
-            name,
+            "${viewModel.model!.name}",
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -46,7 +46,7 @@ class _ProfileState extends State<Profile> {
         ),
         const SizedBox(height: 5,),
         Text(
-          email,
+          "${viewModel.model!.email}",
           style: const TextStyle(
               fontSize: 14,
               color: Color.fromRGBO(129, 137, 176, 1),
@@ -110,16 +110,7 @@ class _ProfileState extends State<Profile> {
         ],
     );
   }
-  void getUser(){
-    UserApi user = UserApi() ;
-    user.getUser().then((value){
-      print(value) ;
-      setState(() {
-        name = value['username'];
-        email = value['email'];
-      });
-    }) ;
-  }
+
   Widget TopContainer() => Column(
     children: [
       Container  (
@@ -174,12 +165,17 @@ class _ProfileState extends State<Profile> {
   Widget ProfileImage() => CircleAvatar(
     radius: profileHeight / 2,
     backgroundColor: const Color.fromRGBO(241, 246, 251, 1),
-    child: const CircleAvatar(
+    child: CircleAvatar(
       radius: 68,
       backgroundColor: Colors.white,
-      child: CircleAvatar(
+      child:  viewModel.model!.img == "string" ?
+      const CircleAvatar(
         radius: 65,
         backgroundImage: AssetImage("assets/images/Mask.png"),
+      ) :
+      CircleAvatar(
+        radius: 65,
+        backgroundImage: NetworkImage(viewModel.model!.img),
       ),
     ),
   );

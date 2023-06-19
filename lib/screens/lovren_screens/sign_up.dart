@@ -5,7 +5,8 @@ import 'package:semsark/components/email_input.dart';
 import 'package:semsark/screens/lovren_screens/sign_in.dart';
 import 'package:semsark/screens/lovren_screens/PinCodeVerificationScreen.dart';
 
-import '../../Api/lovren_apis/sign_up_api.dart';
+import '../../Repo/Api/lovren_apis/sign_up_api.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

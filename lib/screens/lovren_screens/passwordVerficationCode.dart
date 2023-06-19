@@ -7,7 +7,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/screens/lovren_screens/newPassword.dart';
 
-import '../../Api/lovren_apis/forgetPassword_api.dart';
+import '../../Repo/Api/lovren_apis/forgetPassword_api.dart';
+
 
 
 class ForgetPasswordVerficationScreen extends StatefulWidget {
