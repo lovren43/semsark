@@ -1,6 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
+import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/screens/home/chat_screen.dart';
 import 'package:semsark/screens/home/create_advertisement_screen.dart';
 import 'package:semsark/utils/helper.dart';
@@ -9,38 +11,16 @@ import '../auth/sign_in_screen.dart';
 import 'map_screen.dart';
 import 'notification_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-
-  late Position currentPosition;
-
-  HomeScreen({super.key , required this.currentPosition});
-  @override
-  _HomeScreen createState() => _HomeScreen();
-}
-
-class _HomeScreen extends State<HomeScreen> {
+class HomeScreen extends StatelessWidget {
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-  bool isHome = true;
-  int index = 0;
-
-  var widgets = [
-    ChatScreen(res: 'Chat Screen'),
-    CreateAd(),
-    NotificationScreen(),
-    LoginScreen()
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<HomeProvider>(context);
     return Scaffold(
       extendBody: true,
       body: Container(
-        child: index==0 ? Home(cameraPosition: widget.currentPosition,) :widgets[index-1],
+        child: _ui(context)
       ),
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
@@ -74,12 +54,19 @@ class _HomeScreen extends State<HomeScreen> {
           ),
         ],
         onTap: (_index) {
-          setState(() {
-            index = _index;
-          });
+          provider.changePosition(_index);
         },
         color: Helper.blue,
       ),
     );
+  }
+
+  _ui(context){
+    var widgets = [
+      ChatScreen(),
+      CreateAd(),
+      NotificationScreen(),
+      LoginScreen()
+    ];
   }
 }

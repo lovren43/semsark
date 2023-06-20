@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/notification_model.dart';
+import '../models/response/notification_model.dart';
 
 class NotificationItem extends StatefulWidget {
   final NotificationModel notificationModel;

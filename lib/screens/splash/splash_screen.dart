@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:semsark/Repo/location_services.dart';
 
-import 'home/home_screen.dart';
+import '../home/home_screen.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Position position = await locationServices.getCurrentPosition(context);
       setState(() {
         Navigator.pushReplacement(context, MaterialPageRoute(builder:
-            (context) => HomeScreen(currentPosition: position))) ;
+            (context) => HomeScreen())) ;
       });
     });
   }

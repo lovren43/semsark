@@ -447,7 +447,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                         Position position = await _locationServices.getCurrentPosition(context);
                                         setState((){
                                           Navigator.pushReplacement(context, MaterialPageRoute(builder:
-                                              (context) => HomeScreen(currentPosition: position))) ;
+                                              (context) => HomeScreen())) ;
                                       });
                                     }
                                   } else {}
@@ -552,7 +552,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
     setState(() => {
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => HomeScreen(currentPosition: position,))
+          MaterialPageRoute(builder: (context) => HomeScreen())
       )
     });
   }

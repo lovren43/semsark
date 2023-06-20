@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Position position = await _locationServices.getCurrentPosition(context);
                             setState((){
                               Navigator.pushReplacement(context, MaterialPageRoute(builder:
-                                  (context) => HomeScreen(currentPosition: position))) ;
+                                  (context) => HomeScreen())) ;
                             });
                           }
                         });

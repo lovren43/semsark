@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:hive/hive.dart';
 import 'package:semsark/Repo/home_services.dart';
+import 'package:semsark/Repo/remote/remote_status.dart';
 
-import '../../models/ad_model.dart';
+import '../../models/request/ad_model.dart';
 import '../../utils/constants.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,6 +35,10 @@ class RemoteHomeServices extends HomeServices{
     }
   }
 
+  Future<String> getToken() async {
+    var box =await Hive.openBox('myBox');
+    return box.get('token');
+  }
   @override
   Future<Map<String , dynamic>> getUser() async{
     var response =await http.get(
@@ -46,9 +53,30 @@ class RemoteHomeServices extends HomeServices{
   }
 
   @override
-  Future getAdvertisements() {
-    // TODO: implement getAdvertisements
-    throw UnimplementedError();
+  Future getAdvertisements() async {
+
+    String url = '$baseURL/';
+    String token = await getToken();
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      final http.Response response = await http.get(
+          Uri.parse(url),
+          headers: headers,
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: jsonDecode(response.body)['token'],
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
   }
 
   @override

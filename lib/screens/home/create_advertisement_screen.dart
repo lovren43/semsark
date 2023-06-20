@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:semsark/Repo/fake_data.dart';
 import 'package:semsark/Repo/remote/reomte_home_services.dart';
-import 'package:semsark/models/ad_model.dart';
+import 'package:semsark/models/request/ad_model.dart';
 import 'package:semsark/components/custom_drop_down_field.dart';
 import 'package:semsark/components/custom_input_field.dart';
 import 'package:semsark/components/numaric_data_field.dart';
@@ -513,7 +513,7 @@ class _CreateAdState extends State<CreateAd> {
       });
       Position position = await _locationServices.getCurrentPosition(context);
       Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) =>
-          HomeScreen(currentPosition: position)
+          HomeScreen()
       ));
     }).catchError((e){
       print(enable) ;
