@@ -23,7 +23,7 @@ class Semsark extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (create) => HomeProvider())],
       child:
-          MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()),
+          MaterialApp(debugShowCheckedModeBanner: false, home: HomeScreen()),
     );
   }
 }
