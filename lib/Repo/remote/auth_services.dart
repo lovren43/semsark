@@ -126,11 +126,13 @@ class AuthServices {
 
   Future verifyEmail(email) async {
     String url = '$VERFIY_EMAIL/$email';
+    print(email);
     try {
-      final http.Response response = await http.get(
+      http.Response response = await http.get(
           Uri.parse(url),
           headers: headers,
       );
+      print(response.toString());
       if (response.statusCode == 200) {
         return Success(
           code: 200,

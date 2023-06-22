@@ -11,6 +11,12 @@ class SignUpProvider with ChangeNotifier {
   String? errorMessage;
   bool success=false;
   bool showPassword = false;
+  String? email;
+  String? name;
+  String? otp;
+  String? phoneNumber;
+  String? gender;
+  String? password;
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var otpController = TextEditingController();
@@ -23,7 +29,30 @@ class SignUpProvider with ChangeNotifier {
     loading = newLoading;
     notifyListeners();
   }
-
+  setEmail(email){
+    this.email=email;
+    notifyListeners();
+  }
+  setName(name){
+    this.name=name;
+    notifyListeners();
+  }
+  setPhoneNumber(phoneNumber){
+    this.phoneNumber=phoneNumber;
+    notifyListeners();
+  }
+  setGender(gender){
+    this.gender=gender;
+    notifyListeners();
+  }
+  setPassword(password){
+    this.password=password;
+    notifyListeners();
+  }
+  setOtp(otp){
+    this.otp=otp;
+    notifyListeners();
+  }
   setShowPassword() {
     showPassword = !showPassword;
     notifyListeners();
@@ -32,8 +61,9 @@ class SignUpProvider with ChangeNotifier {
   verifyEmail() async {
     setLoading(true);
     var response =
-    await services.verifyEmail(emailController.text);
+    await services.verifyEmail(email);
     setLoading(false);
+    print(response.toString());
     if (response is Success) {
       // var box = await Hive.openBox(MY_BOX);
       // box.put('token', response.response);
@@ -46,7 +76,7 @@ class SignUpProvider with ChangeNotifier {
   sendOtp() async {
     setLoading(true);
     var response =
-    await services.sendOtp(emailController.text);
+    await services.sendOtp(email);
     setLoading(false);
     if (response is Success) {
       // var box = await Hive.openBox(MY_BOX);
@@ -60,7 +90,7 @@ class SignUpProvider with ChangeNotifier {
   verifyOtp() async {
     setLoading(true);
     var response =
-    await services.verifyOtp(emailController.text,otpController.text);
+    await services.verifyOtp(email,otp);
     setLoading(false);
     if (response is Success) {
       // var box = await Hive.openBox(MY_BOX);
@@ -74,7 +104,7 @@ class SignUpProvider with ChangeNotifier {
   createUser() async {
     setLoading(true);
     var response =
-    await services.createUser(RegisterationModel(username: nameController.text, phone: phoneNumberController.text, email: emailController.text, social: false, img: "",   password: passwordController.text, gender: ""));
+    await services.createUser(RegisterationModel(username: name!, phone: phoneNumber!, email: email!, social: false, img: "",   password: password!, gender: ""));
     setLoading(false);
     if (response is Success) {
       // var box = await Hive.openBox(MY_BOX);
