@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:semsark/screens/joo_screens/SplashScreen.dart';
+import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
+//import 'package:semsark/provider/auth_provider.dart';
+import 'package:semsark/provider/home_provider.dart';
+import 'package:semsark/screens/home/home_screen.dart';
+import 'package:semsark/screens/splash/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp() ;
+  await Firebase.initializeApp();
+  // await Hive.initFlutter();
+  // Hive.registerAdapter(LocalAdvertisementAdapter());
   runApp(const Semsark());
 }
 
@@ -13,9 +20,10 @@ class Semsark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (create) => HomeProvider())],
+      child:
+          MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()),
     );
   }
 }

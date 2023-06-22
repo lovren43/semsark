@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-import '../screens/islam_screens/helper.dart';
+import '../utils/helper.dart';
 
 class AdItem extends StatelessWidget {
   const AdItem({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class AdItem extends StatelessWidget {
                     topRight: Radius.circular(20),
                   ),
                   child: Image.asset(
-                    "assets/images/haha.JPG",
+                    "assets/images/haha.jpeg",
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 250,
@@ -41,14 +42,6 @@ class AdItem extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       minWidth: 50,
                       child: const Icon(Icons.favorite_outline),
-                    ),
-                    MaterialButton(
-                      onPressed: () {},
-                      shape: const CircleBorder(),
-                      color: Colors.white,
-                      padding: EdgeInsets.zero,
-                      minWidth: 50,
-                      child: const Icon(Icons.list),
                     ),
                   ],
                 ),
@@ -163,7 +156,7 @@ class AdItem extends StatelessWidget {
                   child: MaterialButton(
                     onPressed: () {},
                     child: const Icon(
-                      Icons.whatsapp_rounded,
+                      Icons.message,
                       color: Colors.green,
                       size: 30,
                     ),
