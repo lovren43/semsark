@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
-//import 'package:hive/hive.dart';
 import 'package:semsark/Repo/home_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
+import 'package:semsark/models/response/user_details.dart';
 
 import '../../models/request/ad_model.dart';
 import '../../utils/constants.dart';
@@ -23,18 +22,32 @@ class RemoteHomeServices extends HomeServices{
     'Accept': "application/json",
   };
 
-  Future<void> postAd(CreateAdModel model) async
+  String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlc0Blcy5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjg5MjQ2NTI4LCJpYXQiOjE2ODc0NDY1Mjh9._Bzg1j7vSXPvY9QA6cVpRhAHTcDCBZSmaZSGtbn0-ypnL3lrUEgjuN7YaKFYpBAf9a0-m4IrdaC-1NehnAoKHA";
+
+
+  Future createAdvertisement(CreateAdvertisementModel model) async
   {
-    var uri = Uri.parse(baseURL + CREATE_AD);
+    headers['Authorization'] = 'Bearer $token';
     try {
-      var response = await http.post(
-        uri,
+      final http.Response response = await http.post(
+        Uri.parse(GET_USER),
         headers: headers,
-        body: jsonEncode(model.toJSON()),
+        body: createAdvertisementModelToJson(model)
       );
       print(response.body);
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: createAdvertisementModelFromJson(response.body),
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
     } catch (e) {
-      print(e);
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
     }
   }
 
@@ -43,27 +56,37 @@ class RemoteHomeServices extends HomeServices{
   //   return box.get('token');
   // }
   @override
-  Future<Map<String , dynamic>> getUser() async{
-    var response =await http.get(
-      Uri.parse(baseURL+GET_USER),
-      headers: headers ,
-    );
-
-    if(response.statusCode == 200){
-      return jsonDecode(response.body) ;
+  Future getUser() async {
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      final http.Response response = await http.get(
+        Uri.parse(GET_USER),
+        headers: headers,
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: userDetailsFromJson(response.body),
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
     }
-    return {} ;
   }
 
   @override
   Future getAdvertisements() async {
-
-    String url = '$baseURL/common/getAllAds';
     // String token = await getToken();
     // headers['Authorization'] = 'Bearer $token';
     try {
       final http.Response response = await http.get(
-          Uri.parse(url),
+          Uri.parse(GET_ALL_ADS),
           headers: headers,
       );
       print(response.body);

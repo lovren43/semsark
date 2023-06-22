@@ -1,91 +1,49 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:geolocator/geolocator.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:semsark/Repo/fake_data.dart';
 import 'package:semsark/Repo/remote/reomte_home_services.dart';
-import 'package:semsark/models/request/ad_model.dart';
 import 'package:semsark/components/custom_drop_down_field.dart';
 import 'package:semsark/components/custom_input_field.dart';
 import 'package:semsark/components/numaric_data_field.dart';
+import 'package:semsark/provider/create_ad_provider.dart';
 import 'package:semsark/utils/helper.dart';
-import '../../Repo/location_services.dart';
-import '../../Repo/remote/firebase_services.dart';
-//import '../auth/sign_in_screen.dart';
-import 'home_screen.dart';
+import 'package:provider/provider.dart';
 
 
-
-class CreateAd extends StatefulWidget {
-  CreateAd({Key? key}) : super(key: key);
-
-  @override
-  State<CreateAd> createState() => _CreateAdState();
-}
-
-class _CreateAdState extends State<CreateAd> {
+class CreateAdvertisementScreen extends StatelessWidget {
   RemoteHomeServices createAdServices = RemoteHomeServices();
-  final LocationServices _locationServices = LocationServices() ;
-
-  var type_val = "ALL";
-  var signal_val = "ALL";
-  bool enable = false;
-  bool complete = false;
-  bool is_progress = false;
-
-  bool isChecked = false;
-
-  var cat_value, fin_value;
-  var num_of_rooms = 1,
-      num_of_bath_rooms = 1,
-      num_of_halls = 1,
-      num_of_level = 1;
-
-  var type_key = GlobalKey<FormState>();
+  var typeKey = GlobalKey<FormState>();
   GlobalKey<FormState> _formKey = GlobalKey();
   var signal_key = GlobalKey();
 
-  dynamic types = ["ALL", "APARTMENT", "DUPLEX", "STUDIO"];
-  dynamic signals = ["ALL", "Vodafone", "Orange", "Etisalat", "WE"];
-  List<XFile> photos = [];
-  List<String> paths = [];
-
-  final TextEditingController titleController = TextEditingController(text: "");
-  final TextEditingController priceController = TextEditingController(text: "");
-  final TextEditingController areaController = TextEditingController(text: "");
-  final TextEditingController detailsController =
-      TextEditingController(text: "");
-
-  @override
-  void initState() {
-    setState(() {
-      cat_value = "RENT";
-      fin_value = "YES";
-      WidgetsFlutterBinding.ensureInitialized();
-    });
-    super.initState();
-  }
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController areaController = TextEditingController();
+  final TextEditingController detailsController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    String tmp = " ";
-    return tmp !="islam" ? SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
+
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    var provider = Provider.of<CreateAdvertisementProvider>(context) ;
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
           children: [
             const SizedBox(
               height: 10,
             ),
             Container(
-              width: double.infinity,
+              width: width,
               padding: const EdgeInsets.all(10),
               color: Colors.white30,
               child: const Center(
                 child: Text(
-                  "ENTER THE HOUSE DETAILS",
+                  "ENTER THE BUILDING DETAILS",
                   style: TextStyle(
                     color: Colors.lightBlue,
                     fontSize: 20,
@@ -107,9 +65,6 @@ class _CreateAdState extends State<CreateAd> {
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
                             const SizedBox(
                               height: 20,
                             ),
@@ -141,13 +96,11 @@ class _CreateAdState extends State<CreateAd> {
                             ),
                             CustomDropDownField(
                               labelText: "Type",
-                              key: type_key,
-                              list: types,
-                              value: type_val,
+                              key: typeKey,
+                              list: provider.types,
+                              value: provider.type_val,
                               onChange: (newValue) {
-                                setState(() {
-                                  type_val = newValue.toString();
-                                });
+                                provider.setType(newValue);
                               },
                             ),
                             const SizedBox(
@@ -156,12 +109,10 @@ class _CreateAdState extends State<CreateAd> {
                             CustomDropDownField(
                               labelText: "Signal Power",
                               key: signal_key,
-                              list: signals,
-                              value: signal_val,
+                              list: provider.signals,
+                              value: provider.signal_val,
                               onChange: (newValue) {
-                                setState(() {
-                                  signal_val = newValue.toString();
-                                });
+                                provider.setSignalPower(newValue);
                               },
                             ),
                             const SizedBox(
@@ -193,21 +144,17 @@ class _CreateAdState extends State<CreateAd> {
                                         children: [
                                           Radio(
                                             value: "RENT",
-                                            groupValue: cat_value,
+                                            groupValue: provider.cat_value,
                                             onChanged: (value) {
-                                              setState(() {
-                                                cat_value = value;
-                                              });
+                                              provider.setCategory(value);
                                             },
                                           ),
                                           const Text("RENT"),
                                           Radio(
                                             value: "SELL",
-                                            groupValue: cat_value,
+                                            groupValue: provider.cat_value,
                                             onChanged: (value) {
-                                              setState(() {
-                                                cat_value = value;
-                                              });
+                                              provider.setCategory(value);
                                             },
                                           ),
                                           const Text("SELL"),
@@ -231,21 +178,17 @@ class _CreateAdState extends State<CreateAd> {
                                         children: [
                                           Radio(
                                             value: "YES",
-                                            groupValue: fin_value,
+                                            groupValue: provider.fin_value,
                                             onChanged: (value) {
-                                              setState(() {
-                                                fin_value = value;
-                                              });
+                                              provider.setFinished(value);
                                             },
                                           ),
                                           const Text("YES"),
                                           Radio(
                                             value: "NO",
-                                            groupValue: fin_value,
+                                            groupValue: provider.fin_value,
                                             onChanged: (value) {
-                                              setState(() {
-                                                fin_value = value;
-                                              });
+                                              provider.setFinished(value);
                                             },
                                           ),
                                           const Text("NO"),
@@ -265,16 +208,12 @@ class _CreateAdState extends State<CreateAd> {
                                   children: [
                                     CustomNumaricDataField(
                                       txt_value: "ROOMS",
-                                      data: num_of_rooms,
+                                      data: provider.num_of_rooms,
                                       onMinPressed: () {
-                                        setState(() {
-                                          num_of_rooms = max(num_of_rooms - 1, 0);
-                                        });
+                                          provider.setNumOfRooms( max(provider.num_of_rooms - 1, 0));
                                       },
                                       onPlusPressed: () {
-                                        setState(() {
-                                          num_of_rooms = min(num_of_rooms + 1, 10);
-                                        });
+                                          provider.setNumOfRooms(min(provider.num_of_rooms + 1, 10));
                                       },
                                     ),
                                     const SizedBox(
@@ -282,19 +221,15 @@ class _CreateAdState extends State<CreateAd> {
                                     ),
                                     CustomNumaricDataField(
                                       txt_value: "BATHROOM",
-                                      data: num_of_bath_rooms,
+                                      data: provider.num_of_bath_rooms,
                                       onMinPressed: () {
-                                        setState(() {
-                                          num_of_bath_rooms =
-                                              max(num_of_bath_rooms - 1, 1);
-                                        });
+                                        provider.setNumOfBathRooms(
+                                              max(provider.num_of_bath_rooms - 1, 1));
                                       },
                                       onPlusPressed: () {
-                                        setState(() {
-                                          num_of_bath_rooms =
-                                              min(num_of_bath_rooms + 1, 10);
-                                        });
-                                      },
+                                        provider.setNumOfBathRooms(
+                                              min(provider.num_of_bath_rooms + 1, 10));
+                                       },
                                     ),
                                   ],
                                 ),
@@ -305,34 +240,26 @@ class _CreateAdState extends State<CreateAd> {
                                   children: [
                                     CustomNumaricDataField(
                                       txt_value: "HOUSE LEVEL",
-                                      data: num_of_level,
+                                      data: provider.num_of_level,
                                       onMinPressed: () {
-                                        setState(() {
-                                          num_of_level = max(num_of_level - 1, 0);
-                                        });
-                                      },
+                                        provider.setHouseLevel(max(provider.num_of_level - 1, 0));
+                                       },
                                       onPlusPressed: () {
-                                        setState(() {
-                                          num_of_level = min(num_of_level + 1, 30);
-                                        });
-                                      },
+                                        provider.setHouseLevel(min(provider.num_of_level + 1, 100));
+                                       },
                                     ),
                                     const SizedBox(
                                       width: 20,
                                     ),
                                     CustomNumaricDataField(
                                       txt_value: "HALLS",
-                                      data: num_of_halls,
+                                      data: provider.num_of_halls,
                                       onMinPressed: () {
-                                        setState(() {
-                                          num_of_halls = max(num_of_halls - 1, 0);
-                                        });
-                                      },
+                                           provider.setNumOfHalls(max(provider.num_of_halls - 1, 0));
+                                       },
                                       onPlusPressed: () {
-                                        setState(() {
-                                          num_of_halls = min(num_of_halls + 1, 10);
-                                        });
-                                      },
+                                        provider.setNumOfHalls(min(provider.num_of_halls + 1, 10));
+                                       },
                                     ),
                                   ],
                                 ),
@@ -349,9 +276,11 @@ class _CreateAdState extends State<CreateAd> {
                                 borderRadius: BorderRadiusDirectional.circular(10),
                               ),
                               width: double.infinity,
-                              child: photos.isEmpty
+                              child: provider.photos.isEmpty
                                   ? InkWell(
-                                onTap: pick_photo,
+                                onTap: (){
+                                  pick_photo(provider);
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       top: 20.0, bottom: 20),
@@ -362,7 +291,7 @@ class _CreateAdState extends State<CreateAd> {
                                         size: 70,
                                       ),
                                       Text(
-                                        "Take a pictur for a house",
+                                        "Take a picture for a house",
                                         style: TextStyle(
                                           fontSize: 16,
                                           //rgba(28, 45, 87, 1)
@@ -373,7 +302,7 @@ class _CreateAdState extends State<CreateAd> {
                                   ),
                                 ),
                               )
-                                  : list_of_photos(),
+                                  : list_of_photos(provider),
                             ),
                             const SizedBox(
                               height: 20,
@@ -384,27 +313,30 @@ class _CreateAdState extends State<CreateAd> {
                                 borderRadius: BorderRadiusDirectional.circular(50),
                               ),
                               child: MaterialButton(
-                                onPressed: enable && complete
-                                    ? validator
-                                    : () {
+                                onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    setState(() {
-                                      complete = true;
-                                    });
+                                    await provider.createAdvertisement() ;
                                   } else {
-                                    setState(() {
-                                      complete = false;
-                                    });
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: const Text('Complete All Fields'),
+                                        duration: Duration(seconds: 2), // Duration for which the SnackBar is displayed
+                                        action: SnackBarAction(
+                                          label: 'Close',
+                                          onPressed: () {
+                                            // Code to execute when the SnackBar action is pressed
+                                          },
+                                        ),
+                                      ),
+                                    );
                                   }
                                 },
                                 //rgba(69, 166, 221, 1)
-                                color: enable
-                                    ? Colors.white
+                                color:Colors.white
                                     .withRed(69)
                                     .withGreen(166)
-                                    .withBlue(221)
-                                    : Colors.grey,
-                                enableFeedback: enable,
+                                    .withBlue(221),
                                 child: const Padding(
                                   padding: EdgeInsets.all(15.0),
                                   child: Text(
@@ -422,7 +354,7 @@ class _CreateAdState extends State<CreateAd> {
                       ),
                     ),
                   ),
-                  is_progress ? Stack(
+                  provider.isLoading ? Stack(
                     children: [
                       Container(
                         height: double.infinity,
@@ -450,83 +382,17 @@ class _CreateAdState extends State<CreateAd> {
           ],
         ),
       ),
-    ) : HomeScreen();
+    );
   }
 
-  Future<void> upload_photo(XFile element) async {
-    final FirebaseServices firebaseServices = FirebaseServices();
-    String email = "se3da";
-    var currentTime = DateTime.now().millisecondsSinceEpoch;
-    await firebaseServices
-        .upload_image(File(element.path), email, "$currentTime")
-        .then((value) {
-      firebaseServices.get_url(email, "$currentTime").then((path) {
-        print(path);
-        paths.add(path);
-        print("added sucess");
-        setState(() {
-          enable = true;
-          is_progress = false;
-        });
-      });
-    });
-  }
-
-  void pick_photo() async {
+  void pick_photo(CreateAdvertisementProvider provider) async {
     ImagePicker _picker = ImagePicker();
     final photo = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      photos.add(photo!);
-      enable = false;
-      is_progress = true ;
-    });
-    upload_photo(photo!);
+    provider.photos.add(photo!) ;
   }
-
-  void validator() {
-    setState(() {
-      is_progress = true ;
-    });
-    print("Clicked!");
-    bool isFinshed = (fin_value == "YES");
-    CreateAdModel model = CreateAdModel(
-        paths,
-        signal_val,
-        titleController.text,
-        cat_value,
-        detailsController.text,
-        priceController.text,
-        "30.997881",
-        "30.784451",
-        areaController.text,
-        "$num_of_rooms",
-        "$num_of_bath_rooms",
-        "$num_of_halls",
-        "$num_of_level",
-        isFinshed,
-        true,
-        type_val);
-    createAdServices.postAd(model).then((value) async {
-      print("sucsessfully");
-      setState(() {
-        is_progress = false ;
-      });
-      // Position position = await _locationServices.getCurrentPosition(context);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) =>
-          HomeScreen()
-      ));
-    }).catchError((e){
-      print(enable) ;
-      setState(() {
-        is_progress = false ;
-      });
-    });
-    paths = [];
-  }
-
-  Widget list_of_photos() {
+  Widget list_of_photos(CreateAdvertisementProvider provider) {
     List<Widget> col = [], row = [];
-    for (var element in photos) {
+    for (var element in provider.photos) {
       row.add(Padding(
         padding: const EdgeInsets.all(5.0),
         child: Container(
@@ -552,7 +418,9 @@ class _CreateAdState extends State<CreateAd> {
     row.add(Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: pick_photo,
+        onTap: (){
+          pick_photo(provider);
+        },
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black),

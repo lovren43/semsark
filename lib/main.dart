@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:semsark/provider/create_ad_provider.dart';
 //import 'package:provider/provider.dart';
 //import 'package:semsark/provider/login_provider.dart';
 import 'package:semsark/provider/home_provider.dart';
@@ -25,10 +26,11 @@ class Semsark extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (create) => LoginProvider()),
-        ChangeNotifierProvider(create: (create) => HomeProvider())
+        ChangeNotifierProvider(create: (create) => HomeProvider()),
+        ChangeNotifierProvider(create: (create) => CreateAdvertisementProvider()),
       ],
       child:
-          MaterialApp(debugShowCheckedModeBanner: false, home: LoginScreen()),
+          MaterialApp(debugShowCheckedModeBanner: false, home: HomeScreen()),
     );
   }
 }
