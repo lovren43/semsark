@@ -1,8 +1,5 @@
 // api end points
 
-const String baseURL = "http://localhost:8080";
-const String CREATE_AD = "createAd";
-const String GET_USER = "getUser";
 
 const HOME_PAGE = 0;
 const CHAT_PAGE = 1;

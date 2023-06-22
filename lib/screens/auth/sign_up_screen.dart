@@ -5,18 +5,13 @@ import 'package:semsark/components/email_input.dart';
 import 'package:semsark/screens/auth/pin_code_verification_screen.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
 
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
+class SignUpScreen extends StatelessWidget {
   GlobalKey<FormState> formKey = GlobalKey();
   String? email;
   double width = 0;
   TextEditingController inputController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

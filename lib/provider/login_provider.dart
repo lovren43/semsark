@@ -10,8 +10,8 @@ class LoginProvider with ChangeNotifier {
   String? errorMessage;
   bool success=false;
   bool showPassword = false;
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
+  String email="";
+  String password="";
   AuthServices services = AuthServices();
   setLoading(newLoading) {
     loading = newLoading;
@@ -23,10 +23,16 @@ class LoginProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  LoginProvider(){
+    setLoading(true);
+    errorMessage="";
+    setLoading(false);
+  }
+
   login() async {
     setLoading(true);
     var response =
-        await services.login(emailController.text, passwordController.text);
+        await services.login(email, password);
     setLoading(false);
     if (response is Success) {
       // var box = await Hive.openBox(MY_BOX);

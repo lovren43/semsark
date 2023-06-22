@@ -1,0 +1,9 @@
+const String baseURL = "https://10.0.2.2:8000";
+//const String baseURL = "http://localhost:8080";
+const String CREATE_AD = "createAd";
+const String GET_USER = "getUser";
+const String VERFIY_EMAIL = "$baseURL/insecure/userDetails/checkEmail";
+const String LOGIN = "$baseURL/insecure/authenticate";
+const String SEND_OTP = "$baseURL/email/sendOtp";
+const String VERIFY_OTP = "$baseURL/email/verifyEmail";
+const String CREATE_USER = "$baseURL/insecure/userDetails";

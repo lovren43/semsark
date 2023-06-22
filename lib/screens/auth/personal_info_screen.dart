@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:semsark/components/InputField.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:semsark/components/button.dart';
@@ -33,7 +34,7 @@ String? name;
 String? password = '';
 String? confirmPassword = '';
 String? img;
-//PhoneNumber? phoneNumber;
+PhoneNumber? phoneNumber;
 final formKey = GlobalKey<FormState>();
 final TextEditingController pass = TextEditingController();
 final TextEditingController confirmPass = TextEditingController();
@@ -62,7 +63,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   String initialCountry = 'EG';
   final TextEditingController controller = TextEditingController();
 
-  //PhoneNumber number = PhoneNumber(isoCode: 'EG');
+  PhoneNumber number = PhoneNumber(isoCode: 'EG');
   //we can upload image from camera or from gallery based on parameter
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
@@ -220,101 +221,97 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  // InternationalPhoneNumberInput(
-                                  //   maxLength: 12,
-                                  //   onInputChanged: (PhoneNumber number) {
-                                  //     phoneNumber = number;
-                                  //     print(phoneNumber!.phoneNumber);
-                                  //   },
-                                  //   onInputValidated: (bool value) {
-                                  //     print(value);
-                                  //   },
-                                  //   inputDecoration: const InputDecoration(
-                                  //       filled: true,
-                                  //       fillColor: Color(0xFFf1f6fb)),
-                                  //   validator: _phoneValidator,
-                                  //   selectorConfig: const SelectorConfig(
-                                  //     selectorType:
-                                  //         PhoneInputSelectorType.BOTTOM_SHEET,
-                                  //   ),
-                                  //   ignoreBlank: false,
-                                  //   autoValidateMode: AutovalidateMode.disabled,
-                                  //   selectorTextStyle:
-                                  //       const TextStyle(color: Colors.black),
-                                  //   initialValue: number,
-                                  //   textFieldController: controller,
-                                  //   formatInput: true,
-                                  //   keyboardType:
-                                  //       const TextInputType.numberWithOptions(
-                                  //           signed: true, decimal: true),
-                                  //   inputBorder: const OutlineInputBorder(),
-                                  //   onSaved: (PhoneNumber number) {
-                                  //     print('On Saved: $number');
-                                  //   },
-                                  // ),
-                                  // const SizedBox(
-                                  //   height: 20,
-                                  // ),
-                                  // DropdownButtonFormField2(
-                                  //   decoration: InputDecoration(
-                                  //       filled: true,
-                                  //       fillColor: const Color(0xFFF1F6FB),
-                                  //       prefixIcon: Padding(
-                                  //         padding: const EdgeInsets.all(10.0),
-                                  //         child: Image.asset(
-                                  //           'assets/images/gender.png',
-                                  //           height: 5,
-                                  //           width: 5,
-                                  //         ),
-                                  //       ),
-                                  //       hintStyle: const TextStyle(
-                                  //           color: Color(0xFF8189B0)),
-                                  //       enabledBorder: const OutlineInputBorder(
-                                  //           borderSide: BorderSide(
-                                  //         color: Colors.white,
-                                  //       )),
-                                  //       border: const OutlineInputBorder(
-                                  //           borderSide: BorderSide(
-                                  //         color: Colors.white,
-                                  //       ))),
-                                  //   //isExpanded: true,
-                                  //   hint: const Text(
-                                  //     'Gender',
-                                  //     style: TextStyle(fontSize: 16),
-                                  //   ),
-                                  //   icon: const Icon(
-                                  //     Icons.arrow_drop_down,
-                                  //     color: Colors.black45,
-                                  //   ),
-                                  //   iconSize: 30,
-                                  //   buttonHeight: 20,
-                                  //   dropdownDecoration: BoxDecoration(
-                                  //     borderRadius: BorderRadius.circular(15),
-                                  //   ),
-                                  //   items: genderItems
-                                  //       .map((item) => DropdownMenuItem<String>(
-                                  //             value: item,
-                                  //             child: Text(
-                                  //               item,
-                                  //               style: const TextStyle(
-                                  //                 fontSize: 14,
-                                  //               ),
-                                  //             ),
-                                  //           ))
-                                  //       .toList(),
-                                  //   validator: (value) {
-                                  //     if (value == null) {
-                                  //       return 'Field is required';
-                                  //     }
-                                  //   },
-                                  //   onChanged: (value) {
-                                  //     gender = value.toString();
-                                  //     //Do something when changing the item if you want.
-                                  //   },
-                                  //   onSaved: (value) {
-                                  //     gender = value.toString();
-                                  //   },
-                                  // ),
+                                  InternationalPhoneNumberInput(
+                                    maxLength: 12,
+                                    onInputChanged: (PhoneNumber number) {
+                                      phoneNumber = number;
+                                      print(phoneNumber!.phoneNumber);
+                                    },
+                                    onInputValidated: (bool value) {
+                                      print(value);
+                                    },
+                                    inputDecoration: const InputDecoration(
+                                        filled: true,
+                                        fillColor: Color(0xFFf1f6fb)),
+                                    validator: _phoneValidator,
+                                    selectorConfig: const SelectorConfig(
+                                      selectorType:
+                                          PhoneInputSelectorType.BOTTOM_SHEET,
+                                    ),
+                                    ignoreBlank: false,
+                                    autoValidateMode: AutovalidateMode.disabled,
+                                    selectorTextStyle:
+                                        const TextStyle(color: Colors.black),
+                                    initialValue: number,
+                                    textFieldController: controller,
+                                    formatInput: true,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            signed: true, decimal: true),
+                                    inputBorder: const OutlineInputBorder(),
+                                    onSaved: (PhoneNumber number) {
+                                      print('On Saved: $number');
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color(0xFFF1F6FB),
+                                        prefixIcon: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Image.asset(
+                                            'assets/images/gender.png',
+                                            height: 5,
+                                            width: 5,
+                                          ),
+                                        ),
+                                        hintStyle: const TextStyle(
+                                            color: Color(0xFF8189B0)),
+                                        enabledBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                          color: Colors.white,
+                                        )),
+                                        border: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                          color: Colors.white,
+                                        ))),
+                                    //isExpanded: true,
+                                    hint: const Text(
+                                      'Gender',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    icon: const Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.black45,
+                                    ),
+                                    iconSize: 30,
+                                    items: genderItems
+                                        .map((item) => DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(
+                                                item,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ))
+                                        .toList(),
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'Field is required';
+                                      }
+                                    },
+                                    onChanged: (value) {
+                                      gender = value.toString();
+                                      //Do something when changing the item if you want.
+                                    },
+                                    onSaved: (value) {
+                                      gender = value.toString();
+                                    },
+                                  ),
                                 ],
                               ),
                               const SizedBox(
@@ -513,45 +510,6 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         ),
       ),
     );
-  }
-
-  Future<bool> _handleLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Location services are disabled. Please enable the services')));
-      return false;
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
-        return false;
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Location permissions are permanently denied, we cannot request permissions.')));
-      return false;
-    }
-    return true;
-  }
-
-  Future<void> _getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
-    if (!hasPermission) SystemNavigator.pop();
-    final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-    setState(() => {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => HomeScreen())
-      )
-    });
   }
   String? _phoneValidator(String? p1) {
     if (p1!.startsWith("1")) {

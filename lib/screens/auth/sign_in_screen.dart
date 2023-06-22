@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
@@ -9,49 +10,27 @@ import 'package:semsark/Repo/location_services.dart';
 import 'package:semsark/screens/auth/forget_password_screen.dart';
 import 'package:semsark/screens/auth/sign_up_screen.dart';
 
+import '../../provider/login_provider.dart';
 import '../home/home_screen.dart';
 import '../home/profile_screen.dart';
 
 
 
-class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  String? email;
-
-  String? password;
-
-  bool isLoading = false;
-
-  LocationServices _locationServices = LocationServices() ;
+class LoginScreen extends StatelessWidget {
 
   GlobalKey<FormState> formKey = GlobalKey();
   final TextEditingController pass = TextEditingController();
 
   final textFieldFocusNode = FocusNode();
 
-  bool _obscured = true;
-  void _toggleObscured() {
-    setState(() {
-      _obscured = !_obscured;
-      if (textFieldFocusNode.hasPrimaryFocus) {
-        return;
-      }
-      textFieldFocusNode.canRequestFocus = false;
-      // Prevents focus if tap on eye
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-
-    String tmp= " ";
-    return tmp!="islam" ?  Profile() : Scaffold(
+    // double height = MediaQuery.of(context).size.height;
+    // double width = MediaQuery.of(context).size.width;
+    var provider = Provider.of<LoginProvider>(context) ;
+    return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
@@ -73,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 EmailInputField(
                     onChanged: (data) {
-                      email = data;
+                      provider.email = data;
                     },
                     hintText: 'Email'),
                 const SizedBox(
@@ -82,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   controller: pass,
                   onChanged: (data) {
-                    password = data;
+                    provider.password = data;
                   },
                   validator: (data) {
                     if (data!.isEmpty) {
@@ -91,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     
                   },
                   keyboardType: TextInputType.visiblePassword,
-                  obscureText: _obscured,
+                  obscureText: provider.showPassword,
                   focusNode: textFieldFocusNode,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -112,9 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     suffixIcon: Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
                       child: GestureDetector(
-                        onTap: _toggleObscured,
+                        onTap: provider.setShowPassword(),
                         child: Icon(
-                          _obscured
+                          provider.showPassword
                               ? Icons.visibility_off_rounded
                               : Icons.visibility_rounded,
                           size: 24,
@@ -156,15 +135,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
                       try {
-                        // await LoginServices().login(email!, password!).then((value) async {
-                        //   if(value){
-                        //     Position position = await _locationServices.getCurrentPosition(context);
-                        //     setState((){
-                        //       Navigator.pushReplacement(context, MaterialPageRoute(builder:
-                        //           (context) => HomeScreen())) ;
-                        //     });
-                        //   }
-                        // });
+                        await provider.login();
+                        if (provider.success){
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomeScreen()));
+                        }
+                        else{
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   SnackBar(
+                          //     content: Text('${provider.errorMessage}'),
+                          //     duration: Duration(seconds: 2), // Duration for which the SnackBar is displayed
+                          //     action: SnackBarAction(
+                          //       label: 'Close',
+                          //       onPressed: () {
+                          //         // Code to execute when the SnackBar action is pressed
+                          //       },
+                          //     ),
+                          //   ),
+                          // );
+                        }
                       } catch (ex) {
                         print(ex);
                       }
@@ -185,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const SignUpScreen();
+                                return SignUpScreen();
                               },
                             ),
                           );

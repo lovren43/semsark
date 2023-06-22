@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:semsark/Repo/remote/remote_status.dart';
+import 'package:semsark/models/request/registartion_model.dart';
 import '../../utils/constants.dart';
+import '../../utils/end_points.dart';
 
 class AuthServices {
   var headers = {
@@ -95,13 +97,113 @@ class AuthServices {
   // }
 
   Future login(email, password) async {
-    String url = '$baseURL/insecure/authenticate/';
+    String url = '$LOGIN';
     print(email+password);
     try {
       final http.Response response = await http.post(
         Uri.parse(url),
         headers: headers,
-        body: jsonEncode({"email": email, "password": password,"social":true})
+        body: jsonEncode({"email": email, "password": password})
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: jsonDecode(response.body)['token'],
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      print(e);
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
+
+
+
+  Future verifyEmail(email) async {
+    String url = '$VERFIY_EMAIL/$email';
+    try {
+      final http.Response response = await http.get(
+          Uri.parse(url),
+          headers: headers,
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: "",
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
+
+
+  Future sendOtp(email) async {
+    String url = '$SEND_OTP/$email';
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: response.body,
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
+
+
+  Future verifyOtp(email,otp) async {
+    String url = '$VERIFY_OTP';
+    try {
+      final http.Response response = await http.post(
+          Uri.parse(url),
+          headers: headers,
+          body: jsonEncode({"otp": otp, "email": email})
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: response.body,
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
+
+
+  Future createUser( RegisterationModel model) async {
+    String url = '$CREATE_USER';
+    try {
+      final http.Response response = await http.post(
+          Uri.parse(url),
+          headers: headers,
+          body: registerationModelToJson(model)
       );
       if (response.statusCode == 200) {
         return Success(
