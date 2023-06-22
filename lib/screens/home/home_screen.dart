@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
     var widgets = [
       AdvertisementsScreen(),
       ChatScreen(),
-      CreateAd(),
+      CreateAdvertisementScreen(),
       NotificationScreen(),
       LoginScreen()
     ];
