@@ -23,8 +23,10 @@ class Semsark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (create) => HomeProvider()),
-        ChangeNotifierProvider(create: (create) => LoginProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (create) => LoginProvider()),
+        ChangeNotifierProvider(create: (create) => HomeProvider())
+      ],
       child:
           MaterialApp(debugShowCheckedModeBanner: false, home: LoginScreen()),
     );

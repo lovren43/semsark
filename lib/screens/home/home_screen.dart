@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/provider/home_provider.dart';
+import 'package:semsark/screens/home/advertisements_screen.dart';
 import 'package:semsark/screens/home/chat_screen.dart';
 import 'package:semsark/screens/home/create_advertisement_screen.dart';
 import 'package:semsark/screens/home/map_screen.dart';
@@ -63,14 +64,18 @@ class HomeScreen extends StatelessWidget {
 
   _ui(context , HomeProvider provider){
     var widgets = [
-      MapScreen(),
+      AdvertisementsScreen(),
       ChatScreen(),
       CreateAd(),
       NotificationScreen(),
       LoginScreen()
     ];
     //print(provider.advertisements!);
-    if(provider.isLoading) return Center(child: CircularProgressIndicator(),);
+    if(provider.isLoading) {
+      return const Center(
+      child: CircularProgressIndicator(),
+    );
+    }
     return widgets[provider.index];
 
   }

@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
-//import 'package:hive/hive.dart';
 import 'package:semsark/Repo/remote/auth_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
-import 'package:semsark/utils/constants.dart';
 
 class LoginProvider with ChangeNotifier {
   // att
@@ -20,16 +18,16 @@ class LoginProvider with ChangeNotifier {
 
   setShowPassword() {
     showPassword = !showPassword;
-    notifyListeners();
+    //notifyListeners();
   }
 
   LoginProvider(){
     setLoading(true);
-    errorMessage="";
+    // errorMessage="";
     setLoading(false);
   }
 
-  login() async {
+  login() async{
     setLoading(true);
     var response =
         await services.login(email, password);

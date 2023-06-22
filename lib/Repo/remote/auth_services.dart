@@ -111,7 +111,7 @@ class AuthServices {
           response: jsonDecode(response.body)['token'],
         );
       }
-      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+      return Failure(code: INVALID_RESPONSE, errorResponse: jsonDecode(response.body)["message"]);
     } on HttpException {
       return Failure(code: NO_INTERNE, errorResponse: "No Internet");
     } on FormatException {

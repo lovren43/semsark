@@ -1,5 +1,5 @@
-const String baseURL = "https://10.0.2.2:8000";
-//const String baseURL = "http://localhost:8080";
+//const String baseURL = "https://10.0.2.2:8000";
+const String baseURL = "http://localhost:8080";
 const String CREATE_AD = "createAd";
 const String GET_USER = "getUser";
 const String VERFIY_EMAIL = "$baseURL/insecure/userDetails/checkEmail";

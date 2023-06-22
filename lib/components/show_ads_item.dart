@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:semsark/models/response/advertisement_response_model.dart';
 
 import '../utils/helper.dart';
 
 class AdItem extends StatelessWidget {
-  const AdItem({Key? key}) : super(key: key);
+
+  AdItem({Key? key , required this.model}) : super(key: key);
+  AdvertisementModel? model;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -54,14 +57,14 @@ class AdItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "5000 EGP",
+                    "${model?.price} EGP",
                     style: Helper.textStyle,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    "Adress",
+                    "${model?.address}",
                     style: Helper.stlye,
                   ),
                   Row(
@@ -74,7 +77,7 @@ class AdItem extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        "3",
+                        "${model?.numOfRoom}",
                         style: Helper.stlye,
                       ),
                       const SizedBox(
@@ -85,7 +88,7 @@ class AdItem extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        "185",
+                        "${model?.area}",
                         style: Helper.stlye,
                       ),
                       const SizedBox(
@@ -96,18 +99,7 @@ class AdItem extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        "1",
-                        style: Helper.stlye,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Icon(Icons.bed, color: Helper.blue),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "1",
+                        "${model?.numOfBathroom}",
                         style: Helper.stlye,
                       ),
                       const SizedBox(

@@ -1,9 +1,9 @@
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+//import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:semsark/components/InputField.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:semsark/components/button.dart';
@@ -34,7 +34,7 @@ String? name;
 String? password = '';
 String? confirmPassword = '';
 String? img;
-PhoneNumber? phoneNumber;
+//PhoneNumber? phoneNumber;
 final formKey = GlobalKey<FormState>();
 final TextEditingController pass = TextEditingController();
 final TextEditingController confirmPass = TextEditingController();
@@ -63,7 +63,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   String initialCountry = 'EG';
   final TextEditingController controller = TextEditingController();
 
-  PhoneNumber number = PhoneNumber(isoCode: 'EG');
+  //PhoneNumber number = PhoneNumber(isoCode: 'EG');
   //we can upload image from camera or from gallery based on parameter
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
@@ -221,38 +221,38 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  InternationalPhoneNumberInput(
-                                    maxLength: 12,
-                                    onInputChanged: (PhoneNumber number) {
-                                      phoneNumber = number;
-                                      print(phoneNumber!.phoneNumber);
-                                    },
-                                    onInputValidated: (bool value) {
-                                      print(value);
-                                    },
-                                    inputDecoration: const InputDecoration(
-                                        filled: true,
-                                        fillColor: Color(0xFFf1f6fb)),
-                                    validator: _phoneValidator,
-                                    selectorConfig: const SelectorConfig(
-                                      selectorType:
-                                          PhoneInputSelectorType.BOTTOM_SHEET,
-                                    ),
-                                    ignoreBlank: false,
-                                    autoValidateMode: AutovalidateMode.disabled,
-                                    selectorTextStyle:
-                                        const TextStyle(color: Colors.black),
-                                    initialValue: number,
-                                    textFieldController: controller,
-                                    formatInput: true,
-                                    keyboardType:
-                                        const TextInputType.numberWithOptions(
-                                            signed: true, decimal: true),
-                                    inputBorder: const OutlineInputBorder(),
-                                    onSaved: (PhoneNumber number) {
-                                      print('On Saved: $number');
-                                    },
-                                  ),
+                                  // InternationalPhoneNumberInput(
+                                  //   maxLength: 12,
+                                  //   onInputChanged: (PhoneNumber number) {
+                                  //     phoneNumber = number;
+                                  //     print(phoneNumber!.phoneNumber);
+                                  //   },
+                                  //   onInputValidated: (bool value) {
+                                  //     print(value);
+                                  //   },
+                                  //   inputDecoration: const InputDecoration(
+                                  //       filled: true,
+                                  //       fillColor: Color(0xFFf1f6fb)),
+                                  //   validator: _phoneValidator,
+                                  //   selectorConfig: const SelectorConfig(
+                                  //     selectorType:
+                                  //         PhoneInputSelectorType.BOTTOM_SHEET,
+                                  //   ),
+                                  //   ignoreBlank: false,
+                                  //   autoValidateMode: AutovalidateMode.disabled,
+                                  //   selectorTextStyle:
+                                  //       const TextStyle(color: Colors.black),
+                                  //   initialValue: number,
+                                  //   textFieldController: controller,
+                                  //   formatInput: true,
+                                  //   keyboardType:
+                                  //       const TextInputType.numberWithOptions(
+                                  //           signed: true, decimal: true),
+                                  //   inputBorder: const OutlineInputBorder(),
+                                  //   onSaved: (PhoneNumber number) {
+                                  //     print('On Saved: $number');
+                                  //   },
+                                  // ),
                                   const SizedBox(
                                     height: 20,
                                   ),

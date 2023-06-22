@@ -511,7 +511,7 @@ class _CreateAdState extends State<CreateAd> {
       setState(() {
         is_progress = false ;
       });
-      Position position = await _locationServices.getCurrentPosition(context);
+      // Position position = await _locationServices.getCurrentPosition(context);
       Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) =>
           HomeScreen()
       ));

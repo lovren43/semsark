@@ -31,7 +31,14 @@ class LoginScreen extends StatelessWidget {
     // double width = MediaQuery.of(context).size.width;
     var provider = Provider.of<LoginProvider>(context) ;
     return Scaffold(
-      body: Padding(
+      body: _ui(context , provider),
+    );
+  }
+
+  _ui(context , LoginProvider provider){
+    if(provider.loading) return Center(child: CircularProgressIndicator(),) ;
+    return SafeArea(
+      child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
           child: Form(
@@ -67,10 +74,10 @@ class LoginScreen extends StatelessWidget {
                     if (data!.isEmpty) {
                       return "Field is required";
                     }
-                    
+
                   },
                   keyboardType: TextInputType.visiblePassword,
-                  obscureText: provider.showPassword,
+                  //obscureText: provider.showPassword,
                   focusNode: textFieldFocusNode,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -82,12 +89,12 @@ class LoginScreen extends StatelessWidget {
                     hintStyle: const TextStyle(color: Color(0xFF8189B0)),
                     enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
-                      color: Colors.white,
-                    )),
+                          color: Colors.white,
+                        )),
                     border: const OutlineInputBorder(
                         borderSide: BorderSide(
-                      color: Colors.white,
-                    )),
+                          color: Colors.white,
+                        )),
                     suffixIcon: Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
                       child: GestureDetector(
@@ -140,18 +147,18 @@ class LoginScreen extends StatelessWidget {
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomeScreen()));
                         }
                         else{
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   SnackBar(
-                          //     content: Text('${provider.errorMessage}'),
-                          //     duration: Duration(seconds: 2), // Duration for which the SnackBar is displayed
-                          //     action: SnackBarAction(
-                          //       label: 'Close',
-                          //       onPressed: () {
-                          //         // Code to execute when the SnackBar action is pressed
-                          //       },
-                          //     ),
-                          //   ),
-                          // );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('${provider.errorMessage}'),
+                              duration: Duration(seconds: 2), // Duration for which the SnackBar is displayed
+                              action: SnackBarAction(
+                                label: 'Close',
+                                onPressed: () {
+                                  // Code to execute when the SnackBar action is pressed
+                                },
+                              ),
+                            ),
+                          );
                         }
                       } catch (ex) {
                         print(ex);

@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 4) , () async {
 
-      Position position = await locationServices.getCurrentPosition(context);
+      // Position position = await locationServices.getCurrentPosition(context);
       setState(() {
         Navigator.pushReplacement(context, MaterialPageRoute(builder:
             (context) => HomeScreen())) ;
