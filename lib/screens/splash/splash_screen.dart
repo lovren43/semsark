@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
-
 import 'package:semsark/Repo/location_services.dart';
 
 import '../home/home_screen.dart';

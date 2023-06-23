@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:semsark/Repo/home_services.dart';
 import 'package:semsark/Repo/location_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
-import 'package:semsark/Repo/remote/reomte_home_services.dart';
 import 'package:semsark/components/map_ad_item.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
 
@@ -14,7 +13,7 @@ class HomeProvider with ChangeNotifier{
   // att
   bool isMap = true;
   bool isLoading = false;
-  HomeServices services = RemoteHomeServices();
+  HomeServices services = HomeServices();
   late String errorMsg;
   int index = 0 ;
   //

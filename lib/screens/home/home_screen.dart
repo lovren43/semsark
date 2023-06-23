@@ -22,9 +22,13 @@ class HomeScreen extends StatelessWidget {
     double height = MediaQuery.of(context).size.height ;
     return Scaffold(
       extendBody: true,
-      body: Container(
-        height: height*0.98,
-        child: _ui(context, provider)
+      body: Column(
+        children: [
+          SizedBox(
+            height: height*0.988,
+            child: _ui(context, provider)
+          ),
+        ],
       ),
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,

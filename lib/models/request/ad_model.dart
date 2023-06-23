@@ -21,9 +21,9 @@ class CreateAdvertisementModel {
   String apartmentDetails;
   String city;
   String gov;
-  int price;
-  int lng;
-  int lat;
+  double price;
+  double lng;
+  double lat;
   int area;
   int numOfRoom;
   int numOfBathroom;

@@ -1,4 +1,4 @@
-// api end points
+const String APP_NAME = "Semsark";
 
 
 const HOME_PAGE = 0;

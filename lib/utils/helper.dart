@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 class Helper{
-  static Color blue = const Color.fromRGBO(69, 166, 221, 1) ;
+  static Color blue = Colors.lightBlue;
   static Color input_field_color = Colors.white.withBlue(251).withGreen(246).withRed(241);
 
   static TextStyle textStyle = TextStyle(
