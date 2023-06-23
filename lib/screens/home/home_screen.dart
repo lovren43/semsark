@@ -5,7 +5,9 @@ import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/screens/home/advertisements_screen.dart';
 import 'package:semsark/screens/home/chat_screen.dart';
 import 'package:semsark/screens/home/create_advertisement_screen.dart';
+import 'package:semsark/screens/home/filter_screen.dart';
 import 'package:semsark/screens/home/map_screen.dart';
+import 'package:semsark/screens/home/profile_screen.dart';
 import 'package:semsark/utils/helper.dart';
 
 import '../auth/sign_in_screen.dart';
@@ -17,10 +19,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<HomeProvider>(context);
-   //provider.getAllAdvertisement();
+    double height = MediaQuery.of(context).size.height ;
     return Scaffold(
       extendBody: true,
       body: Container(
+        height: height*0.98,
         child: _ui(context, provider)
       ),
       bottomNavigationBar: CurvedNavigationBar(
@@ -68,7 +71,8 @@ class HomeScreen extends StatelessWidget {
       ChatScreen(),
       CreateAdvertisementScreen(),
       NotificationScreen(),
-      LoginScreen()
+      Profile(),
+      FilterScreen(),
     ];
     //print(provider.advertisements!);
     if(provider.isLoading) {
