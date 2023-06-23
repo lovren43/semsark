@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/provider/home_provider.dart';
+import 'package:semsark/utils/constants.dart';
 
 import '../../components/show_ads_item.dart';
 import '../../utils/helper.dart';
@@ -128,6 +129,7 @@ class AdvertisementListScreen extends StatelessWidget {
               Expanded(
                 child: InkWell(
                   onTap: () {
+                    provider.changePosition(FILTER_PAGE);
                   },
                   child: Container(
                     margin: const EdgeInsets.all(10),
@@ -172,11 +174,13 @@ class AdvertisementListScreen extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: ListView.builder(
+            child:provider.advertisements != null ? ListView.builder(
                 itemBuilder: (context, index) =>
                     InkWell(
-                        child: AdItem(model: provider.advertisements[index],)),
-                itemCount: provider.advertisements.length),
+                        child: AdItem(model: provider.advertisements![index],)),
+                itemCount: provider.advertisements!.length) :
+            Text("No Ads Yet")
+            ,
           ),
         ],
       ),

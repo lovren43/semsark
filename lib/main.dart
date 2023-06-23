@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/provider/create_ad_provider.dart';
+import 'package:semsark/provider/filter_provider.dart';
 //import 'package:provider/provider.dart';
 //import 'package:semsark/provider/login_provider.dart';
 import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/provider/login_provider.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
+import 'package:semsark/screens/home/filter_screen.dart';
 import 'package:semsark/screens/home/home_screen.dart';
 import 'package:semsark/screens/splash/splash_screen.dart';
 
@@ -28,6 +30,7 @@ class Semsark extends StatelessWidget {
         ChangeNotifierProvider(create: (create) => LoginProvider()),
         ChangeNotifierProvider(create: (create) => HomeProvider()),
         ChangeNotifierProvider(create: (create) => CreateAdvertisementProvider()),
+        ChangeNotifierProvider(create: (create) => FilterProvider()),
       ],
       child:
           MaterialApp(debugShowCheckedModeBanner: false, home: HomeScreen()),

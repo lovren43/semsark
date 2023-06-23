@@ -18,7 +18,7 @@ class HomeProvider with ChangeNotifier{
   late String errorMsg;
   int index = 0 ;
   //
-  late List<AdvertisementModel> advertisements ;
+  List<AdvertisementModel>? advertisements ;
   late Position currentPosition;
   CustomInfoWindowController mapController = CustomInfoWindowController();
 
@@ -46,8 +46,6 @@ class HomeProvider with ChangeNotifier{
     notifyListeners();
   }
 
-
-
   //Api
   getAllAdvertisement() async {
     setLoading(true);
@@ -55,10 +53,10 @@ class HomeProvider with ChangeNotifier{
     if(response is Success){
       advertisements = response.response as List<AdvertisementModel> ;
 
-      for(int i = 0 ; i<advertisements.length ; i++){
+      for(int i = 0 ; i<advertisements!.length ; i++){
         var position = LatLng(
-          double.tryParse('${advertisements[i].lat}')!.toDouble() ,
-          double.tryParse('${advertisements[i].lng}')!.toDouble() ,
+          double.tryParse('${advertisements![i].lat}')!.toDouble() ,
+          double.tryParse('${advertisements![i].lng}')!.toDouble() ,
         );
         markers.add(Marker(markerId: MarkerId("$i"),
           position: position,
@@ -66,7 +64,7 @@ class HomeProvider with ChangeNotifier{
           mapController.addInfoWindow!(
             Container(
               color: Colors.white,
-                child: MapAdvertisementItem(model: advertisements[i])
+                child: MapAdvertisementItem(model: advertisements![i])
             ),
             position
           );
