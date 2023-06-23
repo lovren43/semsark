@@ -3,6 +3,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 //import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:semsark/components/InputField.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,17 +14,14 @@ import 'package:semsark/Repo/location_services.dart';
 
 
 import '../../components/email_input.dart';
+import '../../provider/sign_up_provider.dart';
 import '../home/home_screen.dart';
 
-class PersonalInfoScreen extends StatefulWidget {
-  String? email;
+class PersonalInfoScreen extends StatelessWidget {
   PersonalInfoScreen({
     Key? key,
-    this.email,
   }) : super(key: key);
-  @override
-  State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
-}
+
 
 final List<String> genderItems = [
   'Male',
@@ -39,23 +38,6 @@ final formKey = GlobalKey<FormState>();
 final TextEditingController pass = TextEditingController();
 final TextEditingController confirmPass = TextEditingController();
 
-class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
-  final textFieldFocusNode = FocusNode();
-  final textFieldFocusNode2 = FocusNode();
-
-  final LocationServices _locationServices = LocationServices();
-
-  bool _obscured = true;
-  void _toggleObscured() {
-    setState(() {
-      _obscured = !_obscured;
-      if (textFieldFocusNode.hasPrimaryFocus) {
-        return;
-      } // If focus is on text field, don't unfocused
-      textFieldFocusNode.canRequestFocus = false;
-      // Prevents focus if tap on eye
-    });
-  }
 
   XFile? image;
 
@@ -68,68 +50,68 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
 
-    setState(() {
-      image = img;
-    });
+
   }
 
   //show popup dialog
-  void myAlert() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: const Text('Please choose media to select'),
-            content: Container(
-              height: MediaQuery.of(context).size.height / 8,
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    //if user click this button, user can upload image from gallery
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.gallery);
-                    },
-                    child: Row(
-                      children: const [
-                        Icon(Icons.image),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text('From Gallery'),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    //if user click this button. user can upload image from camera
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.camera);
-                    },
-                    child: Row(
-                      children: const [
-                        Icon(Icons.camera),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text('From Camera'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
+  // void myAlert() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           shape:
+  //               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+  //           title: const Text('Please choose media to select'),
+  //           content: Container(
+  //             height: MediaQuery.of(context).size.height / 8,
+  //             child: Column(
+  //               children: [
+  //                 ElevatedButton(
+  //                   //if user click this button, user can upload image from gallery
+  //                   onPressed: () {
+  //                     Navigator.pop(context);
+  //                     getImage(ImageSource.gallery);
+  //                   },
+  //                   child: Row(
+  //                     children: const [
+  //                       Icon(Icons.image),
+  //                       SizedBox(
+  //                         width: 2,
+  //                       ),
+  //                       Text('From Gallery'),
+  //                     ],
+  //                   ),
+  //                 ),
+  //                 const SizedBox(
+  //                   height: 10,
+  //                 ),
+  //                 ElevatedButton(
+  //                   //if user click this button. user can upload image from camera
+  //                   onPressed: () {
+  //                     Navigator.pop(context);
+  //                     getImage(ImageSource.camera);
+  //                   },
+  //                   child: Row(
+  //                     children: const [
+  //                       Icon(Icons.camera),
+  //                       SizedBox(
+  //                         width: 2,
+  //                       ),
+  //                       Text('From Camera'),
+  //                     ],
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<SignUpProvider>(context) ;
+
     // const List<String> list = <String>['Male', 'Female'];
     // String dropdownValue = list.first;
     // String genderHintText = 'Gender';
@@ -188,7 +170,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                             left: 105,
                             child: GestureDetector(
                               onTap: () {
-                                myAlert();
+                                //myAlert();
                               },
                               child: Container(
                                   decoration: BoxDecoration(
@@ -319,7 +301,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               ),
                               EmailInputField(
                                   onChanged: (data) {},
-                                  hintText: widget.email,
+                                  hintText: provider.email,
                                   enabled: false),
                               const SizedBox(
                                 height: 20,
@@ -327,7 +309,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               TextFormField(
                                 controller: pass,
                                 onChanged: (data) {
-                                  password = data;
+                                  provider.setPassword(data.toString());
                                 },
                                 validator: (data) {
                                   if (data!.isEmpty) {
@@ -338,8 +320,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   }
                                 },
                                 keyboardType: TextInputType.visiblePassword,
-                                obscureText: _obscured,
-                                focusNode: textFieldFocusNode,
+                                obscureText: provider.showPassword,
+                                //focusNode: ,
                                 enableSuggestions: false,
                                 autocorrect: false,
                                 decoration: InputDecoration(
@@ -361,9 +343,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 4, 0),
                                     child: GestureDetector(
-                                      onTap: _toggleObscured,
+                                      onTap: provider.setShowPassword(),
                                       child: Icon(
-                                        _obscured
+                                        provider.showPassword
                                             ? Icons.visibility_off_rounded
                                             : Icons.visibility_rounded,
                                         size: 24,
@@ -390,8 +372,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.visiblePassword,
-                                obscureText: _obscured,
-                                focusNode: textFieldFocusNode2,
+                                obscureText: provider.showPassword,
+                                //focusNode: textFieldFocusNode2,
                                 enableSuggestions: false,
                                 autocorrect: false,
                                 decoration: InputDecoration(
@@ -413,9 +395,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 4, 0),
                                     child: GestureDetector(
-                                      onTap: _toggleObscured,
+                                      onTap: provider.setShowPassword(),
                                       child: Icon(
-                                        _obscured
+                                        provider.showPassword
                                             ? Icons.visibility_off_rounded
                                             : Icons.visibility_rounded,
                                         size: 24,
@@ -430,21 +412,14 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               CustomButon(
                                 text: "Sign Up",
                                 onTap: () async {
-                                  // if (formKey.currentState!.validate()) {
-                                  //   if (await SignUpServices().createUser(
-                                  //       name!,
-                                  //       widget.email!,
-                                  //       "",
-                                  //       pass.text,
-                                  //       gender!,
-                                  //       phoneNumber!.phoneNumber.toString())) {
-                                  //       Position position = await _locationServices.getCurrentPosition(context);
-                                  //       setState((){
-                                  //         Navigator.pushReplacement(context, MaterialPageRoute(builder:
-                                  //             (context) => HomeScreen())) ;
-                                  //     });
-                                  //   }
-                                  // } else {}
+                                  if (formKey.currentState!.validate()) {
+                                    provider.createUser();
+                                    if (provider.success) {
+                                        //Position position = await _locationServices.getCurrentPosition(context);
+                                      Navigator.pushReplacement(context, MaterialPageRoute(builder:
+                                          (context) => HomeScreen())) ;
+                                    }
+                                  } else {}
                                 },
                               ),
                               const SizedBox(

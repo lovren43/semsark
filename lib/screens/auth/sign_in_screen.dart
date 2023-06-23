@@ -77,7 +77,7 @@ class LoginScreen extends StatelessWidget {
 
                   },
                   keyboardType: TextInputType.visiblePassword,
-                  //obscureText: provider.showPassword,
+                  obscureText: provider.showPassword,
                   focusNode: textFieldFocusNode,
                   enableSuggestions: false,
                   autocorrect: false,

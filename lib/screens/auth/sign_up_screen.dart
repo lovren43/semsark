@@ -1,9 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
 import 'package:semsark/screens/auth/pin_code_verification_screen.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
+
+import '../../provider/sign_up_provider.dart';
 
 
 class SignUpScreen extends StatelessWidget {
@@ -14,6 +17,8 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<SignUpProvider>(context) ;
+
     return Scaffold(
       body: Form(
         key: formKey,
@@ -75,7 +80,7 @@ class SignUpScreen extends StatelessWidget {
                             ),
                             EmailInputField(
                                 onChanged: (data) {
-                                  email = data.toString();
+                                  provider.setEmail(data.toString());
                                 },
                                 hintText: 'Email ',
                                 enabled: true),
@@ -90,10 +95,10 @@ class SignUpScreen extends StatelessWidget {
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   try {
-                                    // if (await SignUpServices().verifyEmail(email!)) {
-                                    //   confirmationDialog(context);
-                                    //   setState(() {});
-                                    // }
+                                    await provider.verifyEmail();
+                                    if (provider.success) {
+                                      confirmationDialog(context);
+                                    }
                                   } catch (ex) {
                                     print(ex);
                                   }

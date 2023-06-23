@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "122658836953",
+    "project_id": "gp-semsark",
+    "storage_bucket": "gp-semsark.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122658836953:android:6152829637f6a1b3ff89c8",
+        "android_client_info": {
+          "package_name": "com.example.semsark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122658836953-724i70is0nmmiccginirrflf0c219fi0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVpS80S1T37avdRlrliopfUTRfd7-49qw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122658836953-724i70is0nmmiccginirrflf0c219fi0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "122658836953-cq13jk1jd31ffrec5ep02c3t4fmpgh6l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.semsark"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
