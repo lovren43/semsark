@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:semsark/provider/chat_provider.dart';
 import 'package:semsark/provider/create_ad_provider.dart';
 import 'package:semsark/provider/filter_provider.dart';
 //import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/provider/login_provider.dart';
 import 'package:semsark/provider/sign_up_provider.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
+import 'package:semsark/screens/home/chat_screen.dart';
 import 'package:semsark/screens/home/chat_screen.dart';
 import 'package:semsark/screens/home/filter_screen.dart';
 import 'package:semsark/screens/home/home_screen.dart';
@@ -31,13 +33,13 @@ class Semsark extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (create) => LoginProvider()),
         ChangeNotifierProvider(create: (create) => HomeProvider()),
-        ChangeNotifierProvider(create: (create) => CreateAdvertisementProvider()),
+        ChangeNotifierProvider(
+            create: (create) => CreateAdvertisementProvider()),
         ChangeNotifierProvider(create: (create) => FilterProvider()),
+        ChangeNotifierProvider(create: (create) => ChatProvider()),
         ChangeNotifierProvider(create: (create) => SignUpProvider())
-
       ],
-      child:
-          MaterialApp(debugShowCheckedModeBanner: false, home: ChatScreen()),
+      child: MaterialApp(debugShowCheckedModeBanner: false, home: ChatScreen()),
     );
   }
 }
