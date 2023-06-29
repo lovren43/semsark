@@ -56,6 +56,9 @@ dependencies:
   path_provider:
   uuid:
   flutter_chat_ui: ^1.6.6
+  firebase_database: ^10.2.3
+  intl: ^0.17.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,7 +89,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
       - assets/images/
-      - assets/images/c.png
+      
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
