@@ -17,8 +17,8 @@ class UserDetails {
   String email;
   String password;
   String phone;
-  int rate;
-  int rateSum;
+  double rate;
+  double rateSum;
   int rateCounter;
   bool verifyId;
   bool verify;
@@ -69,7 +69,7 @@ class UserDetails {
     personalImg: json["personalImg"],
     idImg: json["idImg"],
     myAds: List<AdvertisementModel>.from(json["myAds"].map((x) => AdvertisementModel.fromJson(x))),
-    favourites: Favourites.fromJson(json["favourites"]),
+    favourites: json["favourites"]!=null?Favourites.fromJson(json["favourites"]):Favourites(id: 0, userId: 0, buildings: []),
   );
 
   Map<String, dynamic> toJson() => {

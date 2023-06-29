@@ -1,58 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:semsark/provider/profile_provider.dart';
 
-import 'package:semsark/provider/home_provider.dart';
+import '../../components/show_ads_item.dart';
+import '../../models/response/advertisement_response_model.dart';
 
 
-class Profile extends StatefulWidget{
+class Profile extends StatelessWidget{
   const Profile({super.key});
 
-  @override
-  State<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
   final double profileHeight = 144;
-  HomeProvider viewModel = HomeProvider();
+
+
+
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<ProfileProvider>(context);
+    List<AdvertisementModel> fav = provider.fav.buildings;
+    List<AdvertisementModel> ads=provider.myAds;
+    double height = MediaQuery.of(context).size.height ;
     return Scaffold(
-      body: ListView(
+      body: SingleChildScrollView(
         padding: EdgeInsets.zero,
-        children:[
-          buildTop(),
-          buildContent(),
-        ],
+        child:Column(
+          children: [
+            buildTop(provider),
+            buildContent(provider,fav,ads),
+          ],
+        )
       ),
     );
   }
 
-  Widget buildContent(){
+  Widget buildContent(ProfileProvider provider,fav,ads){
     return Column(
       children: [
-        //ProfileImage(),
-        // Text(
-        //     "${viewModel.model!.name}",
-        //   style: const TextStyle(
-        //     fontSize: 20,
-        //     fontWeight: FontWeight.bold,
-        //     color: Color.fromRGBO(129, 137, 176, 1)
-        //   ),
-        // ),
-        const SizedBox(height: 5,),
-        // Text(
-        //   "${viewModel.model!.email}",
-        //   style: const TextStyle(
-        //       fontSize: 14,
-        //       color: Color.fromRGBO(129, 137, 176, 1),
-        //     letterSpacing: 5
-        //   ),
-        // ),
-        const SizedBox(height: 100,),
+        const SizedBox(height: 10,),
+        Text(
+            provider.user.username,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(129, 137, 176, 1)
+          ),
+        ),
+        const SizedBox(height: 10,),
+        Text(
+          provider.user.email,
+          style: const TextStyle(
+              fontSize: 14,
+              color: Color.fromRGBO(129, 137, 176, 1),
+            letterSpacing: 5
+          ),
+        ),
+        const SizedBox(height: 70,),
         Container(
           width: 400,
           height: 60,
@@ -61,56 +62,101 @@ class _ProfileState extends State<Profile> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Padding(padding: EdgeInsets.only(left: 10)),
+              // const Padding(padding: EdgeInsets.only(left: 5)),
               TextButton(
-                  onPressed:(){},
+                  onPressed:(){
+                    provider.setAd();
+                  },
                   child: const Text(
                       'YOUR ADS',
                     style: TextStyle(
-                      fontWeight: FontWeight.normal
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
               ),
-              const Padding(padding: EdgeInsets.only(left: 60)),
+
+              // const Padding(padding: EdgeInsets.only(right: 50)),
               TextButton(
-                  onPressed:(){},
+                  onPressed:(){
+                    provider.setAd();
+                  },
                   child: const Text(
-                    'PAYMENTS',
+                    'Favorites',
                     style: TextStyle(
-                        fontWeight: FontWeight.normal
-                    ),
-                  ),
-              ),
-              const Padding(padding: EdgeInsets.only(left: 60)),
-              TextButton(
-                  onPressed:(){},
-                  child: const Text(
-                    'HISTORY',
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal
+                        fontWeight: FontWeight.bold
                     ),
                   ),
               )
             ],
           ),
-        )
+        ),
+        const SizedBox(height: 30,),
+        Container(
+          height: 250,
+          child: (provider.adClick?ads:fav).isNotEmpty ?
+          ListView.builder(
+            itemCount: (provider.adClick?ads:fav).length,
+            itemBuilder: (context, index) =>
+            Card(
+              child: ListTile(
+
+                leading: Image.network(provider.adClick ?ads[index].photosList[0].imgLink: fav[index].photosList[0].imgLink),
+
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                  Text(provider.adClick ?ads[index].title:fav[index].title),
+                  ],
+                  ),
+
+                subtitle: Column(
+                  children: [
+                    const SizedBox(height: 30,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(provider.adClick ?"${ads[index].numOfBathroom}":"${fav[index].numOfBathroom}"),
+                        Text(provider.adClick ?"${ads[index].numOfRoom}":"${fav[index].numOfRoom}"),
+                        Text(provider.adClick ?"${ads[index].area} m^2":"${fav[index].area} m^2"),
+                      ],
+                    ),
+                    const SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(Icons.bathtub_sharp),
+                        Icon(Icons.bed_sharp),
+                        Icon(Icons.area_chart_sharp)
+                      ],
+                    ),
+                    const SizedBox(height: 10,),
+                  ],
+                ),
+
+                onTap: () {
+
+                },
+              ),
+            )) :const Text("No Ads Yet"),
+        ),
       ],
     );
   }
 
-  Widget buildTop() {
+  Widget buildTop(ProfileProvider provider) {
     return Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
         children: [
-          TopContainer(),
-          ProfileImage(),
+          topContainer(),
+          profileImage(provider),
         ],
     );
   }
 
-  Widget TopContainer() => Column(
+  Widget topContainer() => Column(
     children: [
       Container  (
         height: 270,
@@ -161,21 +207,10 @@ class _ProfileState extends State<Profile> {
     ],
   );
 
-  Widget ProfileImage() => CircleAvatar(
+  Widget profileImage(ProfileProvider provider) => CircleAvatar(
     radius: profileHeight / 2,
     backgroundColor: const Color.fromRGBO(241, 246, 251, 1),
-    // child: CircleAvatar(
-    //   radius: 68,
-    //   backgroundColor: Colors.white,
-    //   child:  viewModel.model!.img == "string" ?
-    //   const CircleAvatar(
-    //     radius: 65,
-    //     backgroundImage: AssetImage("assets/images/Mask.png"),
-    //   ) :
-    //   CircleAvatar(
-    //     radius: 65,
-    //     backgroundImage: NetworkImage(viewModel.model!.img),
-    //   ),
-    // ),
+    backgroundImage: NetworkImage(provider.user.img == "string" || provider.user.img == ""?"assets/images/Mask.png":provider.user.img)
+
   );
 }

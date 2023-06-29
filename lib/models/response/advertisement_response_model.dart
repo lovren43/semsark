@@ -17,8 +17,6 @@ class AdvertisementModel {
   String title;
   String category;
   String dailyPrice;
-  String address;
-  String des;
   String apartmentDetails;
   String city;
   String gov;
@@ -46,8 +44,6 @@ class AdvertisementModel {
     required this.title,
     required this.category,
     required this.dailyPrice,
-    required this.address,
-    required this.des,
     required this.apartmentDetails,
     required this.city,
     required this.gov,
@@ -76,8 +72,6 @@ class AdvertisementModel {
     title: json["title"],
     category: json["category"],
     dailyPrice: json["dailyPrice"],
-    address: json["address"],
-    des: json["des"],
     apartmentDetails: json["apartmentDetails"],
     city: json["city"],
     gov: json["gov"],
@@ -106,8 +100,6 @@ class AdvertisementModel {
     "title": title,
     "category": category,
     "dailyPrice": dailyPrice,
-    "address": address,
-    "des": des,
     "apartmentDetails": apartmentDetails,
     "city": city,
     "gov": gov,

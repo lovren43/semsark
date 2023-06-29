@@ -64,7 +64,7 @@ class AdItem extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    "${model?.address}",
+                    "address",
                     style: Helper.stlye,
                   ),
                   Row(
