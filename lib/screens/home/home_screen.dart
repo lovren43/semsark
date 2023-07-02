@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
       ChatScreen(),
       CreateAdvertisementScreen(),
       NotificationScreen(),
-      Profile(),
+      ProfileScreen(),
       FilterScreen(),
     ];
     //print(provider.advertisements!);

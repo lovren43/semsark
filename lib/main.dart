@@ -11,6 +11,7 @@ import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/provider/login_provider.dart';
 import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/provider/sign_up_provider.dart';
+import 'package:semsark/screens/auth/personal_info_screen.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
 import 'package:semsark/screens/home/chat_screen.dart';
 import 'package:semsark/screens/home/chat_screen.dart';
@@ -37,8 +38,7 @@ class Semsark extends StatelessWidget {
         ChangeNotifierProvider(create: (create) => LoginProvider()),
         ChangeNotifierProvider(create: (create) => HomeProvider()),
         ChangeNotifierProvider(create: (create) => ProfileProvider()),
-        ChangeNotifierProvider(
-            create: (create) => CreateAdvertisementProvider()),
+        ChangeNotifierProvider(create: (create) => CreateAdvertisementProvider()),
         ChangeNotifierProvider(create: (create) => FilterProvider()),
         ChangeNotifierProvider(create: (create) => ChatProvider()),
         ChangeNotifierProvider(create: (create) => SignUpProvider())

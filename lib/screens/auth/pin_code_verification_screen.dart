@@ -229,6 +229,7 @@ class PinCodeVerificationScreen extends StatelessWidget {
                       if (formKey.currentState!.validate()) {
                         await provider.verifyOtp();
                         if (provider.success) {
+                          provider.setEdit();
                           Navigator.push(
                             context,
                             MaterialPageRoute(

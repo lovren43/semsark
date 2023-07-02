@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
-  InputField({this.hintText, this.inputIcon,this.onChanged});
+  InputField({this.hintText, this.inputIcon,this.onChanged, required String? Function(dynamic value) validator});
   String? hintText;
   Icon? inputIcon;
   Function(String)? onChanged;

@@ -10,12 +10,16 @@ UserDetails userDetailsFromJson(String str) => UserDetails.fromJson(json.decode(
 
 String userDetailsToJson(UserDetails data) => json.encode(data.toJson());
 
+Profile profileFromJson(String str) => Profile.fromJson(json.decode(str));
+
+String profileToJson(Profile data) => json.encode(data.toJson());
+
 class UserDetails {
-  int id;
+  // int id;
   String username;
   String gender;
   String email;
-  String password;
+  // String password;
   String phone;
   double rate;
   double rateSum;
@@ -31,40 +35,40 @@ class UserDetails {
   Favourites favourites;
 
   UserDetails({
-    required this.id,
-    required this.username,
+    // required  this.id,
+   required this.username,
     required this.gender,
-    required this.email,
-    required this.password,
+   required  this.email,
+    // required this.password,
     required this.phone,
     required this.rate,
-    required this.rateSum,
-    required this.rateCounter,
-    required this.verifyId,
+    required  this.rateSum,
+    required  this.rateCounter,
+    required  this.verifyId,
     required this.verify,
     required this.suspended,
-    required this.deviceId,
+    required  this.deviceId,
     required this.img,
-    required this.personalImg,
+    required  this.personalImg,
     required this.idImg,
-    required this.myAds,
+    required  this.myAds,
     required this.favourites,
   });
 
   factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
-    id: json["id"],
+    // id: json["id"]!=null?json["id"] : json["userId"],
     username: json["username"],
     gender: json["gender"],
     email: json["email"],
-    password: json["password"],
+    // password: json["password"],
     phone: json["phone"],
-    rate: json["rate"],
-    rateSum: json["rateSum"],
-    rateCounter: json["rateCounter"],
-    verifyId: json["verifyID"],
-    verify: json["verify"],
-    suspended: json["suspended"],
-    deviceId: json["deviceId"],
+    rate: json["rate"]??0,
+    rateSum: json["rateSum"]??0,
+    rateCounter: json["rateCounter"]??0,
+    verifyId: json["verifyID"]??false,
+    verify: json["verify"]??false,
+    suspended: json["suspended"]??false,
+    deviceId: json["deviceId"]??"",
     img: json["img"],
     personalImg: json["personalImg"],
     idImg: json["idImg"],
@@ -73,11 +77,11 @@ class UserDetails {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    // "id": id,
     "username": username,
     "gender": gender,
     "email": email,
-    "password": password,
+    // "password": password,
     "phone": phone,
     "rate": rate,
     "rateSum": rateSum,
@@ -91,6 +95,46 @@ class UserDetails {
     "idImg": idImg,
     "myAds": List<dynamic>.from(myAds.map((x) => x.toJson())),
     "favourites": favourites.toJson(),
+  };
+}
+
+class Profile {
+  String username;
+  String gender;
+  String email;
+  String password;
+  String phone;
+
+  String img;
+
+
+  Profile({
+    required this.username,
+    required this.gender,
+    required  this.email,
+    required this.password,
+    required this.phone,
+    required this.img,
+  });
+
+  factory Profile.fromJson(Map<String, dynamic> json) => Profile(
+    username: json["username"],
+    gender: json["gender"],
+    email: json["email"],
+    password: json["password"],
+    phone: json["phone"],
+    img: json["img"],
+  );
+
+  Map<String, dynamic> toJson() => {
+
+    "username": username,
+    "gender": gender,
+    "email": email,
+    "password": password,
+    "phone": phone,
+    "img": img,
+
   };
 }
 

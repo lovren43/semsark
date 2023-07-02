@@ -7,6 +7,7 @@ import 'package:semsark/utils/constants.dart';
 
 class SignUpProvider with ChangeNotifier {
   // att
+  bool edit=true;
   bool loading=false;
   String? errorMessage;
   bool success=false;
@@ -17,18 +18,17 @@ class SignUpProvider with ChangeNotifier {
   String? phoneNumber;
   String? gender;
   String? password;
-  var nameController = TextEditingController();
-  var emailController = TextEditingController();
-  var otpController = TextEditingController();
-  var passwordController = TextEditingController();
-  var phoneNumberController = TextEditingController();
-  var genderController = TextEditingController();
 
   AuthServices services = AuthServices();
   setLoading(newLoading) {
     loading = newLoading;
     notifyListeners();
   }
+  setEdit(){
+    edit=!edit;
+    notifyListeners();
+  }
+
   setEmail(email){
     this.email=email;
     notifyListeners();
@@ -63,7 +63,6 @@ class SignUpProvider with ChangeNotifier {
     var response =
     await services.verifyEmail(email);
     setLoading(false);
-    print(response.toString());
     if (response is Success) {
       // var box = await Hive.openBox(MY_BOX);
       // box.put('token', response.response);

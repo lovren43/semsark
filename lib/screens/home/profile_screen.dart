@@ -4,10 +4,11 @@ import 'package:semsark/provider/profile_provider.dart';
 
 import '../../components/my_ad_item.dart';
 import '../../models/response/advertisement_response_model.dart';
+import '../auth/personal_info_screen.dart';
 
 
-class Profile extends StatelessWidget{
-  const Profile({super.key});
+class ProfileScreen extends StatelessWidget{
+  const ProfileScreen({super.key});
 
   final double profileHeight = 144;
 
@@ -25,7 +26,7 @@ class Profile extends StatelessWidget{
         padding: EdgeInsets.zero,
         child:Column(
           children: [
-            buildTop(provider),
+            buildTop(provider,context),
             buildContent(provider,cur),
           ],
         )
@@ -68,8 +69,9 @@ class Profile extends StatelessWidget{
               // const Padding(padding: EdgeInsets.only(left: 5)),
               TextButton(
                   onPressed:(){
-                    provider.setAd();
+                    provider.setAd(true);
                   },
+
                   child: const Text(
                       'YOUR ADS',
                     style: TextStyle(
@@ -81,8 +83,9 @@ class Profile extends StatelessWidget{
               // const Padding(padding: EdgeInsets.only(right: 50)),
               TextButton(
                   onPressed:(){
-                    provider.setAd();
+                    provider.setAd(false);
                   },
+                autofocus: true,
                   child: const Text(
                     'Favorites',
                     style: TextStyle(
@@ -93,7 +96,7 @@ class Profile extends StatelessWidget{
             ],
           ),
         ),
-        const SizedBox(height: 30,),
+        // const SizedBox(height: 0,),
         SizedBox(
           height: 250,
           child: cur.isNotEmpty ?
@@ -112,21 +115,21 @@ class Profile extends StatelessWidget{
     );
   }
 
-  Widget buildTop(ProfileProvider provider) {
+  Widget buildTop(ProfileProvider provider,context) {
     return Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
         children: [
-          topContainer(),
+          topContainer(context),
           profileImage(provider),
         ],
     );
   }
 
-  Widget topContainer() => Column(
+  Widget topContainer(context) => Column(
     children: [
       Container  (
-        height: 150,
+        height: 160,
         decoration: const BoxDecoration(
             color: Color.fromRGBO(241, 246, 251, 1),
             borderRadius: BorderRadius.only(
@@ -134,19 +137,12 @@ class Profile extends StatelessWidget{
               bottomLeft: Radius.circular(90.0),
             )
         ),
-        padding: const EdgeInsets.only(left: 10 , right: 10),
+        padding: const EdgeInsets.only(left: 50 , right: 10),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 50),
+          padding: const EdgeInsets.only(bottom: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
-                  onPressed: (){},
-                  icon: const Icon(
-                    Icons.settings,
-                    color: Color.fromRGBO(241, 246, 251, 1),
-                  )
-              ),
               const Expanded(
                 child: Center(
                   child: Text(
@@ -160,7 +156,12 @@ class Profile extends StatelessWidget{
                 ),
               ),
               IconButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PersonalInfoScreen()),
+                    );
+                  },
                   icon: const Icon(
                     Icons.settings,
                     color: Color.fromRGBO(129, 137, 176, 1),
@@ -175,9 +176,9 @@ class Profile extends StatelessWidget{
   );
 
   Widget profileImage(ProfileProvider provider) => CircleAvatar(
-    radius: profileHeight / 2,
+    radius: profileHeight / 2.4,
     backgroundColor: const Color.fromRGBO(241, 246, 251, 1),
-    backgroundImage: AssetImage(provider.user.img == "string" || provider.user.img == ""?"assets/images/Mask.png":provider.user.img)
+    backgroundImage: NetworkImage(provider.user.img == "string" || provider.user.img == ""?"assets/images/Mask.png":provider.user.img)
 
   );
 }

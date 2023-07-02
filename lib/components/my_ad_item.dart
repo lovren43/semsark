@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
+import '../utils/helper.dart';
 
 class MyAdvertisementItem extends StatelessWidget {
   MyAdvertisementItem({Key? key , required this.model}) : super(key: key);
@@ -10,41 +11,87 @@ class MyAdvertisementItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        child: Row(
-
-          children: [
-            SizedBox(
-              width: 100,
-              height: 100,
-              child: Image.asset(model.photosList[0].imgLink=="string" ||
-                  model.photosList[0].imgLink=="" ? "assets/images/c.png" : model.photosList[0].imgLink
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 150,
+                height: 110,
+                child: Image.network(
+                    fit: BoxFit.cover,
+                    model.photosList[0].imgLink=="string" ||
+                    model.photosList[0].imgLink=="" ? "assets/images/c.png" : model.photosList[0].imgLink
+                ),
               ),
-            ),
-            Column(
-              children: [
-                const SizedBox(height: 30,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Container(
+                alignment: Alignment.centerRight,
+                margin: const EdgeInsetsDirectional.only(start: 12, top: 10, bottom: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text("${model.numOfBathroom}"),
-                    Text("${model.numOfRoom}"),
-                    Text("${model.area} m^2"),
-                  ],
-                ),
-                const SizedBox(height: 10,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Icon(Icons.bathtub_sharp),
-                    Icon(Icons.bed_sharp),
-                    Icon(Icons.area_chart_sharp)
-                  ],
-                ),
-                const SizedBox(height: 10,),
-              ],
-            ),
-          ],
+                    Text(
+                      "${model.price} EGP",
+                      style: Helper.textStyle,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.bed,
+                          color: Helper.blue,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "${model.numOfRoom}",
+                          style: Helper.textStyle,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Icon(Icons.format_size, color: Helper.blue),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "${model.area}",
+                          style: Helper.textStyle,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Icon(Icons.bathtub_outlined, color: Helper.blue),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "${model.numOfBathroom}",
+                          style: Helper.textStyle,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      '${model.city}, ${model.gov}',
+                      style: Helper.stlye,
 
+                    ),
+                  ],
+                ),
+              ),
+
+            ],
+
+          ),
         ),
       ),
     );

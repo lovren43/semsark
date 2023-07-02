@@ -19,7 +19,7 @@ class ProfileServices {
     'Accept': "application/json",
   };
 
-  String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlc0Blcy5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjg5MjQ2NTI4LCJpYXQiOjE2ODc0NDY1Mjh9._Bzg1j7vSXPvY9QA6cVpRhAHTcDCBZSmaZSGtbn0-ypnL3lrUEgjuN7YaKFYpBAf9a0-m4IrdaC-1NehnAoKHA";
+  String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzb2tvdG90bzM2QGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJleHAiOjE2OTAwNTkxNTEsImlhdCI6MTY4ODI1OTE1MX0.59G7wB8B0qwQa48mlNdri2TakQHcfETcC8L9GUCswD9toH5P0q454EdJrSP8LuS4t7jfiNADYeG7CJ5EtTm7WA";
 
   Future getUser() async {
     String url = '$GET_USER';
@@ -43,28 +43,28 @@ class ProfileServices {
     }
   }
 
-  // Future sendChatMessage(message) async {
-  //   String url = '$SEND_MESSAGE';
-  //   headers['Authorization'] = 'Bearer $token';
-  //   try {
-  //     final http.Response response = await http.post(Uri.parse(url),
-  //         headers: headers, body: ChatMessageToJson(message));
-  //     if (response.statusCode == 200) {
-  //       return Success(
-  //         code: 200,
-  //         response: "",
-  //       );
-  //     }
-  //     return Failure(
-  //         code: INVALID_RESPONSE,
-  //         errorResponse: jsonDecode(response.body)["message"]);
-  //   } on HttpException {
-  //     return Failure(code: NO_INTERNE, errorResponse: "No Internet");
-  //   } on FormatException {
-  //     return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
-  //   } catch (e) {
-  //     print(e);
-  //     return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
-  //   }
-  // }
+  Future editUser(user) async {
+    String url = '$UPDATE_USER';
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      final http.Response response = await http.patch(Uri.parse(url),
+          headers: headers, body: profileToJson(user));
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: userDetailsFromJson(response.body),
+        );
+      }
+      return Failure(
+          code: INVALID_RESPONSE,
+          errorResponse: jsonDecode(response.body)["message"]);
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      print(e);
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
 }
