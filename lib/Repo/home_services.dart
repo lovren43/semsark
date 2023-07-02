@@ -1,14 +1,10 @@
 import 'dart:io';
-
-import 'package:semsark/Repo/home_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
 import 'package:semsark/models/response/user_details.dart';
-
 import '../../models/request/ad_model.dart';
 import '../../utils/constants.dart';
 import 'package:http/http.dart' as http;
-
 import '../../utils/end_points.dart';
 
 class HomeServices {
@@ -22,9 +18,8 @@ class HomeServices {
     'Accept': "application/json",
   };
 
+
   String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlc0Blcy5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjg5MjQ2NTI4LCJpYXQiOjE2ODc0NDY1Mjh9._Bzg1j7vSXPvY9QA6cVpRhAHTcDCBZSmaZSGtbn0-ypnL3lrUEgjuN7YaKFYpBAf9a0-m4IrdaC-1NehnAoKHA";
-
-
   Future createAdvertisement(CreateAdvertisementModel model) async
   {
     headers['Authorization'] = 'Bearer $token';
@@ -102,6 +97,7 @@ class HomeServices {
     } on FormatException {
       return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
     } catch (e) {
+      print(e) ;
       return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
     }
   }

@@ -32,11 +32,11 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> getAllMessage() async {
-    var response = await services.getChatMessage(room);
-    if (response.isNotEmpty) {
-      chatMessages = response as List<ChatMessage>;
-    }
-    notifyListeners();
+    // var response = await services.getChatMessage(room);
+    // if (response.isNotEmpty) {
+    //   chatMessages = response as List<ChatMessage>;
+    // }
+    // notifyListeners();
   }
 
   Future<void> sendMessage() async {

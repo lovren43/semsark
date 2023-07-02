@@ -4,19 +4,82 @@
 
 import 'dart:convert';
 
+import 'package:semsark/models/response/user_details.dart';
+
+AdvertisementModel advertisementModelFromJson(String str) => AdvertisementModel.fromJson(json.decode(str));
 List<AdvertisementModel> allAdvertisementFromJson(String str) => List<AdvertisementModel>.from(json.decode(str).map((x) => AdvertisementModel.fromJson(x)));
-AdvertisementModel advertisementFromJson(String str) => AdvertisementModel.fromJson(json.decode(str));
 
 String advertisementModelToJson(List<AdvertisementModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+class User {
+  int userId;
+  String username;
+  String gender;
+  String email;
+  String phone;
+  String img;
+  String personalImg;
+  String idImg;
+  List<AdvertisementModel> myAds;
+  bool verifyId;
+  bool suspended;
+  double rate;
+
+  User({
+    required this.userId,
+    required this.username,
+    required this.gender,
+    required this.email,
+    required this.phone,
+    required this.img,
+    required this.personalImg,
+    required this.idImg,
+    required this.myAds,
+    required this.verifyId,
+    required this.suspended,
+    required this.rate,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    userId: json["userId"],
+    username: json["username"],
+    gender: json["gender"],
+    email: json["email"],
+    phone: json["phone"],
+    img: json["img"],
+    personalImg: json["personalImg"],
+    idImg: json["idImg"],
+    myAds: List<AdvertisementModel>.from(json["myAds"].map((x) => AdvertisementModel.fromJson(x))),
+    verifyId: json["verifyID"],
+    suspended: json["suspended"],
+    rate: json["rate"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "userId": userId,
+    "username": username,
+    "gender": gender,
+    "email": email,
+    "phone": phone,
+    "img": img,
+    "personalImg": personalImg,
+    "idImg": idImg,
+    "myAds": List<dynamic>.from(myAds.map((x) => x.toJson())),
+    "verifyID": verifyId,
+    "suspended": suspended,
+    "rate": rate,
+  };
+}
 class AdvertisementModel {
   int id;
-  int userId;
+  User? user;
   List<PhotosList> photosList;
   String signalPower;
+  bool elevator;
+  bool acceptBusiness;
+  String dailyPrice;
   String title;
   String category;
-  String dailyPrice;
   String apartmentDetails;
   String city;
   String gov;
@@ -24,8 +87,8 @@ class AdvertisementModel {
   double price;
   int views;
   DateTime date;
-  double? lng;
-  double? lat;
+  double lng;
+  double lat;
   int area;
   int numOfRoom;
   int numOfBathroom;
@@ -33,17 +96,18 @@ class AdvertisementModel {
   int level;
   bool finished;
   bool single;
-  bool acceptBusiness;
-  bool elevator;
+  int? userId;
 
   AdvertisementModel({
     required this.id,
-    required this.userId,
+    this.user,
     required this.photosList,
     required this.signalPower,
+    required this.elevator,
+    required this.acceptBusiness,
+    required this.dailyPrice,
     required this.title,
     required this.category,
-    required this.dailyPrice,
     required this.apartmentDetails,
     required this.city,
     required this.gov,
@@ -51,8 +115,8 @@ class AdvertisementModel {
     required this.price,
     required this.views,
     required this.date,
-    this.lng,
-    this.lat,
+    required this.lng,
+    required this.lat,
     required this.area,
     required this.numOfRoom,
     required this.numOfBathroom,
@@ -60,18 +124,19 @@ class AdvertisementModel {
     required this.level,
     required this.finished,
     required this.single,
-    required this.acceptBusiness,
-    required this.elevator,
+    this.userId,
   });
 
   factory AdvertisementModel.fromJson(Map<String, dynamic> json) => AdvertisementModel(
     id: json["id"],
-    userId: json["userId"],
+    user: json["user"] == null ? null : User.fromJson(json["user"]),
     photosList: List<PhotosList>.from(json["photosList"].map((x) => PhotosList.fromJson(x))),
     signalPower: json["signalPower"],
+    elevator: json["elevator"],
+    acceptBusiness: json["acceptBusiness"],
+    dailyPrice: json["dailyPrice"],
     title: json["title"],
     category: json["category"],
-    dailyPrice: json["dailyPrice"],
     apartmentDetails: json["apartmentDetails"],
     city: json["city"],
     gov: json["gov"],
@@ -79,8 +144,8 @@ class AdvertisementModel {
     price: json["price"],
     views: json["views"],
     date: DateTime.parse(json["date"]),
-    lng: json["lng"]?.toDouble(),
-    lat: json["lat"]?.toDouble(),
+    lng: json["lng"],
+    lat: json["lat"],
     area: json["area"],
     numOfRoom: json["numOfRoom"],
     numOfBathroom: json["numOfBathroom"],
@@ -88,18 +153,19 @@ class AdvertisementModel {
     level: json["level"],
     finished: json["finished"],
     single: json["single"],
-    acceptBusiness: json["acceptBusiness"],
-    elevator: json["elevator"],
+    userId: json["userId"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "userId": userId,
+    "user": user?.toJson(),
     "photosList": List<dynamic>.from(photosList.map((x) => x.toJson())),
     "signalPower": signalPower,
+    "elevator": elevator,
+    "acceptBusiness": acceptBusiness,
+    "dailyPrice": dailyPrice,
     "title": title,
     "category": category,
-    "dailyPrice": dailyPrice,
     "apartmentDetails": apartmentDetails,
     "city": city,
     "gov": gov,
@@ -116,8 +182,7 @@ class AdvertisementModel {
     "level": level,
     "finished": finished,
     "single": single,
-    "acceptBusiness": acceptBusiness,
-    "elevator": elevator,
+    "userId": userId,
   };
 }
 

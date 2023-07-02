@@ -43,7 +43,7 @@ class Semsark extends StatelessWidget {
         ChangeNotifierProvider(create: (create) => ChatProvider()),
         ChangeNotifierProvider(create: (create) => SignUpProvider())
       ],
-      child:  MaterialApp(debugShowCheckedModeBanner: false, home: Profile()),
+      child:  MaterialApp(debugShowCheckedModeBanner: false, home: HomeScreen()),
     );
   }
 }

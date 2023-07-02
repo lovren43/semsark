@@ -23,6 +23,7 @@ class ProfileProvider with ChangeNotifier {
     init();
   }
 
+
   Future<void> getUser() async {
     var response = await services.getUser();
     if (response is Success) {

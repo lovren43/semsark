@@ -49,9 +49,11 @@ class HomeProvider with ChangeNotifier{
   getAllAdvertisement() async {
     setLoading(true);
     var response = await services.getAdvertisements();
+    //print() ;
     if(response is Success){
       advertisements = response.response as List<AdvertisementModel> ;
 
+      print(advertisements);
       for(int i = 0 ; i<advertisements!.length ; i++){
         var position = LatLng(
           double.tryParse('${advertisements![i].lat}')!.toDouble() ,

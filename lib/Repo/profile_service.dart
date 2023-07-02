@@ -18,8 +18,9 @@ class ProfileServices {
     'content-Type': 'application/json',
     'Accept': "application/json",
   };
-  String token =
-     "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzb2tvdG90bzM2QGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJleHAiOjE2ODk4MDMxNjUsImlhdCI6MTY4ODAwMzE2NX0.P_fvBhthbcB4ckrBamBSBIr7KN3JBGmLpR6ptBX6lFPbS_gR9WECNEncvL_Dm6d0vYR74y4QElqQ_60Pvh5OGA";
+
+  String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlc0Blcy5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjg5MjQ2NTI4LCJpYXQiOjE2ODc0NDY1Mjh9._Bzg1j7vSXPvY9QA6cVpRhAHTcDCBZSmaZSGtbn0-ypnL3lrUEgjuN7YaKFYpBAf9a0-m4IrdaC-1NehnAoKHA";
+
   Future getUser() async {
     String url = '$GET_USER';
     headers['Authorization'] = 'Bearer $token';

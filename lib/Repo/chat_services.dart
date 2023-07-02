@@ -9,7 +9,7 @@ import '../utils/constants.dart';
 import '../utils/end_points.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
+//import 'package:firebase_database/firebase_database.dart';
 
 class ChatServices {
   var headers = {
@@ -95,27 +95,27 @@ class ChatServices {
     }
   }
 
-  Future<List<dynamic>> getChatMessage(room) async {
-    var returnArr = [];
-
-    final database = FirebaseDatabase.instance.reference().child('chat/');
-
-    database.child('$room/').onValue.listen((event) {
-      DataSnapshot snapshot = event.snapshot;
-
-      if (snapshot.value != null) {
-        Map<dynamic, dynamic>? dataMap =
-            snapshot.value as Map<dynamic, dynamic>?;
-        if (dataMap != null) {
-          dataMap.forEach((key, value) {
-            returnArr.add(value);
-          });
-        }
-      }
-    });
-    print(returnArr);
-    return returnArr;
-  }
+  // Future<List<dynamic>> getChatMessage(room) async {
+  //   var returnArr = [];
+  //
+  //   final database = FirebaseDatabase.instance.reference().child('chat/');
+  //
+  //   database.child('$room/').onValue.listen((event) {
+  //     DataSnapshot snapshot = event.snapshot;
+  //
+  //     if (snapshot.value != null) {
+  //       Map<dynamic, dynamic>? dataMap =
+  //           snapshot.value as Map<dynamic, dynamic>?;
+  //       if (dataMap != null) {
+  //         dataMap.forEach((key, value) {
+  //           returnArr.add(value);
+  //         });
+  //       }
+  //     }
+  //   });
+  //   print(returnArr);
+  //   return returnArr;
+  // }
 
   Future sendChatMessage(message) async {
     String url = '$SEND_MESSAGE';

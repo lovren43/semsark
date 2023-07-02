@@ -1,6 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/provider/chat_provider.dart';
 
@@ -15,8 +14,8 @@ class ChatDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var provider = Provider.of<ChatProvider>(context);
     DateTime currentDate = DateTime.now();
-    String formattedDate =
-        DateFormat('DD-MM-YYYY HH:mm:ss').format(currentDate);
+    // String formattedDate =
+    //     DateFormat('DD-MM-YYYY HH:mm:ss').format(currentDate);
 
     List<ChatMessage> messages = provider.chatMessages;
 
@@ -163,7 +162,7 @@ class ChatDetailPage extends StatelessWidget {
                   FloatingActionButton(
                     onPressed: () {
                       provider.setReciverEmail(provider.chatUsers[index].email);
-                      provider.setDate(formattedDate);
+                      provider.setDate("formattedDate");
                       provider.setMessage(_textEditingController.text);
                       provider.sendMessage();
                       //provider.setMessage("");

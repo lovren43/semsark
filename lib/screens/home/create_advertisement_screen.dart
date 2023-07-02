@@ -486,7 +486,7 @@ class CreateAdvertisementScreen extends StatelessWidget {
 
   void pick_photo(CreateAdvertisementProvider provider) async {
     ImagePicker _picker = ImagePicker();
-    final photo = await _picker.pickImage(source: ImageSource.gallery);
+    final photo = await _picker.pickImage(source: ImageSource.camera);
     provider.photos.add(photo!) ;
   }
   Widget list_of_photos(CreateAdvertisementProvider provider) {
