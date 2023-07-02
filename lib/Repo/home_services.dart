@@ -50,7 +50,6 @@ class HomeServices {
   //   var box =await Hive.openBox('myBox');
   //   return box.get('token');
   // }
-  @override
   Future getUser() async {
     headers['Authorization'] = 'Bearer $token';
     try {
@@ -75,7 +74,6 @@ class HomeServices {
     }
   }
 
-  @override
   Future getAdvertisements() async {
     // String token = await getToken();
     // headers['Authorization'] = 'Bearer $token';
@@ -101,11 +99,28 @@ class HomeServices {
       return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
     }
   }
-
-  @override
-  Future getNotifications() {
-    // TODO: implement getNotifications
-    throw UnimplementedError();
+  Future getAdvertisementById( id ) async {
+    // String token = await getToken();
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      final http.Response response = await http.get(
+        Uri.parse("$GET_AD_BY_ID/$id"),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: advertisementModelFromJson(response.body),
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      print(e) ;
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
   }
-
 }
