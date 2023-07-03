@@ -21,6 +21,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
   // att
   bool isConfirmed = true;
   bool isLoading = false;
+  bool upload = false;
   HomeServices services = HomeServices();
   late String errorMsg;
 
@@ -40,7 +41,6 @@ class CreateAdvertisementProvider with ChangeNotifier{
   List<bool> isSelected = [true, false]; // Initialize the selection state of buttons
 
   List<XFile> photos = [];
-
   //
   late Position currentPosition;
   Map<String , List<String>> governors = {
@@ -156,15 +156,21 @@ class CreateAdvertisementProvider with ChangeNotifier{
     isLoading = load;
     notifyListeners();
   }
+  setUploading(load){
+    upload = load;
+    notifyListeners();
+  }
 
 
   Future uploadPhoto(XFile element) async {
+    photoList = [] ;
     final FirebaseServices firebaseServices = FirebaseServices();
     var currentTime = DateTime.now().millisecondsSinceEpoch;
     await firebaseServices
         .upload_image(File(element.path), APP_NAME, "$currentTime")
         .then((value) {
       firebaseServices.get_url(APP_NAME, "$currentTime").then((path) {
+
         photoList.add(path);
       });
     });
@@ -172,10 +178,13 @@ class CreateAdvertisementProvider with ChangeNotifier{
 
   //Api
   createAdvertisement() async {
+    setUploading(true) ;
+    for (int i = 0; i < photos.length; i++) {
+      await uploadPhoto(photos[i]);
+    }
+    setUploading(false) ;
     setLoading(true);
-    photos.forEach((element) {
-      uploadPhoto(element);
-    });
+    print(photoList[0]);
     CreateAdvertisementModel model = CreateAdvertisementModel(
         photosList: photoList,
         signalPower: signal_val,
@@ -184,8 +193,6 @@ class CreateAdvertisementProvider with ChangeNotifier{
         dailyPrice: "dailyPrice",
         title: titleController.text,
         category: isSelected[0] ? "RENT" : "SELL",
-        address: "address",
-        des: detailsController.text,
         apartmentDetails: detailsController.text,
         city: "city",
         gov: "gov",

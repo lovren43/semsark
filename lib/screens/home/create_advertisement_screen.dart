@@ -8,12 +8,8 @@ import 'package:semsark/components/custom_input_field.dart';
 import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/components/numaric_data_field.dart';
 import 'package:semsark/provider/create_ad_provider.dart';
-import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/utils/helper.dart';
 import 'package:provider/provider.dart';
-
-import '../../Repo/home_services.dart';
-
 
 class CreateAdvertisementScreen extends StatelessWidget {
   var typeKey = GlobalKey<FormState>();
@@ -22,8 +18,6 @@ class CreateAdvertisementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     var provider = Provider.of<CreateAdvertisementProvider>(context) ;
     return Scaffold(
@@ -33,6 +27,7 @@ class CreateAdvertisementScreen extends StatelessWidget {
   }
 
   _ui(CreateAdvertisementProvider provider , width , context){
+    if(provider.upload) return const LoadingScreen() ;
     if(provider.isLoading) return const LoadingScreen() ;
     return SafeArea(
       child: Column(
@@ -440,6 +435,25 @@ class CreateAdvertisementScreen extends StatelessWidget {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 await provider.createAdvertisement() ;
+                                if(provider.errorMsg != null){
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Error'),
+                                        content: Text(provider.errorMsg),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('OK'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop(); // Close the dialog
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
                               } else {
 
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -487,7 +501,10 @@ class CreateAdvertisementScreen extends StatelessWidget {
   void pick_photo(CreateAdvertisementProvider provider) async {
     ImagePicker _picker = ImagePicker();
     final photo = await _picker.pickImage(source: ImageSource.camera);
-    provider.photos.add(photo!) ;
+    if(photo != null){
+      provider.photos.add(photo) ;
+      provider.notifyListeners();
+    }
   }
   Widget list_of_photos(CreateAdvertisementProvider provider) {
     List<Widget> col = [], row = [];

@@ -33,15 +33,12 @@ class PersonalInfoScreen extends StatelessWidget {
 
   var confirmPassword;
 
-//PhoneNumber? phoneNumber;
   final formKey = GlobalKey<FormState>();
   final TextEditingController pass = TextEditingController();
   final TextEditingController confirmPass = TextEditingController();
 
 
   XFile? image;
-
-
   String initialCountry = 'EG';
 
 
@@ -50,10 +47,7 @@ class PersonalInfoScreen extends StatelessWidget {
   //PhoneNumber number = PhoneNumber(isoCode: 'EG');
   //we can upload image from camera or from gallery based on parameter
   Future getImage(ImageSource media) async {
-
     var img = await picker.pickImage(source: media);
-
-
   }
 
   //show popup dialog

@@ -64,7 +64,7 @@ class AdItem extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    "address",
+                    "${model!.city}, ${model!.gov}",
                     style: Helper.stlye,
                   ),
                   Row(
@@ -110,52 +110,7 @@ class AdItem extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black12),
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.call,
-                      color: Helper.blue,
-                      size: 30,
-                    ),
-                  ),
-                )),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.chat_outlined,
-                      color: Helper.blue,
-                      size: 30,
-                    ),
-                  ),
-                )),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(
-                    onPressed: () {},
-                    child: const Icon(
-                      Icons.message,
-                      color: Colors.green,
-                      size: 30,
-                    ),
-                  ),
-                )),
-              ],
-            ),
+            const SizedBox(height: 20,),
           ],
         ),
       ),

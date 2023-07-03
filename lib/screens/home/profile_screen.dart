@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/provider/profile_provider.dart';
 
 import '../../components/my_ad_item.dart';
@@ -16,20 +17,25 @@ class ProfileScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    return _ui(context) ;
+  }
+
+  _ui(context){
     var provider = Provider.of<ProfileProvider>(context);
     List<AdvertisementModel> fav = provider.fav.buildings;
     List<AdvertisementModel> ads = provider.myAds;
     List<AdvertisementModel> cur = provider.adClick ? ads : fav;
-    //double height = MediaQuery.of(context).size.height ;
+
+    if(provider.loading) return const LoadingScreen() ;
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.zero,
-        child:Column(
-          children: [
-            buildTop(provider,context),
-            buildContent(provider,cur),
-          ],
-        )
+          padding: EdgeInsets.zero,
+          child:Column(
+            children: [
+              buildTop(provider,context),
+              buildContent(provider,cur),
+            ],
+          )
       ),
     );
   }
@@ -178,7 +184,7 @@ class ProfileScreen extends StatelessWidget{
   Widget profileImage(ProfileProvider provider) => CircleAvatar(
     radius: profileHeight / 2.4,
     backgroundColor: const Color.fromRGBO(241, 246, 251, 1),
-    backgroundImage: NetworkImage(provider.user.img == "string" || provider.user.img == ""?"assets/images/Mask.png":provider.user.img)
+    backgroundImage: AssetImage(provider.user.img == "string" || provider.user.img == ""?"assets/images/Mask.png":provider.user.img)
 
   );
 }

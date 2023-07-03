@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:semsark/provider/advertisement_detailes_provider.dart';
 import 'package:semsark/provider/home_provider.dart';
+import 'package:semsark/screens/advertisementDetails/advertisement_details_screen.dart';
 import 'package:semsark/utils/constants.dart';
 
 import '../../components/show_ads_item.dart';
@@ -177,9 +179,20 @@ class AdvertisementListScreen extends StatelessWidget {
             child:provider.advertisements != null ? ListView.builder(
                 itemBuilder: (context, index) =>
                     InkWell(
+                      onTap: () async {
+                        await Provider.of<AdvertisementDetailsProvider>(context , listen: false).setID(
+                            provider.advertisements![index].id
+                        ).then({
+                        Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) =>
+                        AdvertisementDetailsScreen()
+                        )
+                        )
+                        });
+                      },
                         child: AdItem(model: provider.advertisements![index],)),
                 itemCount: provider.advertisements!.length) :
-            Text("No Ads Yet")
+            const Text("No Ads Yet")
             ,
           ),
         ],

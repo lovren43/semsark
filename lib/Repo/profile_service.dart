@@ -19,7 +19,7 @@ class ProfileServices {
     'Accept': "application/json",
   };
 
-  String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzb2tvdG90bzM2QGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJleHAiOjE2OTAwNTkxNTEsImlhdCI6MTY4ODI1OTE1MX0.59G7wB8B0qwQa48mlNdri2TakQHcfETcC8L9GUCswD9toH5P0q454EdJrSP8LuS4t7jfiNADYeG7CJ5EtTm7WA";
+  String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpc2xhbUBnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjkwMjE1OTQyLCJpYXQiOjE2ODg0MTU5NDJ9.cpT-prsYdYxAj4hbXp6wKsJc0ymNSINeBVgfIAEmTyubtWbEwjFVBX7BwndJc2P8fxYJBkZS1dchwHLn0xVvpw";
 
   Future getUser() async {
     String url = '$GET_USER';

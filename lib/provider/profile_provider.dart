@@ -31,6 +31,7 @@ class ProfileProvider with ChangeNotifier {
 
 
   Future<void> getUser() async {
+    setLoading(true) ;
     var response = await services.getUser();
     if (response is Success) {
       user = response.response as UserDetails;
@@ -42,6 +43,7 @@ class ProfileProvider with ChangeNotifier {
       fav=user.favourites;
       myAds=user.myAds;
     }
+    setLoading(false);
     notifyListeners();
   }
 

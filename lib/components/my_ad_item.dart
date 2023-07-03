@@ -18,7 +18,7 @@ class MyAdvertisementItem extends StatelessWidget {
               SizedBox(
                 width: 150,
                 height: 110,
-                child: Image.network(
+                child: Image.asset(
                     fit: BoxFit.cover,
                     model.photosList[0].imgLink=="string" ||
                     model.photosList[0].imgLink=="" ? "assets/images/c.png" : model.photosList[0].imgLink

@@ -26,7 +26,7 @@ class ChatDetailPage extends StatelessWidget {
         backgroundColor: Colors.white,
         flexibleSpace: SafeArea(
           child: Container(
-            padding: EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.only(right: 16),
             child: Row(
               children: <Widget>[
                 IconButton(
@@ -38,7 +38,7 @@ class ChatDetailPage extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 2,
                 ),
                 CircleAvatar(
@@ -51,7 +51,7 @@ class ChatDetailPage extends StatelessWidget {
                   maxRadius: 20,
                   backgroundColor: Colors.white,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 12,
                 ),
                 Expanded(
@@ -61,10 +61,10 @@ class ChatDetailPage extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         provider.chatUsers[index].username,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 6,
                       ),
                       Text(
@@ -75,7 +75,7 @@ class ChatDetailPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.settings,
                   color: Colors.black54,
                 ),
@@ -85,33 +85,33 @@ class ChatDetailPage extends StatelessWidget {
         ),
       ),
       body: Stack(
-        children: <Widget>[
+        children:[
           ListView.builder(
             itemCount: messages.length,
             shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            physics: NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return Container(
                 padding:
-                    EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                    const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                 child: Align(
                   alignment:
-                      (messages[index].receiverEmail != provider.currentUser
+                      (messages[index].receiverEmail != provider.currentUserEmail
                           ? Alignment.topRight
                           : Alignment.topLeft),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color:
-                          (messages[index].receiverEmail == provider.currentUser
+                          (messages[index].receiverEmail == provider.currentUserEmail
                               ? Colors.grey.shade200
                               : Colors.blue[200]),
                     ),
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Text(
                       messages[index].message,
-                      style: TextStyle(fontSize: 15),
+                      style: const TextStyle(fontSize: 15),
                     ),
                   ),
                 ),
@@ -121,7 +121,7 @@ class ChatDetailPage extends StatelessWidget {
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
-              padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+              padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
               height: 60,
               width: double.infinity,
               color: Colors.white,
@@ -136,27 +136,27 @@ class ChatDetailPage extends StatelessWidget {
                         color: Colors.lightBlue,
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.add,
                         color: Colors.white,
                         size: 20,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Expanded(
                     child: TextField(
                       controller: _textEditingController,
                       //onChanged: (value) => {provider.setMessage(value)},
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: "Write message...",
                           hintStyle: TextStyle(color: Colors.black54),
                           border: InputBorder.none),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   FloatingActionButton(
@@ -168,13 +168,13 @@ class ChatDetailPage extends StatelessWidget {
                       //provider.setMessage("");
                       _textEditingController.clear();
                     },
-                    child: Icon(
+                    backgroundColor: Colors.blue,
+                    elevation: 0,
+                    child: const Icon(
                       Icons.send,
                       color: Colors.white,
                       size: 18,
                     ),
-                    backgroundColor: Colors.blue,
-                    elevation: 0,
                   ),
                 ],
               ),

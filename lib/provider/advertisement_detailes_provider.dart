@@ -10,13 +10,20 @@ class AdvertisementDetailsProvider with ChangeNotifier{
   String errorMsg = "" ;
   HomeServices services = HomeServices();
   AdvertisementModel? model;
+  int id = 0 ;
 
-  AdvertisementDetailsProvider(){
-    init();
+  setID(nId) async {
+    id = nId ;
+    await getAdvertisement(id) ;
+    notifyListeners() ;
   }
-  init() async {
-    await getAdvertisement(1) ;
-  }
+
+  // AdvertisementDetailsProvider(){
+  //   init();
+  // }
+  // init() async {
+  //   await getAdvertisement(id) ;
+  // }
 
   setLoading(newLoad){
     isLoading = newLoad ;

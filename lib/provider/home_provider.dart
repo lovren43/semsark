@@ -1,5 +1,6 @@
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:semsark/Repo/home_services.dart';
@@ -7,6 +8,8 @@ import 'package:semsark/Repo/location_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/components/map_ad_item.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
+
+import '../components/my_ad_item.dart';
 
 class HomeProvider with ChangeNotifier{
 
@@ -52,21 +55,23 @@ class HomeProvider with ChangeNotifier{
     //print() ;
     if(response is Success){
       advertisements = response.response as List<AdvertisementModel> ;
-
-      print(advertisements);
+      markers = {} ;
+      setLoading(false);
       for(int i = 0 ; i<advertisements!.length ; i++){
         var position = LatLng(
           double.tryParse('${advertisements![i].lat}')!.toDouble() ,
           double.tryParse('${advertisements![i].lng}')!.toDouble() ,
         );
+        final imageByteData = await rootBundle.load("assets/images/marker.png");
+        final bytes = imageByteData.buffer.asUint8List();
         markers.add(Marker(markerId: MarkerId("$i"),
           position: position,
+          icon: BitmapDescriptor.fromBytes(bytes,
+
+          ),
           onTap: (){
           mapController.addInfoWindow!(
-            Container(
-              color: Colors.white,
-                child: MapAdvertisementItem(model: advertisements![i])
-            ),
+              MyAdvertisementItem(model: advertisements![i],),
             position
           );
           },
