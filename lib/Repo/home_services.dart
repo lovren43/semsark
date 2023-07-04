@@ -6,6 +6,7 @@ import '../../models/request/ad_model.dart';
 import '../../utils/constants.dart';
 import 'package:http/http.dart' as http;
 import '../../utils/end_points.dart';
+import '../utils/helper.dart';
 
 class HomeServices {
 
@@ -20,7 +21,7 @@ class HomeServices {
 
 
   //String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlc0Blcy5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjg5MjQ2NTI4LCJpYXQiOjE2ODc0NDY1Mjh9._Bzg1j7vSXPvY9QA6cVpRhAHTcDCBZSmaZSGtbn0-ypnL3lrUEgjuN7YaKFYpBAf9a0-m4IrdaC-1NehnAoKHA";
-  String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpc2xhbUBnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjkwMjE1OTQyLCJpYXQiOjE2ODg0MTU5NDJ9.cpT-prsYdYxAj4hbXp6wKsJc0ymNSINeBVgfIAEmTyubtWbEwjFVBX7BwndJc2P8fxYJBkZS1dchwHLn0xVvpw";
+  String token = Helper.token;
   Future createAdvertisement(CreateAdvertisementModel model) async
   {
     headers['Authorization'] = 'Bearer $token';

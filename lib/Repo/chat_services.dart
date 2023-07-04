@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/chat/chat_message_model.dart';
 import 'package:semsark/models/chat/chat_user_model.dart';
+import 'package:semsark/utils/helper.dart';
 
 import '../utils/constants.dart';
 import '../utils/end_points.dart';
@@ -20,8 +21,7 @@ class ChatServices {
     'content-Type': 'application/json',
     'Accept': "application/json",
   };
-  String token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJra0BnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjg5NTI5ODE1LCJpYXQiOjE2ODc3Mjk4MTV9.SEqu-giWifdrv7Ag1VgDF5tMfGgWHKa48g5ulQ5dxwO0dauUlaWjhLRaCeBbZpkccFQsIZTSERah1erm8405Aw";
+  String token = Helper.token;
 
   Future getChatUser() async {
     String url = '$GET_CHAT_USER';

@@ -5,19 +5,19 @@ import 'package:semsark/models/response/user_details.dart';
 import '../models/response/advertisement_response_model.dart';
 
 class ProfileProvider with ChangeNotifier {
-  bool adClick=true;
+  bool adClick = true;
   Favourites fav = Favourites(id: 0, userId: 0, buildings: []);
-  List<AdvertisementModel> myAds=[];
-  UserDetails user=UserDetails( username:"", gender:"", email: "", phone: "", rate: 0, rateSum:0, rateCounter: 0, verifyId: false, verify: false, suspended: false, deviceId: "", img: "", personalImg: "", idImg: "", myAds: [], favourites: Favourites(id: 0, userId: 0, buildings: []));
+  List<Building> myAds = [];
+  UserDetails ?user;
   bool loading = false;
   ProfileServices services = ProfileServices();
-  String name="";
-  String phone="";
-  String email="";
-  String password="";
-  String gender="";
-  bool showPassword=false;
-  bool success=true;
+  String name = "";
+  String phone = "";
+  String email = "";
+  String password = "";
+  String gender = "";
+  bool showPassword = false;
+  bool success = true;
 
   init() async {
     setLoading(true);
@@ -29,62 +29,74 @@ class ProfileProvider with ChangeNotifier {
     init();
   }
 
-
   Future<void> getUser() async {
-    setLoading(true) ;
+    setLoading(true);
     var response = await services.getUser();
     if (response is Success) {
       user = response.response as UserDetails;
-      name = user.username;
-      email = user.email;
-      gender = user.gender;
-      phone= user.phone;
-
-      fav=user.favourites;
-      myAds=user.myAds;
+      print(user);
+      name = user!.username;
+      email = user!.email;
+      gender = user!.gender;
+      phone = user!.phone;
+      if (user!.favourites!=null){
+        fav = user!.favourites!;
+      }
     }
     setLoading(false);
     notifyListeners();
   }
+  Future<void> editProfile() async{
 
+  }
 
-  Future<void> editProfile() async {
-    setSuccess(false);
-    Profile userDetails=Profile(username: name, gender: gender, email: email, password: password, phone: phone, img: "");
+  // Future<void> editProfile() async {
+  //   setSuccess(false);
+  //   Profile userDetails = Profile(
+  //       username: name,
+  //       gender: gender,
+  //       email: email,
+  //       password: password,
+  //       phone: phone,
+  //       img: "");
+  //
+  //   var res = await services.editUser(userDetails);
+  //
+  //   if (res is Success) {
+  //     user = res.response as UserDetails;
+  //     myAds = user.myAds;
+  //
+  //     success = true;
+  //   }
+  //
+  //   notifyListeners();
+  // }
 
-    var res = await services.editUser(userDetails);
-
-    if(res is Success) {
-      user = res.response as UserDetails;
-      myAds=user.myAds;
-
-      success = true;
-    }
-
+  setEmail(email) {
+    this.email = email;
     notifyListeners();
   }
 
-  setEmail(email){
-    this.email=email;
+  setName(name) {
+    this.name = name;
     notifyListeners();
   }
-  setName(name){
-    this.name=name;
-    notifyListeners();
-  }
-  setPhone(phoneNumber){
 
-    this.phone=phoneNumber;
+  setPhone(phoneNumber) {
+    this.phone = phoneNumber;
     notifyListeners();
   }
-  setGender(gender){
-    this.gender=gender;
+
+  setGender(gender) {
+    this.gender = gender;
     notifyListeners();
   }
-  setPassword(password){
-    this.password=password;
+
+  setPassword(password) {
+    this.password = password;
     notifyListeners();
   }
+
   setShowPassword() {
     showPassword = !showPassword;
     notifyListeners();
@@ -104,6 +116,4 @@ class ProfileProvider with ChangeNotifier {
     adClick = clk;
     notifyListeners();
   }
-
-
 }

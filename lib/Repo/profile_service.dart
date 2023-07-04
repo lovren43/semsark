@@ -8,6 +8,8 @@ import '../utils/constants.dart';
 import '../utils/end_points.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/helper.dart';
+
 
 class ProfileServices {
   var headers = {
@@ -19,7 +21,7 @@ class ProfileServices {
     'Accept': "application/json",
   };
 
-  String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpc2xhbUBnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjkwMjE1OTQyLCJpYXQiOjE2ODg0MTU5NDJ9.cpT-prsYdYxAj4hbXp6wKsJc0ymNSINeBVgfIAEmTyubtWbEwjFVBX7BwndJc2P8fxYJBkZS1dchwHLn0xVvpw";
+  String token = Helper.token;
 
   Future getUser() async {
     String url = '$GET_USER';
