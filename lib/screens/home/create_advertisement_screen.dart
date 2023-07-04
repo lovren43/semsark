@@ -8,6 +8,9 @@ import 'package:semsark/components/custom_input_field.dart';
 import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/components/numaric_data_field.dart';
 import 'package:semsark/provider/create_ad_provider.dart';
+import 'package:semsark/provider/home_provider.dart';
+import 'package:semsark/screens/home/home_screen.dart';
+import 'package:semsark/utils/constants.dart';
 import 'package:semsark/utils/helper.dart';
 import 'package:provider/provider.dart';
 
@@ -435,6 +438,9 @@ class CreateAdvertisementScreen extends StatelessWidget {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 await provider.createAdvertisement() ;
+                                if(provider.sucess) {
+                                  Provider.of<HomeProvider>(context , listen: false).changePosition(PROFILE_PAGE);
+                                }
                                 if(provider.errorMsg != null){
                                   showDialog(
                                     context: context,

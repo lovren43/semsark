@@ -8,8 +8,10 @@ import 'package:semsark/Repo/location_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/components/map_ad_item.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
+import 'package:semsark/utils/helper.dart';
 
 import '../components/my_ad_item.dart';
+import '../utils/constants.dart';
 
 class HomeProvider with ChangeNotifier{
 
@@ -30,6 +32,7 @@ class HomeProvider with ChangeNotifier{
     setLoading(true);
     currentPosition = await LocationServices().getCurrentPosition();
     await getAllAdvertisement();
+    print(advertisements);
     setLoading(false);
   }
   HomeProvider(){
@@ -43,16 +46,20 @@ class HomeProvider with ChangeNotifier{
     isLoading = load;
     notifyListeners();
   }
-  changePosition(_index){
+  changePosition(_index) async {
     index = _index ;
+    if(index == HOME_PAGE){
+      await getAllAdvertisement();
+    }
     notifyListeners();
   }
 
   //Api
   getAllAdvertisement() async {
     setLoading(true);
+    print(Helper.token) ;
     var response = await services.getAdvertisements();
-    //print() ;
+    print(response);
     if(response is Success){
       advertisements = response.response as List<AdvertisementModel> ;
       markers = {} ;

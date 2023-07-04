@@ -49,10 +49,10 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                   margin: const EdgeInsets.all(5.0),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                    child: Image.asset(
-                      image.imgLink == "" || image.imgLink == "string"
+                    child: Image.network(
+                      image == "" || image == "string"
                           ? "assets/images/haha.jpeg"
-                          : image.imgLink,
+                          : image,
                       fit: BoxFit.cover,
                       width: width,
                     ),
@@ -146,15 +146,14 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 50.0,
-                        backgroundImage: AssetImage(
-
-                            provider.model!.user!.img == "" || provider.model!.user!.img== "string"?
-                            "assets/images/Mask.png" : provider.model!.user!.img
-                        ),
+                        backgroundImage: provider.model!.user.img == "" ||
+                            provider.model!.user.img == "string"
+                            ? const AssetImage("assets/images/Mask.png")
+                            : AssetImage(provider.model!.user.img ?? ''),
                       ),
                       const SizedBox(height: 10.0),
                       Text(
-                        provider.model!.user!.username,
+                        provider.model!.user.username,
                         style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
@@ -162,7 +161,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 5.0),
                       Text(
-                        provider.model!.user!.email,
+                        provider.model!.user.email,
                         style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
@@ -170,7 +169,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 5.0),
                       RatingBar(
-                        initialRating: provider.model!.user!.rate,
+                        initialRating: provider.model!.user.rate,
                         minRating: 0,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
@@ -230,7 +229,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
               icon: const Icon(Icons.call),
               color: Colors.green,
               onPressed: () {
-                _makePhoneCall(provider.model!.user!.phone);
+                _makePhoneCall(provider.model!.user.phone);
               },
             ),
             IconButton(

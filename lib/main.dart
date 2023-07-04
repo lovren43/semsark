@@ -23,6 +23,8 @@ import 'package:semsark/screens/home/home_screen.dart';
 import 'package:semsark/screens/home/profile_screen.dart';
 import 'package:semsark/screens/splash/splash_screen.dart';
 
+import 'screens/home/verify_user_screen.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -47,7 +49,7 @@ class Semsark extends StatelessWidget {
         ChangeNotifierProvider(create: (create) => SignUpProvider()),
         ChangeNotifierProvider(create: (create) => AdvertisementDetailsProvider()),
       ],
-      child:  MaterialApp(debugShowCheckedModeBanner: false, home: ProfileScreen()),
+      child: MaterialApp(debugShowCheckedModeBanner: false, home: LoginScreen()),
     );
   }
 }

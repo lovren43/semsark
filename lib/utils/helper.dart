@@ -6,8 +6,7 @@ class Helper {
   static Color light_blue = Color(0xff9ad6f5);
   static Color grey = Colors.grey;
   static Color input_field_color = Color(0xfff1f6fb);
-  static String token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYUBnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjkwMjI5MTA0LCJpYXQiOjE2ODg0MjkxMDR9.8uaZQGQ4So3C81oTBjuU1b1ffJCFNgx2rm5s6rE5i3JPNeY1q_jj0RNuoQaiKTVw0exShd1sfAmi9W6vaYhFog";
+  static String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlQGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4cCI6MTY5MDI0MDkyNiwiaWF0IjoxNjg4NDQwOTI2fQ.IIWRKS817B84i7TLwT44Hv88HtfnMtL6zWAq4CnnhRf1jaw9rJ3XHC1CDYsxyMj0ENVjAiXE2WIaox0JYeobkw";
   static TextStyle textStyle = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.bold,

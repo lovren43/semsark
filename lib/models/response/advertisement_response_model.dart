@@ -4,76 +4,15 @@
 
 import 'dart:convert';
 
-import 'package:semsark/models/response/user_details.dart';
-
-AdvertisementModel advertisementModelFromJson(String str) => AdvertisementModel.fromJson(json.decode(str));
 List<AdvertisementModel> allAdvertisementFromJson(String str) => List<AdvertisementModel>.from(json.decode(str).map((x) => AdvertisementModel.fromJson(x)));
+AdvertisementModel advertisementModelFromJson(String str) => AdvertisementModel.fromJson(jsonDecode(str));
 
 String advertisementModelToJson(List<AdvertisementModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class User {
-  int userId;
-  String username;
-  String gender;
-  String email;
-  String phone;
-  String img;
-  String personalImg;
-  String idImg;
-  List<AdvertisementModel> myAds;
-  bool verifyId;
-  bool suspended;
-  double rate;
-
-  User({
-    required this.userId,
-    required this.username,
-    required this.gender,
-    required this.email,
-    required this.phone,
-    required this.img,
-    required this.personalImg,
-    required this.idImg,
-    required this.myAds,
-    required this.verifyId,
-    required this.suspended,
-    required this.rate,
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    userId: json["userId"],
-    username: json["username"],
-    gender: json["gender"],
-    email: json["email"],
-    phone: json["phone"],
-    img: json["img"],
-    personalImg: json["personalImg"],
-    idImg: json["idImg"],
-    myAds: List<AdvertisementModel>.from(json["myAds"].map((x) => AdvertisementModel.fromJson(x))),
-    verifyId: json["verifyID"],
-    suspended: json["suspended"],
-    rate: json["rate"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "userId": userId,
-    "username": username,
-    "gender": gender,
-    "email": email,
-    "phone": phone,
-    "img": img,
-    "personalImg": personalImg,
-    "idImg": idImg,
-    "myAds": List<dynamic>.from(myAds.map((x) => x.toJson())),
-    "verifyID": verifyId,
-    "suspended": suspended,
-    "rate": rate,
-  };
-}
 class AdvertisementModel {
   int id;
-  User? user;
-  List<PhotosList> photosList;
+  User user;
+  List<String> photosList;
   String signalPower;
   bool elevator;
   bool acceptBusiness;
@@ -96,11 +35,10 @@ class AdvertisementModel {
   int level;
   bool finished;
   bool single;
-  int? userId;
 
   AdvertisementModel({
     required this.id,
-    this.user,
+    required this.user,
     required this.photosList,
     required this.signalPower,
     required this.elevator,
@@ -124,13 +62,12 @@ class AdvertisementModel {
     required this.level,
     required this.finished,
     required this.single,
-    this.userId,
   });
 
   factory AdvertisementModel.fromJson(Map<String, dynamic> json) => AdvertisementModel(
     id: json["id"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
-    photosList: List<PhotosList>.from(json["photosList"].map((x) => PhotosList.fromJson(x))),
+    user: User.fromJson(json["user"]),
+    photosList: List<String>.from(json["photosList"].map((x) => x)),
     signalPower: json["signalPower"],
     elevator: json["elevator"],
     acceptBusiness: json["acceptBusiness"],
@@ -144,8 +81,8 @@ class AdvertisementModel {
     price: json["price"],
     views: json["views"],
     date: DateTime.parse(json["date"]),
-    lng: json["lng"],
-    lat: json["lat"],
+    lng: json["lng"]?.toDouble(),
+    lat: json["lat"]?.toDouble(),
     area: json["area"],
     numOfRoom: json["numOfRoom"],
     numOfBathroom: json["numOfBathroom"],
@@ -153,13 +90,12 @@ class AdvertisementModel {
     level: json["level"],
     finished: json["finished"],
     single: json["single"],
-    userId: json["userId"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "user": user?.toJson(),
-    "photosList": List<dynamic>.from(photosList.map((x) => x.toJson())),
+    "user": user.toJson(),
+    "photosList": List<dynamic>.from(photosList.map((x) => x)),
     "signalPower": signalPower,
     "elevator": elevator,
     "acceptBusiness": acceptBusiness,
@@ -182,26 +118,61 @@ class AdvertisementModel {
     "level": level,
     "finished": finished,
     "single": single,
-    "userId": userId,
   };
 }
 
-class PhotosList {
-  int id;
-  String imgLink;
+class User {
+  int userId;
+  String username;
+  String gender;
+  String email;
+  String phone;
+  String img;
+  String personalImg;
+  String idImg;
+  bool verifyId;
+  bool suspended;
+  double rate;
 
-  PhotosList({
-    required this.id,
-    required this.imgLink,
+  User({
+    required this.userId,
+    required this.username,
+    required this.gender,
+    required this.email,
+    required this.phone,
+    required this.img,
+    required this.personalImg,
+    required this.idImg,
+    required this.verifyId,
+    required this.suspended,
+    required this.rate,
   });
 
-  factory PhotosList.fromJson(Map<String, dynamic> json) => PhotosList(
-    id: json["id"],
-    imgLink: json["imgLink"],
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    userId: json["userId"],
+    username: json["username"],
+    gender: json["gender"],
+    email: json["email"],
+    phone: json["phone"],
+    img: json["img"],
+    personalImg: json["personalImg"],
+    idImg: json["idImg"],
+    verifyId: json["verifyID"],
+    suspended: json["suspended"],
+    rate: json["rate"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "imgLink": imgLink,
+    "userId": userId,
+    "username": username,
+    "gender": gender,
+    "email": email,
+    "phone": phone,
+    "img": img,
+    "personalImg": personalImg,
+    "idImg": idImg,
+    "verifyID": verifyId,
+    "suspended": suspended,
+    "rate": rate,
   };
 }

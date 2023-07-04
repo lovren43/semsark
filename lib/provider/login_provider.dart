@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:semsark/Repo/remote/auth_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
+import 'package:semsark/utils/helper.dart';
 
 class LoginProvider with ChangeNotifier {
   // att
@@ -35,6 +36,7 @@ class LoginProvider with ChangeNotifier {
     if (response is Success) {
       // var box = await Hive.openBox(MY_BOX);
       // box.put('token', response.response);
+      Helper.token = response.response as String ;
       success = true;
     } else if (response is Failure) {
       errorMessage = response.errorResponse as String?;

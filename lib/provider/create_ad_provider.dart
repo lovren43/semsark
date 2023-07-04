@@ -22,6 +22,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
   bool isConfirmed = true;
   bool isLoading = false;
   bool upload = false;
+  bool sucess = false;
   HomeServices services = HomeServices();
   late String errorMsg;
 
@@ -163,14 +164,12 @@ class CreateAdvertisementProvider with ChangeNotifier{
 
 
   Future uploadPhoto(XFile element) async {
-    photoList = [] ;
     final FirebaseServices firebaseServices = FirebaseServices();
     var currentTime = DateTime.now().millisecondsSinceEpoch;
     await firebaseServices
         .upload_image(File(element.path), APP_NAME, "$currentTime")
-        .then((value) {
-      firebaseServices.get_url(APP_NAME, "$currentTime").then((path) {
-
+        .then((value) async {
+      await firebaseServices.get_url(APP_NAME, "$currentTime").then((path) {
         photoList.add(path);
       });
     });
@@ -178,13 +177,15 @@ class CreateAdvertisementProvider with ChangeNotifier{
 
   //Api
   createAdvertisement() async {
+    photoList = [] ;
     setUploading(true) ;
     for (int i = 0; i < photos.length; i++) {
       await uploadPhoto(photos[i]);
     }
     setUploading(false) ;
     setLoading(true);
-    print(photoList[0]);
+    if(!photoList.isEmpty)
+      print(photoList[0]);
     CreateAdvertisementModel model = CreateAdvertisementModel(
         photosList: photoList,
         signalPower: signal_val,
@@ -210,11 +211,14 @@ class CreateAdvertisementProvider with ChangeNotifier{
     );
 
     var response = await services.createAdvertisement(model);
-    if(response is Success){
+    setLoading(false);
 
+    if(response is Success){
+      sucess = true ;
+      notifyListeners() ;
     }else if (response is Failure){
+      print(response);
       errorMsg = response.errorResponse as String;
     }
-    setLoading(false);
   }
 }

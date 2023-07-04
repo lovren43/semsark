@@ -74,8 +74,9 @@ class ProfileServices {
     String url = '$SIGN_OUT';
     headers['Authorization'] = 'Bearer $token';
     try {
-      final http.Response response = await http.get(Uri.parse(url),
-          headers: headers);
+      final http.Response response = await http.post(Uri.parse(url),
+          headers: headers
+      );
       if (response.statusCode == 200) {
         return Success(
           code: 200,

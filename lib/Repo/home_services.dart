@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
@@ -35,16 +36,16 @@ class HomeServices {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Success(
           code: 200,
-          response: createAdvertisementModelFromJson(response.body),
+          response:"",
         );
       }
-      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+      return Failure(code: INVALID_RESPONSE, errorResponse: jsonDecode(response.body)["message"]);
     } on HttpException {
       return Failure(code: NO_INTERNE, errorResponse: "No Internet");
     } on FormatException {
-      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+      return Failure(code: INVALID_FORMAT, errorResponse: FormatException);
     } catch (e) {
-      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+      return Failure(code: UNKNOWN, errorResponse: e);
     }
   }
 

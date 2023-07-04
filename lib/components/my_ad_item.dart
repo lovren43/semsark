@@ -18,10 +18,10 @@ class MyAdvertisementItem extends StatelessWidget {
               SizedBox(
                 width: 150,
                 height: 110,
-                child: Image.asset(
+                child: Image.network(
                     fit: BoxFit.cover,
-                    model.photosList[0].imgLink=="string" ||
-                    model.photosList[0].imgLink=="" ? "assets/images/c.png" : model.photosList[0].imgLink
+                    model.photosList[0]=="string" ||
+                    model.photosList[0]=="" ? "assets/images/c.png" : model.photosList[0]
                 ),
               ),
               Container(

@@ -6,6 +6,7 @@ import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
 
 import 'package:semsark/Repo/location_services.dart';
+import 'package:semsark/components/loading_screen.dart';
 
 import 'package:semsark/screens/auth/forget_password_screen.dart';
 import 'package:semsark/screens/auth/sign_up_screen.dart';
@@ -36,7 +37,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   _ui(context , LoginProvider provider){
-    if(provider.loading) return Center(child: CircularProgressIndicator(),) ;
+    if(provider.loading) return const LoadingScreen() ;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -150,7 +151,7 @@ class LoginScreen extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('${provider.errorMessage}'),
-                              duration: Duration(seconds: 2), // Duration for which the SnackBar is displayed
+                              duration: const Duration(seconds: 2), // Duration for which the SnackBar is displayed
                               action: SnackBarAction(
                                 label: 'Close',
                                 onPressed: () {
