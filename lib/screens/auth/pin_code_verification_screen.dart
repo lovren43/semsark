@@ -90,7 +90,7 @@ class PinCodeVerificationScreen extends StatelessWidget {
                         height: 120,
                       )),
                 ]),
-                Column(children: const [
+                const Column(children: [
                   Text("Verification",
                       style: TextStyle(color: Color(0xFF7f88b3), fontSize: 30)),
                   SizedBox(
@@ -181,28 +181,66 @@ class PinCodeVerificationScreen extends StatelessWidget {
                   ],
                 ),
 
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     const Flexible(
+                //       child: Text("Didn't receive the code? ",
+                //           style: TextStyle(
+                //             color: Color(0xFF7f88b3),
+                //             fontSize: 17,
+                //           )),
+                //     ),
+                //     Flexible(
+                //       child: TextButton(
+                //         onPressed:()=> provider.sendOtp(),
+                //         child: const Text(
+                //           "RESEND",
+                //           style: TextStyle(
+                //               color: Color(0xFFe87476),
+                //               fontSize: 17,
+                //               decoration: TextDecoration.underline),
+                //         ),
+                //       ),
+                //     )
+                //   ],
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Flexible(
-                      child: Text("Didn't receive the code? ",
-                          style: TextStyle(
-                            color: Color(0xFF7f88b3),
-                            fontSize: 17,
-                          )),
-                    ),
-                    Flexible(
-                      child: TextButton(
-                        onPressed:()=> provider.sendOtp(),
-                        child: const Text(
-                          "RESEND",
-                          style: TextStyle(
-                              color: Color(0xFFe87476),
-                              fontSize: 17,
-                              decoration: TextDecoration.underline),
+                      child: Text(
+                        "Didn't receive the code? ",
+                        style: TextStyle(
+                          color: Color(0xFF7f88b3),
+                          fontSize: 17,
                         ),
                       ),
-                    )
+                    ),
+                    Flexible(
+                      child: provider.showTimer?Text(
+                        '${provider.timerDuration} seconds',
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 17,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ): TextButton(
+                        onPressed: () {
+                          provider.sendOtp();
+                          provider.startTimer();
+                        },
+                        child:
+                            const Text(
+                          "RESEND",
+                          style: TextStyle(
+                            color: Color(0xFFe87476),
+                            fontSize: 17,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(
