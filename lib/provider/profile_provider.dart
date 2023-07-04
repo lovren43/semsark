@@ -46,10 +46,20 @@ class ProfileProvider with ChangeNotifier {
     setLoading(false);
     notifyListeners();
   }
+
   Future<void> editProfile() async{
 
   }
 
+  Future<void> logout() async {
+    setLoading(true);
+    var response = await services.logout();
+    if (response is Success) {
+      print("logged out");
+    }
+    setLoading(false);
+    notifyListeners();
+  }
   // Future<void> editProfile() async {
   //   setSuccess(false);
   //   Profile userDetails = Profile(

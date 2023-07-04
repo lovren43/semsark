@@ -69,4 +69,29 @@ class ProfileServices {
       return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
     }
   }
+
+  Future logout() async {
+    String url = '$SIGN_OUT';
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      final http.Response response = await http.get(Uri.parse(url),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: ""
+        );
+      }
+      return Failure(
+          code: INVALID_RESPONSE,
+          errorResponse: jsonDecode(response.body)["message"]);
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      print(e);
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
 }

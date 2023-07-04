@@ -1,14 +1,19 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/models/response/user_details.dart';
 import 'package:semsark/provider/profile_provider.dart';
+import 'package:semsark/screens/auth/sign_in_screen.dart';
 
+import '../../components/button.dart';
 import '../../components/my_ad_item.dart';
 import '../../models/response/advertisement_response_model.dart';
 import '../auth/personal_info_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
+
   const ProfileScreen({super.key});
 
   final double profileHeight = 144;
@@ -38,6 +43,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget buildContent(ProfileProvider provider, cur) {
+
     return Column(
       children: [
         const SizedBox(
@@ -128,8 +134,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget topContainer(context) => Column(
-        children: [
+  Widget topContainer(context) {
+    double width = MediaQuery.of(context).size.width;
+    return
+   Column(
+      children: [
           Container(
               height: 160,
               decoration: const BoxDecoration(
@@ -184,6 +193,96 @@ class ProfileScreen extends StatelessWidget {
                               );
                               // Handle Option 1 selection
                             } else if (selectedValue == 'Logout') {
+                              return showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) => AlertDialog(
+                                    actionsAlignment: MainAxisAlignment.center,
+                                    actions: [
+                                      Stack(alignment: Alignment.center, children: <Widget>[
+                                        Column(
+                                          children: [
+                                            ClipRRect(
+                                                borderRadius: const BorderRadius.only(
+                                                    bottomLeft: Radius.circular(150),
+                                                    bottomRight: Radius.circular(150)),
+                                                child: ImageFiltered(
+                                                  imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                                                  child: SizedBox(
+                                                      height: 100,
+                                                      width: double.infinity,
+                                                      child: Image.asset(
+                                                        'assets/images/back.png',
+                                                        fit: BoxFit.fill,
+                                                      )),
+                                                )),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                          ],
+                                        ),
+                                        Positioned(
+                                            bottom: 0,
+                                            height: 70,
+                                            right:110,
+                                            child: Image.asset(
+                                              'assets/images/logout.png',
+                                            )),
+                                      ]),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      const Center(
+                                        child: Text(
+                                          "Are you sure you want to logout?",
+                                          style: TextStyle(color: Color(0xFF45A6DD), fontSize: 17),
+                                        ),
+                                      ),
+
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Flexible(
+                                            child: SizedBox(
+                                              width: 0.3 * width,
+                                              height: 50,
+                                              child: CustomButon(
+                                                text: "BACK",
+                                                onTap: () => Navigator.pop(context, 'BACK'),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 0,
+                                            width: 10,
+                                          ),
+                                          Flexible(
+                                            child: SizedBox(
+                                              width: 0.3 * width,
+                                              height: 50,
+                                              child: CustomButon(
+                                                text: "LOGOUT",
+                                                onTap: () async {
+                                                  // SignUpServices().sendOTP(email!);
+                                                  await Provider.of<ProfileProvider>(context,listen: false).logout();
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return LoginScreen();
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ));
                               // Handle Option 2 selection
                             }
                           });
@@ -201,7 +300,7 @@ class ProfileScreen extends StatelessWidget {
             height: 70,
           )
         ],
-      );
+      );}
 
   Widget profileImage(ProfileProvider provider) => CircleAvatar(
       radius: profileHeight / 2.4,

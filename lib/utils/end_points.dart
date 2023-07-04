@@ -11,7 +11,7 @@ const String GET_ALL_ADS = "$baseURL/common/getAllAds";
 const String FILTER = "$baseURL/user/filter";
 const String CREATE_AD = "$baseURL/user/createAd";
 const String GET_AD_BY_ID = "$baseURL/user/building";
-
+const String SIGN_OUT = "$baseURL/signOut";
 const String GET_CHAT_USER = "$baseURL/chat/getChats";
 const String GET_CHAT_ROOM = "$baseURL/room-semsark";
 const String SEND_MESSAGE= "$baseURL/chat-semsark";
