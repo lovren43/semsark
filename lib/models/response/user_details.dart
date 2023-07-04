@@ -14,43 +14,43 @@ String profileToJson(Profile data) => json.encode(data.toJson());
 class UserDetails {
 
   int id;
-  String username;
-  String gender;
+  String? username;
+  String? gender;
   String email;
-  String password;
-  String phone;
-  double rate;
-  double rateSum;
-  int rateCounter;
-  Profile profile;
-  bool verifyId;
-  bool verify;
-  bool suspended;
+  String? password;
+  String? phone;
+  double? rate;
+  double? rateSum;
+  int? rateCounter;
+  Profile? profile;
+  bool? verifyId;
+  bool? verify;
+  bool? suspended;
   String ?deviceId;
   String ?img;
   String ?personalImg;
   String ?idImg;
-  Favourites ?favourites;
+  Favourites? favourites;
 
   UserDetails({
     required this.id,
-    required this.username,
-    required this.gender,
+    this.username,
+    this.gender,
     required this.email,
-    required this.password,
-    required this.phone,
-    required this.rate,
-    required this.rateSum,
-    required this.rateCounter,
-    required this.profile,
-    required this.verifyId,
-    required this.verify,
-    required this.suspended,
-    required this.deviceId,
-    required this.img,
-    required this.personalImg,
-    required this.idImg,
-    required this.favourites,
+    this.password,
+    this.phone,
+    this.rate,
+    this.rateSum,
+    this.rateCounter,
+    this.profile,
+    this.verifyId,
+    this.verify,
+    this.suspended,
+    this.deviceId,
+    this.img,
+    this.personalImg,
+    this.idImg,
+    this.favourites,
   });
 
   factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
@@ -71,7 +71,7 @@ class UserDetails {
     img: json["img"],
     personalImg: json["personalImg"],
     idImg: json["idImg"],
-    favourites:json["favourites"]==null?null: Favourites?.fromJson(json["favourites"]),
+    favourites:json["favourites"]==null ? null : Favourites.fromJson(json["favourites"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -84,7 +84,7 @@ class UserDetails {
     "rate": rate,
     "rateSum": rateSum,
     "rateCounter": rateCounter,
-    "profile": profile.toJson(),
+    "profile": profile==null ? null : profile!.toJson(),
     "verifyID": verifyId,
     "verify": verify,
     "suspended": suspended,
@@ -92,7 +92,7 @@ class UserDetails {
     "img": img,
     "personalImg": personalImg,
     "idImg": idImg,
-    "favourites": favourites?.toJson(),
+    "favourites": favourites==null ? null : favourites!.toJson(),
   };
 }
 

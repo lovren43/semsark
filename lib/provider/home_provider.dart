@@ -73,9 +73,9 @@ class HomeProvider with ChangeNotifier{
         final bytes = imageByteData.buffer.asUint8List();
         markers.add(Marker(markerId: MarkerId("$i"),
           position: position,
-          icon: BitmapDescriptor.fromBytes(bytes,
+          //icon: BitmapDescriptor.fromBytes(bytes,
 
-          ),
+          //),
           onTap: (){
           mapController.addInfoWindow!(
               MyAdvertisementItem(model: advertisements![i],),

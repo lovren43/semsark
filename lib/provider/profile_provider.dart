@@ -8,7 +8,7 @@ class ProfileProvider with ChangeNotifier {
   bool adClick = true;
   Favourites fav = Favourites(id: 0, userId: 0, buildings: []);
   List<Building> myAds = [];
-  UserDetails ?user;
+  UserDetails user = UserDetails(id: 1, email: 'emai.@email.com',);
   bool loading = false;
   ProfileServices services = ProfileServices();
   String name = "";
@@ -29,21 +29,27 @@ class ProfileProvider with ChangeNotifier {
     init();
   }
 
+  reset(){
+
+    name = user.username!;
+    email = user.email;
+    gender = user.gender!;
+    phone = user.phone!;
+    if (user.favourites!=null){
+      fav = user.favourites!;
+    }
+    notifyListeners() ;
+  }
   Future<void> getUser() async {
     setLoading(true);
     var response = await services.getUser();
     if (response is Success) {
       user = response.response as UserDetails;
       print(user);
-      name = user!.username;
-      email = user!.email;
-      gender = user!.gender;
-      phone = user!.phone;
-      if (user!.favourites!=null){
-        fav = user!.favourites!;
-      }
+      reset();
+      setLoading(false);
+
     }
-    setLoading(false);
     notifyListeners();
   }
 

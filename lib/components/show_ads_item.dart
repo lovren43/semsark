@@ -28,8 +28,13 @@ class AdItem extends StatelessWidget {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  child: Image.asset(
+                  child: model!.photosList==null || model!.photosList.isEmpty ?
+                  Image.asset(
                     "assets/images/haha.jpeg",
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 250,
+                  ) : Image.network("${model!.photosList[0]}",
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 250,

@@ -73,9 +73,9 @@ class SignUpProvider with ChangeNotifier {
   }
 
   verifyEmail() async {
+    success = false;
     setLoading(true);
-    var response =
-    await services.verifyEmail(email);
+    var response = await services.verifyEmail(email);
     setLoading(false);
     if (response is Success) {
       // var box = await Hive.openBox(MY_BOX);
@@ -102,10 +102,10 @@ class SignUpProvider with ChangeNotifier {
   }
 
   sendOtp() async {
+    success = false;
 
-      setLoading(true);
-      var response =
-      await services.sendOtp(email);
+    setLoading(true);
+      var response = await services.sendOtp(email);
       setLoading(false);
       if (response is Success) {
         // var box = await Hive.openBox(MY_BOX);
@@ -118,6 +118,8 @@ class SignUpProvider with ChangeNotifier {
   }
 
   verifyOtp() async {
+    success = false;
+
     setLoading(true);
     var response =
     await services.verifyOtp(email,otp);
@@ -132,6 +134,8 @@ class SignUpProvider with ChangeNotifier {
   }
 
   createUser() async {
+    success = false;
+
     setLoading(true);
     if (image!=null){
       await uploadPhoto(image!);

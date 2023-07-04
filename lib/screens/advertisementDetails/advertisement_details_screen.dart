@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/provider/advertisement_detailes_provider.dart';
+import 'package:semsark/utils/end_points.dart';
 import 'package:semsark/utils/helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
@@ -146,14 +147,20 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 50.0,
-                        backgroundImage: provider.model!.user.img == "" ||
+                        backgroundImage: provider.model!.user.img == null ||
+                            provider.model!.user.img == "" ||
                             provider.model!.user.img == "string"
                             ? const AssetImage("assets/images/Mask.png")
-                            : AssetImage(provider.model!.user.img ?? ''),
+                            : null,
+                        foregroundImage: provider.model!.user.img == null ||
+                            provider.model!.user.img == "" ||
+                            provider.model!.user.img == "string"
+                            ? null
+                            : NetworkImage("${provider.model!.user.img}"),
                       ),
                       const SizedBox(height: 10.0),
                       Text(
-                        provider.model!.user.username,
+                        provider.model!.user.username??"User Name",
                         style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
@@ -221,7 +228,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.share , color: Colors.black,),
               onPressed: () {
-                String textToShare = "A7la Mesa 3la a5oya mo3edo";
+                String textToShare = "${GET_AD_BY_ID}/${provider.model!.id}";
                 Share.share(textToShare);
               },
             ),
@@ -229,7 +236,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
               icon: const Icon(Icons.call),
               color: Colors.green,
               onPressed: () {
-                _makePhoneCall(provider.model!.user.phone);
+                _makePhoneCall(provider.model!.user.phone!);
               },
             ),
             IconButton(
@@ -295,14 +302,14 @@ class AdvertisementDetailsScreen extends StatelessWidget {
               : Container(
                   width: 24.0,
                   height: 24.0,
-                  decoration: BoxDecoration(
-                    color: isBlue ? Colors.white : Colors.green,
+                  decoration: const BoxDecoration(
+                    color: Colors.green,
                     shape: BoxShape.circle,
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.check,
-                      color: isBlue ? Colors.green : Colors.white,
+                      color: Colors.white,
                       size: 16.0,
                     ),
                   ),

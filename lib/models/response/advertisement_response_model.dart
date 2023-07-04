@@ -123,26 +123,26 @@ class AdvertisementModel {
 
 class User {
   int userId;
-  String username;
-  String gender;
+  String? username;
+  String? gender;
   String email;
-  String phone;
-  String img;
-  String personalImg;
-  String idImg;
+  String? phone;
+  String? img;
+  String? personalImg;
+  String? idImg;
   bool verifyId;
   bool suspended;
   double rate;
 
   User({
     required this.userId,
-    required this.username,
-    required this.gender,
+    this.username,
+    this.gender,
     required this.email,
-    required this.phone,
-    required this.img,
-    required this.personalImg,
-    required this.idImg,
+    this.phone,
+    this.img,
+    this.personalImg,
+    this.idImg,
     required this.verifyId,
     required this.suspended,
     required this.rate,

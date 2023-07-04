@@ -62,7 +62,7 @@ class PersonalInfoScreen extends StatelessWidget {
                       Navigator.pop(context);
                       provider.setImage(await getImage(ImageSource.gallery,context));
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(Icons.image),
                         SizedBox(
@@ -81,8 +81,8 @@ class PersonalInfoScreen extends StatelessWidget {
                       Navigator.pop(context);
                       provider.setImage(await getImage(ImageSource.camera,context));
                     },
-                    child: const Row(
-                      children: [
+                    child: Row(
+                      children: const [
                         Icon(Icons.camera),
                         SizedBox(
                           width: 2,
@@ -102,6 +102,7 @@ class PersonalInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var signupProvider = Provider.of<SignUpProvider>(context) ;
     var userProvider = Provider.of<ProfileProvider>(context) ;
+    //confirmPass.text = userProvider.email;
     PhoneNumber initialValue = PhoneNumber(isoCode: 'EG', phoneNumber: signupProvider.edit? "":'');
     if(!userProvider.success) return const LoadingScreen() ;
 
@@ -144,6 +145,7 @@ class PersonalInfoScreen extends StatelessWidget {
                                 left: 0,
                                 child: IconButton(
                                   onPressed: (){
+                                    userProvider.reset() ;
                                     Navigator.pop(context);
                                   },
                                   icon:Icon(Icons.arrow_back,color: Colors.black,size: 33,),

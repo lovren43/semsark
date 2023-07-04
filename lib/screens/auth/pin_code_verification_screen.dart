@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +88,7 @@ class PinCodeVerificationScreen extends StatelessWidget {
                         height: 120,
                       )),
                 ]),
-                const Column(children: [
+                Column(children: const [
                   Text("Verification",
                       style: TextStyle(color: Color(0xFF7f88b3), fontSize: 30)),
                   SizedBox(

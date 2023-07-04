@@ -50,7 +50,7 @@ class ProfileScreen extends StatelessWidget {
           height: 10,
         ),
         Text(
-          provider.user!.username == "" ? "User Name" : provider.user!.username,
+          provider.user.username ==null || provider.user.username==  "" ? "User Name" : provider.user.username!,
           style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -306,7 +306,8 @@ class ProfileScreen extends StatelessWidget {
       radius: profileHeight / 2.4,
       backgroundColor: const Color.fromRGBO(241, 246, 251, 1),
       backgroundImage: AssetImage(
-          provider.user!.img == "string" || provider.user!.img == ""
+          provider.user.img == null ||
+          provider.user.img == "string" || provider.user.img == ""
               ? "assets/images/Mask.png"
-              : provider.user!.img!));
+              : provider.user.img!));
 }

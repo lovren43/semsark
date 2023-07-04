@@ -100,6 +100,7 @@ class AdvertisementListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     var provider = Provider.of<HomeProvider>(context);
+    print(Helper.token) ;
 
     return SafeArea(
       child: Column(
