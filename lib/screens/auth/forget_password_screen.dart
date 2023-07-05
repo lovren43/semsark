@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
+import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/provider/forget_password_provider.dart';
 import 'package:semsark/screens/auth/password_verfication_code.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
 
 import '../../provider/sign_up_provider.dart';
+import '../../utils/helper.dart';
 
 
 class ForgetPasswordScreen extends StatefulWidget {
@@ -26,180 +28,182 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   Widget build(BuildContext context) {
     var provider = Provider.of<ForgetPasswordProvider>(context) ;
     return Scaffold(
-      body: Form(
-        key: formKey,
-        child: Stack(
-          alignment: Alignment.topLeft,
-          children: [
-            CustomScrollView(
-              slivers: [
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Column(
-                    children: [
-                      Stack(alignment: Alignment.center, children: <Widget>[
-                        ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(150),
-                                bottomRight: Radius.circular(150)),
-                            child: ImageFiltered(
-                              imageFilter:
-                                  ImageFilter.blur(sigmaX: 7, sigmaY: 7),
-                              child: SizedBox(
-                                  height: 350,
-                                  width: double.infinity,
-                                  child: Image.asset(
-                                    'assets/images/back.png',
-                                    fit: BoxFit.fill,
-                                  )),
-                            )),
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "WELCOME",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 240, 242, 243),
-                                  fontSize: 30),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "TO SEMSARK",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 240, 242, 243),
-                                  fontSize: 30),
-                            ),
-                          ],
-                        ),
-                      ]),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            const Text("Enter Your Email",
+      body: provider.loading ? const LoadingScreen() :SafeArea(
+        child: Form(
+          key: formKey,
+          child: Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              CustomScrollView(
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Column(
+                      children: [
+                        Stack(alignment: Alignment.center, children: <Widget>[
+                          ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(150),
+                                  bottomRight: Radius.circular(150)),
+                              child: ImageFiltered(
+                                imageFilter:
+                                    ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+                                child: SizedBox(
+                                    height: 350,
+                                    width: double.infinity,
+                                    child: Image.asset(
+                                      'assets/images/back.png',
+                                      fit: BoxFit.fill,
+                                    )),
+                              )),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                "WELCOME",
                                 style: TextStyle(
-                                    color: Color(0xFF45A6DD), fontSize: 23)),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            EmailInputField(
-                                onChanged: (data) {
-                                  provider.email=data;
-                                },
-                                hintText: 'Email '),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            CustomButon(
-                              text: 'NEXT',
-                              onTap: () async {
-                                if (formKey.currentState!.validate()) {
-                                  try {
-                                    await provider.forgetPassword();
-                                    if (provider.success){
-                                      confirmationDialog(context);
-                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>const ForgetPasswordVerficationScreen()));
-                                    }
-                                    else{
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text('${provider.errorMessage}'),
-                                          duration: const Duration(seconds: 2), // Duration for which the SnackBar is displayed
-                                          action: SnackBarAction(
-                                            label: 'Close',
-                                            onPressed: () {
-                                              // Code to execute when the SnackBar action is pressed
-                                            },
+                                    color: Color.fromARGB(255, 240, 242, 243),
+                                    fontSize: 30),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "TO SEMSARK",
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 240, 242, 243),
+                                    fontSize: 30),
+                              ),
+                            ],
+                          ),
+                        ]),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: [
+                              Text("Enter Your Email",
+                                  style: TextStyle(
+                                      color: Helper.blue, fontSize: 23)),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              EmailInputField(
+                                  onChanged: (data) {
+                                    provider.email=data;
+                                  },
+                                  hintText: 'Email '),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              CustomButon(
+                                text: 'NEXT',
+                                onTap: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    try {
+                                      await provider.forgetPassword();
+                                      if (provider.success){
+                                        confirmationDialog(context);
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>const ForgetPasswordVerficationScreen()));
+                                      }
+                                      else{
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('${provider.errorMessage}'),
+                                            duration: const Duration(seconds: 2), // Duration for which the SnackBar is displayed
+                                            action: SnackBarAction(
+                                              label: 'Close',
+                                              onPressed: () {
+                                                // Code to execute when the SnackBar action is pressed
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      }
+                                    } catch (ex) {
+                                      print(ex);
                                     }
-                                  } catch (ex) {
-                                    print(ex);
                                   }
-                                }
-                              },
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Text("or",
-                                style: TextStyle(
-                                    color: Color(0xFF45A6DD), fontSize: 20)),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // const FaIcon(FontAwesomeIcons.google),
-                                Container(
-                                  width: 39,
-                                  height: 39,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: const Color(0xFF707070),
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(20))),
-                                  child: const Icon(
-                                    Icons.facebook,
-                                    size: 37,
-                                    color: Color(0xFF3B5998),
+                                },
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              const Text("or",
+                                  style: TextStyle(
+                                      color: Color(0xFF45A6DD), fontSize: 20)),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // const FaIcon(FontAwesomeIcons.google),
+                                  Container(
+                                    width: 39,
+                                    height: 39,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: const Color(0xFF707070),
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(20))),
+                                    child: const Icon(
+                                      Icons.facebook,
+                                      size: 37,
+                                      color: Color(0xFF3B5998),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 0,
-                                  width: 5,
-                                ),
-                                Container(
-                                  width: 39,
-                                  height: 39,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: const Color(0xFF707070),
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(20))),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(2.0),
-                                    child: Center(
-                                        child: Image.asset(
-                                            'assets/images/googleIcon.png')),
+                                  const SizedBox(
+                                    height: 0,
+                                    width: 5,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
+                                  Container(
+                                    width: 39,
+                                    height: 39,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: const Color(0xFF707070),
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(20))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: Center(
+                                          child: Image.asset(
+                                              'assets/images/googleIcon.png')),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
-              onPressed: () {
-                Navigator.pop(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return LoginScreen();
-                    },
-                  ),
-                );
-              },
-            )
-          ],
+              IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return LoginScreen();
+                      },
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

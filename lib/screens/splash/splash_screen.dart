@@ -2,9 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:semsark/Repo/location_services.dart';
+import 'package:semsark/provider/create_ad_provider.dart';
+import 'package:semsark/provider/filter_provider.dart';
+import 'package:semsark/provider/home_provider.dart';
+import 'package:semsark/provider/profile_provider.dart';
+import 'package:semsark/screens/auth/sign_in_screen.dart';
 import 'package:semsark/utils/helper.dart';
 
+import '../../provider/chat_provider.dart';
 import '../home/home_screen.dart';
 
 
@@ -21,13 +28,28 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4) , () async {
-
-      // Position position = await locationServices.getCurrentPosition(context);
-      setState(() {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder:
-            (context) => HomeScreen())) ;
-      });
+    Future.delayed(const Duration(seconds: 3) , () async {
+      // get Token
+      String token = Helper.token;
+      if(token!=""){
+        await Provider.of<HomeProvider>(context , listen: false).init();
+        await Provider.of<ProfileProvider>(context, listen: false).init();
+        await Provider.of<ChatProvider>(context, listen: false).init();
+        await Provider.of<CreateAdvertisementProvider>(context, listen: false).init();
+        //await Provider.of<FilterProvider>(context).init();
+        setState(() {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder:
+              (context) => HomeScreen()
+          )) ;
+        });
+      }
+      else {
+        setState(() {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder:
+              (context) => LoginScreen()
+          )) ;
+        });
+      }
     });
   }
 

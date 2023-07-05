@@ -126,7 +126,7 @@ class AuthServices {
         headers: headers,
         body: jsonEncode({"email": email})
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return Success(
           code: 200,
           response: "",

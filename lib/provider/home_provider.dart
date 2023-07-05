@@ -7,6 +7,7 @@ import 'package:semsark/Repo/home_services.dart';
 import 'package:semsark/Repo/location_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
+import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/utils/helper.dart';
 
 import '../components/map_ad_item.dart';

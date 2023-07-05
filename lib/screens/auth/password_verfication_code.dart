@@ -7,6 +7,7 @@ import 'dart:ui';
 
 //import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:semsark/components/button.dart';
+import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/screens/auth/new_password_screen.dart';
 
 import '../../provider/forget_password_provider.dart';
@@ -42,13 +43,6 @@ class _ForgetPasswordVerficationScreenState
     super.initState();
   }
 
-  @override
-  void dispose() {
-    errorController!.close();
-
-    super.dispose();
-  }
-
   // snackBar Widget
   snackBar(String? message) {
     return ScaffoldMessenger.of(context).showSnackBar(
@@ -62,7 +56,7 @@ class _ForgetPasswordVerficationScreenState
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ForgetPasswordProvider>(context);
-    return Scaffold(
+    return provider.loading ? const LoadingScreen() : Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {},
@@ -101,7 +95,7 @@ class _ForgetPasswordVerficationScreenState
                       height: 120,
                     )),
               ]),
-              const Column(children: [
+              Column(children: const [
                 Text("Verification",
                     style: TextStyle(color: Color(0xFF7f88b3), fontSize: 30)),
                 SizedBox(
@@ -174,15 +168,13 @@ class _ForgetPasswordVerficationScreenState
                   text: 'Verify',
                   onTap: () async {
                     try {
-                      provider.verifyOtp();
+                      await provider.verifyOtp();
                       if (provider.success) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
                               return NewPasswordScreen(
-                                email: widget.email,
-                                OTP: OTP,
                               );
                             },
                           ),

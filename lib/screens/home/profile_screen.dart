@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/models/response/user_details.dart';
+import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
+import 'package:semsark/utils/helper.dart';
 
 import '../../components/button.dart';
 import '../../components/my_ad_item.dart';
@@ -239,10 +241,10 @@ class ProfileScreen extends StatelessWidget {
                                       const SizedBox(
                                         height: 20,
                                       ),
-                                      const Center(
+                                      Center(
                                         child: Text(
                                           "Are you sure you want to logout?",
-                                          style: TextStyle(color: Color(0xFF45A6DD), fontSize: 17),
+                                          style: TextStyle(color: Helper.blue, fontSize: 17),
                                         ),
                                       ),
 
@@ -275,6 +277,7 @@ class ProfileScreen extends StatelessWidget {
                                                 onTap: () async {
                                                   // SignUpServices().sendOTP(email!);
                                                   await Provider.of<ProfileProvider>(context,listen: false).logout();
+                                                  Provider.of<HomeProvider>(context,listen: false).changePosition(0);
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(

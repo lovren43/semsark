@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/models/response/user_details.dart';
 import 'package:semsark/provider/advertisement_detailes_provider.dart';
 import 'package:semsark/provider/chat_provider.dart';
@@ -15,7 +16,9 @@ import 'package:semsark/provider/login_provider.dart';
 import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/provider/sign_up_provider.dart';
 import 'package:semsark/screens/advertisementDetails/advertisement_details_screen.dart';
+import 'package:semsark/screens/auth/forget_password_screen.dart';
 import 'package:semsark/screens/auth/new_password_screen.dart';
+import 'package:semsark/screens/auth/password_verfication_code.dart';
 import 'package:semsark/screens/auth/personal_info_screen.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
 import 'package:semsark/screens/home/chat_screen.dart';
@@ -54,7 +57,7 @@ class Semsark extends StatelessWidget {
         ChangeNotifierProvider(create: (create) => ForgetPasswordProvider()),
 
       ],
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: NewPasswordScreen()),
+      child: MaterialApp(debugShowCheckedModeBanner: false, home: LoginScreen()),
     );
   }
 }

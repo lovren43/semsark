@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/helper.dart';
+
 class CustomButon extends StatelessWidget {
   CustomButon({this.onTap, required this.text});
   VoidCallback? onTap;
@@ -10,7 +12,7 @@ class CustomButon extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF45A6DD),
+          color: Helper.blue,
           borderRadius: BorderRadius.circular(30),
         ),
         width: double.infinity,

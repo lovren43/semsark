@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:semsark/utils/helper.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height ;
+    double width = MediaQuery.of(context).size.width ;
     return Stack(
       children: [
         Container(
-          height: double.infinity,
-          width: double.infinity,
-          color: Colors.white70,
+          color: const Color(0xe2dedede),
         ),
-        const Center(
-          child: SizedBox(
-            height: 80,
-            width: 80,
-            child: CircularProgressIndicator(
-              color: Colors.blue,
-              backgroundColor: Colors.grey,
-            ),
+        SizedBox(
+          height: height,
+          width: width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/load.gif' ,
+                height: height*0.25,
+              ),
+            ],
           ),
         ),
       ],

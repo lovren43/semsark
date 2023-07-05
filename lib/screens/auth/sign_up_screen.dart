@@ -47,7 +47,7 @@ class SignUpScreen extends StatelessWidget {
                                     fit: BoxFit.fill,
                                   )),
                             )),
-                        const Column(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(

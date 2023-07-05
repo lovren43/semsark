@@ -56,7 +56,7 @@ class ForgetPasswordProvider with ChangeNotifier{
     }
   }
 
-  updatePassword() async{
+  updatePassword(pass) async{
     setLoading(true);
     var response =
     await services.updatePAssword(email,otp, password);

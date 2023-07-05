@@ -46,9 +46,7 @@ class ProfileProvider with ChangeNotifier {
     var response = await services.getUser();
     if (response is Success) {
       user = response.response as UserDetails;
-
       reset();
-
     }
     setLoading(false);
 
