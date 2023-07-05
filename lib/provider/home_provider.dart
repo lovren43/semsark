@@ -10,7 +10,7 @@ import 'package:semsark/models/response/advertisement_response_model.dart';
 import 'package:semsark/utils/helper.dart';
 
 import '../components/map_ad_item.dart';
-import '../components/my_ad_item.dart';
+import '../models/response/user_details.dart';
 import '../utils/constants.dart';
 import 'dart:ui' as ui;
 class HomeProvider with ChangeNotifier{
@@ -18,6 +18,7 @@ class HomeProvider with ChangeNotifier{
   // att
   bool isMap = true;
   bool isLoading = false;
+  bool isVerified = false;
   HomeServices services = HomeServices();
   late String errorMsg;
   int index = 0 ;
@@ -44,6 +45,10 @@ class HomeProvider with ChangeNotifier{
   }
   setLoading(load){
     isLoading = load;
+    notifyListeners();
+  }
+  setVerified(load){
+    isVerified = load;
     notifyListeners();
   }
   changePosition(_index) async {

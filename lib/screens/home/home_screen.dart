@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/screens/home/advertisements_screen.dart';
 import 'package:semsark/screens/home/chat_screen.dart';
@@ -8,6 +9,7 @@ import 'package:semsark/screens/home/create_advertisement_screen.dart';
 import 'package:semsark/screens/home/filter_screen.dart';
 import 'package:semsark/screens/home/map_screen.dart';
 import 'package:semsark/screens/home/profile_screen.dart';
+import 'package:semsark/screens/home/verify_user_screen.dart';
 import 'package:semsark/utils/helper.dart';
 
 import '../auth/sign_in_screen.dart';
@@ -21,15 +23,9 @@ class HomeScreen extends StatelessWidget {
     var provider = Provider.of<HomeProvider>(context);
     double height = MediaQuery.of(context).size.height ;
     return Scaffold(
-      extendBody: true,
-      body: Column(
-        children: [
-          SizedBox(
-            height: height*0.988,
-            child: _ui(context, provider)
-          ),
-        ],
-      ),
+      //extendBody: true,
+      resizeToAvoidBottomInset: false,
+      body: _ui(context, provider),
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         backgroundColor: Colors.transparent,
@@ -71,20 +67,19 @@ class HomeScreen extends StatelessWidget {
 
   _ui(context , HomeProvider provider){
     var widgets = [
-      AdvertisementsScreen(),
+      const AdvertisementsScreen(),
       ChatScreen(),
       CreateAdvertisementScreen(),
       NotificationScreen(),
-      ProfileScreen(),
+      const ProfileScreen(),
       FilterScreen(),
     ];
-    //print(provider.advertisements!);
     if(provider.isLoading) {
-      return const Center(
-      child: CircularProgressIndicator(),
-    );
+      return const LoadingScreen();
     }
-    return widgets[provider.index];
-
+    return Visibility(
+      visible: !provider.isVerified,
+      child: widgets[provider.index],
+    );
   }
 }

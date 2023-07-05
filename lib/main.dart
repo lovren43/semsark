@@ -13,7 +13,6 @@ import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/provider/login_provider.dart';
 import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/provider/sign_up_provider.dart';
-import 'package:semsark/provider/verify_user_provider.dart';
 import 'package:semsark/screens/advertisementDetails/advertisement_details_screen.dart';
 import 'package:semsark/screens/auth/personal_info_screen.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
@@ -50,8 +49,6 @@ class Semsark extends StatelessWidget {
         ChangeNotifierProvider(create: (create) => ChatProvider()),
         ChangeNotifierProvider(create: (create) => SignUpProvider()),
         ChangeNotifierProvider(create: (create) => AdvertisementDetailsProvider()),
-        ChangeNotifierProvider(create: (create) => VerifyUserProvider(),
-        ),
       ],
       child: MaterialApp(debugShowCheckedModeBanner: false, home: HomeScreen()),
     );

@@ -10,6 +10,7 @@ import 'package:semsark/models/request/ad_model.dart';
 import 'package:semsark/utils/constants.dart';
 
 import '../Repo/remote/firebase_services.dart';
+import '../models/response/user_details.dart';
 
 class CreateAdvertisementProvider with ChangeNotifier{
 
@@ -21,16 +22,18 @@ class CreateAdvertisementProvider with ChangeNotifier{
   // att
   bool isConfirmed = true;
   bool isLoading = false;
-  bool upload = false;
-  bool sucess = false;
+  bool isVerified = false;
+  bool success = false;
+
+  XFile? userImage;
+  XFile? NidImage;
+
   HomeServices services = HomeServices();
   late String errorMsg;
 
   //model att
   List<String> photoList = [];
   var fin_value = "NO" , elevator = "YES" , acceptBusiness = "YES" , acceptSingle = "YES";
-
-
   var num_of_rooms = 1,
       num_of_bath_rooms = 1,
       num_of_halls = 1,
@@ -42,7 +45,6 @@ class CreateAdvertisementProvider with ChangeNotifier{
   List<bool> isSelected = [true, false]; // Initialize the selection state of buttons
 
   List<XFile> photos = [];
-  //
   late Position currentPosition;
   Map<String , List<String>> governors = {
     'Cairo': [],
@@ -97,12 +99,15 @@ class CreateAdvertisementProvider with ChangeNotifier{
     'Luxor' : [],
     'Minya' : [],
   };
+  //UserDetails? userModel;
   init() async {
     setLoading(true);
     currentPosition = await LocationServices().getCurrentPosition();
     // var response = await services.getUser();
     // if(response is Success) {
     //   userModel = response.response as UserDetails;
+    //   isVerified = true ;
+    //   notifyListeners();
     // }
     setLoading(false);
   }
@@ -157,11 +162,44 @@ class CreateAdvertisementProvider with ChangeNotifier{
     isLoading = load;
     notifyListeners();
   }
-  setUploading(load){
-    upload = load;
-    notifyListeners();
+
+  verify() async {
+    setLoading(true) ;
+    if(userImage!=null && NidImage != null){
+      var path1 = await uploadPhoto(userImage!) ;
+      var path2 = await uploadPhoto(NidImage!) ;
+      var response =await HomeServices().verifyNID(path1 , path2) ;
+      if(response is Success){
+        if(response.response == true){
+          success = true ;
+        }else {
+          errorMsg = "Some Error The 2 faces doesn't match,\n Please upload a clear Images" ;
+        }
+
+      }else if(response is Failure){
+        errorMsg = response.errorResponse as String;
+      }
+    }
+    else {
+      errorMsg = "Please Add Photos";
+    }
+    setLoading(false) ;
   }
 
+  Future<void> takeUserPhoto() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      userImage = pickedFile ;
+      notifyListeners();
+    }
+  }
+  Future<void> takeNIdPhoto() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      NidImage = pickedFile ;
+      notifyListeners();
+    }
+  }
 
   Future uploadPhoto(XFile element) async {
     final FirebaseServices firebaseServices = FirebaseServices();
@@ -170,7 +208,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
         .upload_image(File(element.path), APP_NAME, "$currentTime")
         .then((value) async {
       await firebaseServices.get_url(APP_NAME, "$currentTime").then((path) {
-        photoList.add(path);
+        return path ;
       });
     });
   }
@@ -178,11 +216,9 @@ class CreateAdvertisementProvider with ChangeNotifier{
   //Api
   createAdvertisement() async {
     photoList = [] ;
-    setUploading(true) ;
     for (int i = 0; i < photos.length; i++) {
-      await uploadPhoto(photos[i]);
+      photoList.add(await uploadPhoto(photos[i]));
     }
-    setUploading(false) ;
     setLoading(true);
     if(!photoList.isEmpty)
       print(photoList[0]);
@@ -214,7 +250,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
     setLoading(false);
 
     if(response is Success){
-      sucess = true ;
+      success = true ;
       notifyListeners() ;
     }else if (response is Failure){
       print(response);

@@ -3,7 +3,6 @@ import 'package:semsark/models/response/advertisement_response_model.dart';
 
 class MapAdvertisementItem extends StatelessWidget {
   MapAdvertisementItem({Key? key , required this.model}) : super(key: key);
-
   AdvertisementModel model;
   @override
   Widget build(BuildContext context) {

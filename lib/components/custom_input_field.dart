@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:semsark/utils/helper.dart';
+
+import '../utils/helper.dart';
 
 class CustomFieldInput extends StatelessWidget {
   CustomFieldInput({
@@ -10,13 +11,14 @@ class CustomFieldInput extends StatelessWidget {
     Color? color,
     int? maxLine,
     int? maxLen,
-
   }) : super(key: key);
-  String txt ;
-  TextEditingController controller ;
+
+  String txt;
+  final TextEditingController controller;
   TextInputType? inputType;
-  Color? color ;
-  int? maxLine, maxLen ;
+  Color? color;
+  int? maxLine, maxLen;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
