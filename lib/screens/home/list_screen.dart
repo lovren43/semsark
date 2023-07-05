@@ -179,16 +179,12 @@ class AdvertisementListScreen extends StatelessWidget {
             child:provider.advertisements != null ? ListView.builder(
                 itemBuilder: (context, index) =>
                     InkWell(
-                      onTap: () async {
-                        await Provider.of<AdvertisementDetailsProvider>(context , listen: false).setID(
-                            provider.advertisements![index].id
-                        ).then({
-                        Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) =>
-                        AdvertisementDetailsScreen()
-                        )
-                        )
-                        });
+                      onTap: () {
+                         Provider.of<AdvertisementDetailsProvider>(context , listen: false).setModel(
+                            provider.advertisements![index]
+                        );
+
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdvertisementDetailsScreen()));
                       },
                         child: AdItem(model: provider.advertisements![index],)),
                 itemCount: provider.advertisements!.length) :

@@ -32,8 +32,8 @@ class ConversationList extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 CircleAvatar(
-                  backgroundImage: AssetImage(imageUrl==null||imageUrl=="string"||imageUrl==""?'assets/images/avtar.png':imageUrl),
-                  backgroundColor: Colors.white,
+                  backgroundImage: NetworkImage(imageUrl==null||imageUrl=="string"||imageUrl==""?'assets/images/avtar.png':imageUrl),
+                  // backgroundColor: Colors.white,
                   maxRadius: 30,
                 ),
                 const SizedBox(
@@ -47,7 +47,7 @@ class ConversationList extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           name,
-                          style: const TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           height: 6,

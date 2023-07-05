@@ -258,7 +258,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
     );
   }
   void _makePhoneCall(String phoneNumber) async {
-    final url = Uri.parse('tel:$phoneNumber');
+    final url = Uri.parse('tel:+20$phoneNumber');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {

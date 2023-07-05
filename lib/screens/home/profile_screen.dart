@@ -10,14 +10,16 @@ import 'package:semsark/screens/auth/sign_in_screen.dart';
 import '../../components/button.dart';
 import '../../components/my_ad_item.dart';
 import '../../models/response/advertisement_response_model.dart';
+import '../../provider/advertisement_detailes_provider.dart';
+import '../advertisementDetails/advertisement_details_screen.dart';
 import '../auth/personal_info_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
 
-  const ProfileScreen({super.key});
+   ProfileScreen({super.key});
 
   final double profileHeight = 144;
-
+  double height = 0 ;
   @override
   Widget build(BuildContext context) {
     return _ui(context);
@@ -25,9 +27,10 @@ class ProfileScreen extends StatelessWidget {
 
   _ui(context) {
     var provider = Provider.of<ProfileProvider>(context);
-    List<Building> fav = provider.fav.buildings;
-    List<Building> ads = provider.myAds;
-    List<Building> cur = provider.adClick ? ads : fav;
+    List<AdvertisementModel> fav = provider.fav.buildings;
+    List<AdvertisementModel> ads = provider.myAds;
+    List<AdvertisementModel> cur = provider.adClick ? ads : fav;
+    height = MediaQuery.of(context).size.height;
 
     if (provider.loading) return const LoadingScreen();
     return Scaffold(
@@ -108,12 +111,17 @@ class ProfileScreen extends StatelessWidget {
         ),
         // const SizedBox(height: 0,),
         SizedBox(
-          height: 250,
+          height: height*0.5,
           child: cur.isNotEmpty
               ? ListView.builder(
                   itemCount: cur.length,
                   itemBuilder: (context, index) => InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Provider.of<AdvertisementDetailsProvider>(context, listen: false).setModel(cur[index]) ;
+                        Navigator.push(context, MaterialPageRoute(builder: (_) =>
+                            AdvertisementDetailsScreen()
+                        )) ;
+                      },
                       child: MyAdvertisementItem(
                         model: cur[index],
                       )))
@@ -308,7 +316,7 @@ class ProfileScreen extends StatelessWidget {
       CircleAvatar(
         radius: profileHeight / 2.4,
         backgroundColor: const Color.fromRGBO(241, 246, 251, 1),
-        backgroundImage: AssetImage(
+        backgroundImage: NetworkImage(
           provider.user.img == null ||
               provider.user.img == "string" || provider.user.img == ""
               ? "assets/images/Mask.png"
@@ -316,8 +324,8 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       Icon(
-        provider.user.verifyId == null || provider.user.verifyId! ? Icons.cancel : Icons.check_circle,
-        color: provider.user.verifyId == null || provider.user.verifyId! ? Colors.redAccent : Colors.green,
+        provider.user.verifyId == null || !provider.user.verifyId! ? Icons.cancel : Icons.check_circle,
+        color: provider.user.verifyId == null || !provider.user.verifyId! ? Colors.redAccent : Colors.green,
       ),
     ],
   );

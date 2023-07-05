@@ -18,6 +18,11 @@ class AdvertisementDetailsProvider with ChangeNotifier{
     notifyListeners() ;
   }
 
+  setModel(AdvertisementModel model) async {
+    this.model = model ;
+    notifyListeners() ;
+  }
+
   // AdvertisementDetailsProvider(){
   //   init();
   // }

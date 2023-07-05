@@ -7,7 +7,7 @@ import '../models/response/advertisement_response_model.dart';
 class ProfileProvider with ChangeNotifier {
   bool adClick = true;
   Favourites fav = Favourites(id: 0, userId: 0, buildings: []);
-  List<Building> myAds = [];
+  List<AdvertisementModel> myAds = [];
   UserDetails user = UserDetails(id: 1, email: 'emai.@email.com',);
   bool loading = false;
   ProfileServices services = ProfileServices();
@@ -22,6 +22,7 @@ class ProfileProvider with ChangeNotifier {
   init() async {
     setLoading(true);
     await getUser();
+    await getMyAds();
     setLoading(false);
   }
 
@@ -45,7 +46,7 @@ class ProfileProvider with ChangeNotifier {
     var response = await services.getUser();
     if (response is Success) {
       user = response.response as UserDetails;
-      print(user);
+
       reset();
       setLoading(false);
 
@@ -53,9 +54,20 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> editProfile() async{
+  Future<void> getMyAds() async {
+    setLoading(true);
+    var response = await services.getMyAds();
 
+    if (response is Success) {
+
+      myAds = response.response as List<AdvertisementModel>;
+
+      setLoading(false);
+
+    }
+    notifyListeners();
   }
+
 
   Future<void> logout() async {
     setLoading(true);
@@ -66,27 +78,27 @@ class ProfileProvider with ChangeNotifier {
     setLoading(false);
     notifyListeners();
   }
-  // Future<void> editProfile() async {
-  //   setSuccess(false);
-  //   Profile userDetails = Profile(
-  //       username: name,
-  //       gender: gender,
-  //       email: email,
-  //       password: password,
-  //       phone: phone,
-  //       img: "");
-  //
-  //   var res = await services.editUser(userDetails);
-  //
-  //   if (res is Success) {
-  //     user = res.response as UserDetails;
-  //     myAds = user.myAds;
-  //
-  //     success = true;
-  //   }
-  //
-  //   notifyListeners();
-  // }
+  Future<void> editProfile() async {
+    setSuccess(false);
+    // Profile userDetails = Profile(
+    //     username: name,
+    //     gender: gender,
+    //     email: email,
+    //     password: password,
+    //     phone: phone,
+    //     img: "");
+    //
+    // var res = await services.editUser(userDetails);
+    //
+    // if (res is Success) {
+    //   user = res.response as UserDetails;
+    //   myAds = user.myAds;
+    //
+    //   success = true;
+    // }
+
+    notifyListeners();
+  }
 
   setEmail(email) {
     this.email = email;

@@ -19,7 +19,7 @@ class AdvertisementsScreen extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10, left: 20),
         child: Container(
           margin: const EdgeInsets.only(
-              bottom: 75
+              bottom: 15
           ),
           child: FloatingActionButton(
             backgroundColor: Helper.blue,

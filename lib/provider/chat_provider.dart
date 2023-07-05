@@ -10,7 +10,7 @@ class ChatProvider with ChangeNotifier {
   String currentUserEmail = "";
   String? reciverEmail;
   UserDetails? curUser;
-  int room = 0;
+  String room = "";
 
   ChatMessage message =
       ChatMessage(receiverEmail: "", message: "", status: true, date: "");
@@ -51,11 +51,11 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> getAllMessage() async {
-    // var response = await services.getChatMessage(room);
-    // if (response.isNotEmpty) {
-    //   chatMessages = response as List<ChatMessage>;
-    // }
-    // notifyListeners();
+    var response = await services.getChatMessage(room);
+    if (response.isNotEmpty) {
+      chatMessages = response as List<ChatMessage>;
+    }
+    notifyListeners();
   }
 
   Future<void> sendMessage() async {
@@ -87,7 +87,8 @@ class ChatProvider with ChangeNotifier {
   getRoom(email) async {
     var response = await services.getChatRoom(email);
     if (response is Success) {
-      this.room = response.response as int;
+      print(response.response);
+      this.room = response.response.toString();
       await getAllMessage();
     }
     notifyListeners();

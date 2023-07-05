@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
       ChatScreen(),
       CreateAdvertisementScreen(),
       NotificationScreen(),
-      const ProfileScreen(),
+       ProfileScreen(),
       FilterScreen(),
     ];
     if(provider.isLoading) {

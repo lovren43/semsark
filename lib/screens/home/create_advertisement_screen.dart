@@ -13,7 +13,12 @@ import 'package:semsark/utils/constants.dart';
 import 'package:semsark/utils/helper.dart';
 import 'package:provider/provider.dart';
 
-class CreateAdvertisementScreen extends StatelessWidget {
+class CreateAdvertisementScreen extends StatefulWidget {
+  @override
+  State<CreateAdvertisementScreen> createState() => _CreateAdvertisementScreenState();
+}
+
+class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -506,6 +511,7 @@ class CreateAdvertisementScreen extends StatelessWidget {
       provider.notifyListeners();
     }
   }
+
   Widget list_of_photos(CreateAdvertisementProvider provider) {
     List<Widget> col = [], row = [];
     for (var element in provider.photos) {

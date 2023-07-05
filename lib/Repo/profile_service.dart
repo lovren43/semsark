@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:semsark/Repo/remote/remote_status.dart';
+import 'package:semsark/models/response/advertisement_response_model.dart';
 
 import '../models/response/user_details.dart';
 import '../utils/constants.dart';
@@ -34,6 +35,30 @@ class ProfileServices {
 
       if (response.statusCode == 200) {
         return Success(code: 200, response: userDetailsFromJson(response.body));
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      print(e) ;
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
+
+  Future getMyAds() async {
+    String url = '$GET_MY_ADS';
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+
+        return Success(code: 200, response: allAdvertisementFromJson(response.body));
       }
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
     } on HttpException {

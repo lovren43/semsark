@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
 
+import '../../models/chat/chat_message_model.dart';
 import '../../models/chat/chat_user_model.dart';
 import '../../provider/chat_provider.dart';
 import '../chat/chat_detial.dart';
@@ -17,6 +18,7 @@ class ChatScreen extends StatelessWidget {
     double height = MediaQuery.of(context).size.height ;
     var provider = Provider.of<ChatProvider>(context);
     List<ChatUsers> chatUsers = provider.chatUsers;
+    List<ChatMessage> messages = provider.chatMessages;
     if(provider.loading) return const LoadingScreen() ;
     return Scaffold(
       body: SingleChildScrollView(
@@ -77,13 +79,14 @@ class ChatScreen extends StatelessWidget {
                 return GestureDetector(
                   onTap: (){
                     provider.setReciverEmail(chatUsers[index].email) ;
+                    provider.getRoom(chatUsers[index].email);
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return ChatDetailPage(index: index);
                     }));
                   },
                   child: ConversationList(
                     name: chatUsers[index].username,
-                    messageText: "",
+                    messageText: "messages[messages.length-1].message",
                     imageUrl: chatUsers[index].image,
                     time: "",
                     isMessageRead: true,

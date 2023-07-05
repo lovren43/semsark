@@ -32,6 +32,7 @@ class PersonalInfoScreen extends StatelessWidget {
   var confirmPassword;
 
   final formKey = GlobalKey<FormState>();
+  final TextEditingController _username = TextEditingController();
   final TextEditingController pass = TextEditingController();
   final TextEditingController confirmPass = TextEditingController();
   String initialCountry = 'EG';
@@ -52,7 +53,7 @@ class PersonalInfoScreen extends StatelessWidget {
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: const Text('Please choose media to select'),
-            content: Container(
+            content: SizedBox(
               height: MediaQuery.of(context).size.height / 8,
               child: Column(
                 children: [
@@ -63,12 +64,12 @@ class PersonalInfoScreen extends StatelessWidget {
                       provider.setImage(await getImage(ImageSource.gallery,context));
                     },
                     child: Row(
-                      children: [
-                        const Icon(Icons.image),
-                        const SizedBox(
+                      children: const [
+                        Icon(Icons.image),
+                        SizedBox(
                           width: 2,
                         ),
-                        const Text('From Gallery'),
+                        Text('From Gallery'),
                       ],
                     ),
                   ),
@@ -102,8 +103,10 @@ class PersonalInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var signupProvider = Provider.of<SignUpProvider>(context) ;
     var userProvider = Provider.of<ProfileProvider>(context) ;
-    //confirmPass.text = userProvider.email;
-    PhoneNumber initialValue = PhoneNumber(isoCode: 'EG', phoneNumber: signupProvider.edit? "":'');
+    _username.text = userProvider.name;
+    PhoneNumber initialValue = PhoneNumber(isoCode: 'EG', phoneNumber: "");
+    controller.text=signupProvider.edit? userProvider.phone:'';
+
     if(!userProvider.success) return const LoadingScreen() ;
 
     return SafeArea(
@@ -199,12 +202,15 @@ class PersonalInfoScreen extends StatelessWidget {
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  InputField(
-                                    onChanged: (data) {
-                                      signupProvider.edit? userProvider.setName(data):signupProvider.setName(data);
-                                    },
-                                    hintText:signupProvider.edit? userProvider.name:"Full Name",
-                                    inputIcon: const Icon(Icons.person_outlined),
+                                  TextFormField(
+                                    // onChanged: (data) {
+                                    //   signupProvider.edit? userProvider.setName(data):signupProvider.setName(data);
+                                    // },
+                                    controller:_username,
+                                    decoration: const InputDecoration(
+                                      label: Text("Full Name"),
+                                      icon: Icon(Icons.person_outlined),
+                                    ),
                                     validator: (value) {
                                       if ((value == null || value.isEmpty) && !signupProvider.edit) {
                                         return 'Field is required';
@@ -224,10 +230,10 @@ class PersonalInfoScreen extends StatelessWidget {
                                     onInputValidated: (bool value) {
 
                                     },
-                                    inputDecoration:  InputDecoration(
-                                      hintText:signupProvider.edit? userProvider.phone:'Mobile Number'  ,
+                                    inputDecoration:  const InputDecoration(
+                                      hintText:'Mobile Number',
                                         filled: true,
-                                        fillColor: const Color(0xFFf1f6fb)),
+                                        fillColor: Color(0xFFf1f6fb)),
                                     validator: _phoneValidator,
                                     selectorConfig: const SelectorConfig(
                                       selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
@@ -427,6 +433,7 @@ class PersonalInfoScreen extends StatelessWidget {
                               CustomButon(
                                 text: signupProvider.edit ? "Edit" :"Sign Up",
                                 onTap: () async {
+                                  signupProvider.edit? userProvider.setName(_username.text):signupProvider.setName(_username.text);
                                   // if (formKey.currentState!.validate()) {
                                     signupProvider.edit ? userProvider.editProfile():signupProvider.createUser();
                                     var success=signupProvider.edit ? userProvider.success :signupProvider.success;
