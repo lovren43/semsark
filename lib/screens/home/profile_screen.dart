@@ -181,7 +181,7 @@ class ProfileScreen extends StatelessWidget {
 
                           showMenu(
                             context: context,
-                              position: RelativeRect.fromLTRB(kToolbarHeight, 80, 20, 0),
+                              position: const RelativeRect.fromLTRB(kToolbarHeight, 80, 20, 0),
 
                             items: [
                               const PopupMenuItem<String>(
@@ -316,12 +316,15 @@ class ProfileScreen extends StatelessWidget {
       CircleAvatar(
         radius: profileHeight / 2.4,
         backgroundColor: const Color.fromRGBO(241, 246, 251, 1),
-        backgroundImage: NetworkImage(
-          provider.user.img == null ||
-              provider.user.img == "string" || provider.user.img == ""
-              ? "assets/images/Mask.png"
-              : provider.user.img!,
-        ),
+        backgroundImage:
+        provider.user.img == null ||
+            provider.user.img == "string" || provider.user.img == ""
+            ?
+         null: NetworkImage(provider.user.img!,),
+        foregroundImage: provider.user.img == null ||
+            provider.user.img == "string" || provider.user.img == ""
+            ?
+        const AssetImage("assets/images/Mask.png") : null,
       ),
       Icon(
         provider.user.verifyId == null || !provider.user.verifyId! ? Icons.cancel : Icons.check_circle,

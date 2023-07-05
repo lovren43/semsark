@@ -17,3 +17,5 @@ const String SIGN_OUT = "$baseURL/signOut";
 const String GET_CHAT_USER = "$baseURL/chat/getChats";
 const String GET_CHAT_ROOM = "$baseURL/room-semsark";
 const String SEND_MESSAGE= "$baseURL/chat-semsark";
+const String ADD_TO_FAV= "$baseURL/user/addFavourite";
+const String DELETE_FROM_FAV= "$baseURL/user/deleteFavourite";

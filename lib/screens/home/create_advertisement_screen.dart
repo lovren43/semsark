@@ -42,11 +42,11 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> {
               width: width,
               padding: const EdgeInsets.all(10),
               color: Colors.white30,
-              child: const Center(
+              child: Center(
                 child: Text(
                   "ENTER THE BUILDING DETAILS",
                   style: TextStyle(
-                    color: Colors.lightBlue,
+                    color: Helper.blue,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),

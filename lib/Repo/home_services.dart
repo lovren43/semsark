@@ -21,6 +21,54 @@ class HomeServices {
   };
 
 
+  Future addToFav(id) async
+  {
+    headers['Authorization'] = 'Bearer $token';
+
+    try {
+      final http.Response response = await http.post(
+        Uri.parse("$ADD_TO_FAV/$id"),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response:"",
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "401");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: FormatException);
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: e);
+    }
+  }
+  Future removeFromFav(id) async
+  {
+    headers['Authorization'] = 'Bearer $token';
+
+    try {
+      final http.Response response = await http.delete(
+        Uri.parse("$DELETE_FROM_FAV/$id"),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response:"",
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: jsonDecode(response.body)["message"]);
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: FormatException);
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: e);
+    }
+  }
   Future verifyNID(face1 , face2) async
   {
     headers['Authorization'] = 'Bearer $token';

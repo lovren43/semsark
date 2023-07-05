@@ -5,13 +5,29 @@ import 'package:semsark/models/response/advertisement_response_model.dart';
 
 class AdvertisementDetailsProvider with ChangeNotifier{
 
-
   bool isLoading = false ;
+  bool isFav = true ;
   String errorMsg = "" ;
   HomeServices services = HomeServices();
   AdvertisementModel? model;
   int id = 0 ;
+  List<AdvertisementModel>? recomended;
+  changeFav() async {
+    if(!isFav){
+      await addToFav(id) ;
+    }else {
+      await removeFromFav(id) ;
+    }
+    isFav = !isFav ;
+    notifyListeners();
+  }
+  addToFav(id) async {
+    await services.addToFav(id) ;
+  }
+  removeFromFav(id) async {
+    await services.removeFromFav(id) ;
 
+  }
   setID(nId) async {
     id = nId ;
     await getAdvertisement(id) ;
@@ -20,6 +36,7 @@ class AdvertisementDetailsProvider with ChangeNotifier{
 
   setModel(AdvertisementModel model) async {
     this.model = model ;
+    id = model.id ;
     notifyListeners() ;
   }
 
@@ -27,9 +44,17 @@ class AdvertisementDetailsProvider with ChangeNotifier{
   //   init();
   // }
   // init() async {
-  //   await getAdvertisement(id) ;
+  //   setLoading(true) ;
+  //   await getRecommended() ;
+  //   await
+  //   setLoading(false);
   // }
 
+  getRecommended(){
+    setLoading(true);
+
+    setLoading(false);
+  }
   setLoading(newLoad){
     isLoading = newLoad ;
     notifyListeners() ;

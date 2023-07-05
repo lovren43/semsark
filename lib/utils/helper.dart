@@ -2,11 +2,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class Helper {
-  static Color blue = Colors.lightBlue;
-  static Color light_blue = Color(0xff9ad6f5);
+  static Color blue = Color(0xff4885c5);
+  static Color light_blue = Colors.grey[200]!;
+  //static Color light_blue = Color(0xff9ad6f5);
   static Color grey = Colors.grey;
   static Color input_field_color = Color(0xfff1f6fb);
-  static String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzb2tvdG90bzM2QGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJleHAiOjE2OTAzNTE0NTMsImlhdCI6MTY4ODU1MTQ1M30.Bc4MOPkEJ9YmOymZ-OpVh53x9QWusc4IXCGsHZijRZmb9E1A3m4Q8kg1X4M3OkA3wm2mMKmlLH_6dXV5SSlVFw";
+  static String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpc2xhbW1hYm91b3VmQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJleHAiOjE2OTAzNzI4NTgsImlhdCI6MTY4ODU3Mjg1OH0.DPvz4bphdPLDErXZQbxZYkVBmuPuwWoMvXUb0liH8raC1QOvBw9P757y1K4mlrhbB5SXBI3k-4mAKolgIb97V";
   static TextStyle textStyle = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.bold,

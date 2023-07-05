@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:semsark/Repo/location_services.dart';
+import 'package:semsark/utils/helper.dart';
 
 import '../home/home_screen.dart';
 
@@ -36,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
         body: Container(
             width: double.infinity,
             height: double.infinity,
-            color: const Color.fromRGBO(69, 166, 221, 1),
+            color: Helper.blue,
             child: Column(children: [
               Expanded(
                   child: Center(

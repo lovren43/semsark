@@ -17,6 +17,7 @@ class MapAdvertisementItem extends StatelessWidget {
     width = width*0.84 ;
     return InkWell(
       onTap: (){
+        Provider.of<AdvertisementDetailsProvider>(context, listen: false).setID(model.id) ;
         Provider.of<AdvertisementDetailsProvider>(context, listen: false).setModel(model) ;
         Navigator.push(context, MaterialPageRoute(builder: (_) =>
         AdvertisementDetailsScreen()

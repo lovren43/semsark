@@ -175,29 +175,33 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 5.0),
-                      RatingBar(
-                        initialRating: provider.model!.user.rate,
-                        minRating: 0,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 20.0,
-                        onRatingUpdate: (rating) {
-                          // Handle rating update if needed
-                        }, ratingWidget: RatingWidget(
-                          full: const Icon(
-                            Icons.star,
-                            color: Colors.amber,
+                      AbsorbPointer(
+                        absorbing: true,
+                        child: RatingBar(
+                          initialRating: provider.model!.user.rate,
+                          minRating: 0,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 20.0,
+                          onRatingUpdate: (rating) {
+                            // Handle rating update if needed
+                          },
+                          ratingWidget: RatingWidget(
+                            full: const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            half: const Icon(
+                              Icons.star_half,
+                              color: Colors.amber,
+                            ),
+                            empty: const Icon(
+                              Icons.star_border,
+                              color: Colors.amber,
+                            ),
                           ),
-                          half: const Icon(
-                            Icons.star_half,
-                            color: Colors.amber,
-                          ),
-                          empty: const Icon(
-                            Icons.star_border,
-                            color: Colors.amber,
-                          )
-                      ),
+                        ),
                       ),
                     ],
                   ),
@@ -226,7 +230,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: const Icon(Icons.share , color: Colors.black,),
+              icon: Icon(Icons.share , color: Helper.blue,),
               onPressed: () {
                 String textToShare = "${GET_AD_BY_ID}/${provider.model!.id}";
                 Share.share(textToShare);
@@ -234,22 +238,25 @@ class AdvertisementDetailsScreen extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.call),
-              color: Colors.green,
+              color: Helper.blue ,
               onPressed: () {
                 _makePhoneCall(provider.model!.user.phone!);
               },
             ),
             IconButton(
               icon: const Icon(Icons.chat_outlined),
-              color: Colors.green,
+              color: Helper.blue,
               onPressed: () {
                 // Handle call button press
               },
             ),
             IconButton(
-              icon: const Icon(Icons.favorite_border , color: Colors.red,),
+              icon: Icon(
+                provider.isFav ? Icons.favorite : Icons.favorite_border ,
+                color:provider.isFav ? Colors.red : Colors.red,
+              ),
               onPressed: () {
-                // Handle love button press
+                provider.changeFav() ;
               },
             ),
           ],
@@ -277,7 +284,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
               width: width * 0.1,
               child: Icon(
                 icon,
-                color: isBlue ? Colors.white : Colors.black,
+                color: Colors.black,
               )),
           SizedBox(
             width: width * 0.05,
@@ -287,7 +294,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
               child: Text(
                 text,
                 style: TextStyle(
-                    fontSize: 18, color: isBlue ? Colors.white : Colors.black),
+                    fontSize: 18, color: Colors.black),
               )),
           SizedBox(
             width: width * 0.05,
@@ -297,13 +304,13 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                   additionalText,
                   style: TextStyle(
                       fontSize: 18,
-                      color: isBlue ? Colors.white : Colors.black),
+                      color: Colors.black),
                 )
               : Container(
                   width: 24.0,
                   height: 24.0,
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
+                  decoration: BoxDecoration(
+                    color: Helper.blue,
                     shape: BoxShape.circle,
                   ),
                   child: const Center(
