@@ -36,6 +36,7 @@ class AdvertisementMapScreen extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 90, right: 10),
             markers: provider.markers,
           ),
+
           CustomInfoWindow(
             controller: provider.mapController,
             height: height*0.25,
