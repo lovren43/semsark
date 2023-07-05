@@ -32,10 +32,10 @@ class ProfileProvider with ChangeNotifier {
 
   reset(){
 
-    name = user.username!;
+    name = user.username??"";
     email = user.email;
-    gender = user.gender!;
-    phone = user.phone!;
+    gender = user.gender??"";
+    phone = user.phone??"";
     if (user.favourites!=null){
       fav = user.favourites!;
     }
@@ -48,9 +48,10 @@ class ProfileProvider with ChangeNotifier {
       user = response.response as UserDetails;
 
       reset();
-      setLoading(false);
 
     }
+    setLoading(false);
+
     notifyListeners();
   }
 

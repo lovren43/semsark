@@ -1,9 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:semsark/components/button.dart';
 import 'package:semsark/components/email_input.dart';
+import 'package:semsark/provider/forget_password_provider.dart';
 import 'package:semsark/screens/auth/password_verfication_code.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
+
+import '../../provider/sign_up_provider.dart';
 
 
 class ForgetPasswordScreen extends StatefulWidget {
@@ -20,6 +24,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<ForgetPasswordProvider>(context) ;
     return Scaffold(
       body: Form(
         key: formKey,
@@ -34,7 +39,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     children: [
                       Stack(alignment: Alignment.center, children: <Widget>[
                         ClipRRect(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(150),
                                 bottomRight: Radius.circular(150)),
                             child: ImageFiltered(
@@ -48,9 +53,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     fit: BoxFit.fill,
                                   )),
                             )),
-                        Column(
+                        const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Text(
                               "WELCOME",
                               style: TextStyle(
@@ -81,7 +86,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             ),
                             EmailInputField(
                                 onChanged: (data) {
-                                  email = data;
+                                  provider.email=data;
                                 },
                                 hintText: 'Email '),
                             const SizedBox(
@@ -95,15 +100,29 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   try {
-                                    // if (await ForgetPassword()
-                                    //     .verifyEmail(email!)) {
-                                    //   confirmationDialog(context);
-                                    //   setState(() {});
-                                    // }
+                                    await provider.forgetPassword();
+                                    if (provider.success){
+                                      confirmationDialog(context);
+                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>const ForgetPasswordVerficationScreen()));
+                                    }
+                                    else{
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('${provider.errorMessage}'),
+                                          duration: const Duration(seconds: 2), // Duration for which the SnackBar is displayed
+                                          action: SnackBarAction(
+                                            label: 'Close',
+                                            onPressed: () {
+                                              // Code to execute when the SnackBar action is pressed
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }
                                   } catch (ex) {
                                     print(ex);
                                   }
-                                } else {}
+                                }
                               },
                             ),
                             const SizedBox(

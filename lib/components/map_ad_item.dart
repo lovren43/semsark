@@ -49,12 +49,15 @@ class MapAdvertisementItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
+
                   width: width*0.5,
                   height: height*0.25,
                   child: Text(model.title,
+                  maxLines: 1,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 17,
+
                   ),
                   ),
                 ),

@@ -439,7 +439,7 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> {
                                   if(provider.success) {
                                     Provider.of<HomeProvider>(context , listen: false).changePosition(PROFILE_PAGE);
                                   }
-                                  if(provider.errorMsg != null){
+                                  if(provider.errorMsg !=""){
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {

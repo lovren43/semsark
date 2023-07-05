@@ -84,6 +84,7 @@ class SignUpProvider with ChangeNotifier {
     } else if (response is Failure) {
       errorMessage = response.errorResponse as String?;
     }
+    notifyListeners();
   }
   setShowTime(timer){
     showTimer=timer;
@@ -131,11 +132,10 @@ class SignUpProvider with ChangeNotifier {
     } else if (response is Failure) {
       errorMessage = response.errorResponse as String?;
     }
+    notifyListeners();
   }
 
-  createUser() async {
-    success = false;
-
+  Future<bool> createUser() async {
     setLoading(true);
     if (image!=null){
       await uploadPhoto(image!);
@@ -143,15 +143,16 @@ class SignUpProvider with ChangeNotifier {
     var response =
     await services.createUser(RegisterationModel(username: name!, phone: phoneNumber!, email: email!, social: false, img: imagePath,   password: password!, gender: ""));
     setLoading(false);
-
     if (response is Success) {
       // var box = await Hive.openBox(MY_BOX);
       // box.put('token', response.response);
       Helper.token=response.response as String;
-      success = true;
+      notifyListeners();
+      return true;
     } else if (response is Failure) {
       errorMessage = response.errorResponse as String?;
     }
+    return false;
   }
 
   Future uploadPhoto(XFile element) async {
@@ -164,5 +165,6 @@ class SignUpProvider with ChangeNotifier {
         imagePath=path;
       });
     });
+    notifyListeners();
   }
 }

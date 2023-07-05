@@ -18,8 +18,8 @@ import '../../components/loading_screen.dart';
 import '../../provider/sign_up_provider.dart';
 import '../home/home_screen.dart';
 
-class PersonalInfoScreen extends StatelessWidget {
-  PersonalInfoScreen({
+class EditProfile extends StatelessWidget {
+  EditProfile({
     Key? key,
   }) : super(key: key);
 
@@ -51,7 +51,7 @@ class PersonalInfoScreen extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: const Text('Please choose media to select'),
             content: SizedBox(
               height: MediaQuery.of(context).size.height / 8,
@@ -105,8 +105,12 @@ class PersonalInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var signupProvider = Provider.of<SignUpProvider>(context);
+    var userProvider = Provider.of<ProfileProvider>(context);
+    usernameContoller.text =signupProvider.edit? userProvider.name:"";
     PhoneNumber initialValue = PhoneNumber(isoCode: 'EG', phoneNumber: "");
+    controller.text = signupProvider.edit ? userProvider.phone : '';
 
+    if (!userProvider.success) return const LoadingScreen();
 
     return SafeArea(
       child: Scaffold(
@@ -126,21 +130,37 @@ class PersonalInfoScreen extends StatelessWidget {
                             children: [
                               ClipRRect(
                                   child: ImageFiltered(
-                                imageFilter:
+                                    imageFilter:
                                     ImageFilter.blur(sigmaX: 7, sigmaY: 7),
-                                child: SizedBox(
-                                    height: 190,
-                                    width: double.infinity,
-                                    child: Image.asset(
-                                      'assets/images/back.png',
-                                      fit: BoxFit.fill,
-                                    )),
-                              )),
+                                    child: SizedBox(
+                                        height: 190,
+                                        width: double.infinity,
+                                        child: Image.asset(
+                                          'assets/images/back.png',
+                                          fit: BoxFit.fill,
+                                        )),
+                                  )),
                               const SizedBox(
                                 height: 20,
                               ),
                             ],
                           ),
+                          (signupProvider.edit
+                              ? Positioned(
+                              top: 30,
+                              left: 0,
+                              child: IconButton(
+                                onPressed: () {
+                                  userProvider.reset();
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.black,
+                                  size: 33,
+                                ),
+                              ))
+                              : const Text("")),
                           Positioned(
                             bottom: 0,
                             left: 20,
@@ -152,16 +172,16 @@ class PersonalInfoScreen extends StatelessWidget {
                                         Radius.circular(80))),
                                 child: signupProvider.image == null
                                     ? Image.asset(
-                                        'assets/images/Mask.png',
-                                        height: 120,
-                                      )
+                                  'assets/images/Mask.png',
+                                  height: 120,
+                                )
                                     : SizedBox(
-                                        height: 120,
-                                        width: 120,
-                                        child: CircleAvatar(
-                                            backgroundImage: FileImage(File(
-                                                signupProvider
-                                                    .image!.path!))))),
+                                    height: 120,
+                                    width: 120,
+                                    child: CircleAvatar(
+                                        backgroundImage: FileImage(File(
+                                            signupProvider
+                                                .image!.path!))))),
                           ),
                           Positioned(
                             bottom: 5,
@@ -192,9 +212,9 @@ class PersonalInfoScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   TextFormField(
-                                    onChanged: (data) {
-                                      signupProvider.setName(usernameContoller.text);
-                                    },
+                                    // onChanged: (data) {
+                                    //   signupProvider.edit? userProvider.setName(data):signupProvider.setName(data);
+                                    // },
                                     controller: usernameContoller,
                                     decoration: const InputDecoration(
                                       filled: true,
@@ -203,7 +223,8 @@ class PersonalInfoScreen extends StatelessWidget {
                                       icon: Icon(Icons.person_outlined),
                                     ),
                                     validator: (value) {
-                                      if ((value == null || value.isEmpty) ) {
+                                      if ((value == null || value.isEmpty) &&
+                                          !signupProvider.edit) {
                                         return 'Field is required';
                                       }
                                     },
@@ -215,8 +236,7 @@ class PersonalInfoScreen extends StatelessWidget {
                                     maxLength: 12,
                                     hintText: "Mobile number",
                                     onInputChanged: (PhoneNumber number) {
-                                      signupProvider.setPhoneNumber(
-                                          number.phoneNumber);
+
                                     },
                                     onInputValidated: (bool value) {},
                                     inputDecoration: const InputDecoration(
@@ -226,18 +246,18 @@ class PersonalInfoScreen extends StatelessWidget {
                                     validator: _phoneValidator,
                                     selectorConfig: const SelectorConfig(
                                       selectorType:
-                                          PhoneInputSelectorType.BOTTOM_SHEET,
+                                      PhoneInputSelectorType.BOTTOM_SHEET,
                                     ),
                                     ignoreBlank: false,
                                     autoValidateMode: AutovalidateMode.disabled,
                                     selectorTextStyle:
-                                        const TextStyle(color: Colors.black),
+                                    const TextStyle(color: Colors.black),
                                     initialValue: initialValue,
                                     textFieldController: controller,
                                     formatInput: true,
                                     keyboardType:
-                                        const TextInputType.numberWithOptions(
-                                            signed: true, decimal: true),
+                                    const TextInputType.numberWithOptions(
+                                        signed: true, decimal: true),
                                     inputBorder: const OutlineInputBorder(),
                                     onSaved: (PhoneNumber number) {
                                       print('On Saved: $number');
@@ -262,16 +282,18 @@ class PersonalInfoScreen extends StatelessWidget {
                                             color: Color(0xFF8189B0)),
                                         enabledBorder: const OutlineInputBorder(
                                             borderSide: BorderSide(
-                                          color: Colors.white,
-                                        )),
+                                              color: Colors.white,
+                                            )),
                                         border: const OutlineInputBorder(
                                             borderSide: BorderSide(
-                                          color: Colors.white,
-                                        ))),
+                                              color: Colors.white,
+                                            ))),
                                     //isExpanded: true,
-                                    hint: const Text(
-                                         'Gender',
-                                      style: TextStyle(fontSize: 16),
+                                    hint: Text(
+                                      signupProvider.edit
+                                          ? userProvider.gender
+                                          : 'Gender',
+                                      style: const TextStyle(fontSize: 16),
                                     ),
                                     icon: const Icon(
                                       Icons.arrow_drop_down,
@@ -280,14 +302,14 @@ class PersonalInfoScreen extends StatelessWidget {
                                     iconSize: 30,
                                     items: genderItems
                                         .map((item) => DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(
-                                                item,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ))
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ))
                                         .toList(),
                                     validator: (value) {
                                       if (value == null) {
@@ -295,14 +317,20 @@ class PersonalInfoScreen extends StatelessWidget {
                                       }
                                     },
                                     onChanged: (value) {
-                                       signupProvider
+                                      signupProvider.edit
+                                          ? userProvider
+                                          .setGender(value.toString())
+                                          : signupProvider
                                           .setGender(value.toString());
 
                                       //Do something when changing the item if you want.
                                     },
                                     onSaved: (value) {
-                                       signupProvider
-                                              .setGender(value.toString());
+                                      signupProvider.edit
+                                          ? userProvider
+                                          .setGender(value.toString())
+                                          : signupProvider
+                                          .setGender(value.toString());
                                     },
                                   ),
                                 ],
@@ -311,7 +339,9 @@ class PersonalInfoScreen extends StatelessWidget {
                                 height: 20,
                               ),
                               EmailInputField(
-                                  hintText: signupProvider.email,
+                                  hintText: signupProvider.edit
+                                      ? userProvider.email
+                                      : signupProvider.email,
                                   enabled: false),
                               const SizedBox(
                                 height: 20,
@@ -319,12 +349,15 @@ class PersonalInfoScreen extends StatelessWidget {
                               TextFormField(
                                 controller: pass,
                                 onChanged: (data) {
-                                   signupProvider
-                                          .setPassword(data.toString());
+                                  signupProvider.edit
+                                      ? userProvider
+                                      .setPassword(data.toString())
+                                      : signupProvider
+                                      .setPassword(data.toString());
                                   // signUp_provider.setPassword(data.toString());
                                 },
                                 validator: (data) {
-                                  if (data!.isEmpty ) {
+                                  if (data!.isEmpty && !signupProvider.edit) {
                                     return "Field is required";
                                   }
                                   if (data.length < 7 && data.length > 0) {
@@ -333,7 +366,9 @@ class PersonalInfoScreen extends StatelessWidget {
                                 },
                                 //onTap: ,
                                 keyboardType: TextInputType.visiblePassword,
-                                obscureText: signupProvider.showPassword,
+                                obscureText: signupProvider.edit
+                                    ? userProvider.showPassword
+                                    : signupProvider.showPassword,
                                 //focusNode: ,
                                 enableSuggestions: false,
                                 autocorrect: false,
@@ -343,22 +378,24 @@ class PersonalInfoScreen extends StatelessWidget {
                                   prefixIcon: const Icon(Icons.lock_outlined),
                                   hintText: "Password",
                                   hintStyle:
-                                      const TextStyle(color: Color(0xFF8189B0)),
+                                  const TextStyle(color: Color(0xFF8189B0)),
                                   enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )),
+                                        color: Colors.white,
+                                      )),
                                   border: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )),
+                                        color: Colors.white,
+                                      )),
                                   suffixIcon: Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                    const EdgeInsets.fromLTRB(0, 0, 4, 0),
                                     child: GestureDetector(
                                       //onTap:signupProvider.edit ?userProvider.setShowPassword() :signupProvider.setShowPassword(),
                                       child: Icon(
-                                        ( signupProvider.showPassword)
+                                        (signupProvider.edit
+                                            ? userProvider.showPassword
+                                            : signupProvider.showPassword)
                                             ? Icons.visibility_off_rounded
                                             : Icons.visibility_rounded,
                                         size: 24,
@@ -376,7 +413,7 @@ class PersonalInfoScreen extends StatelessWidget {
                                   confirmPassword = val;
                                 },
                                 validator: (val) {
-                                  if (val!.isEmpty) {
+                                  if (val!.isEmpty && !signupProvider.edit) {
                                     return 'Field is required';
                                   }
                                   if (val != pass.text) {
@@ -385,7 +422,9 @@ class PersonalInfoScreen extends StatelessWidget {
                                   return null;
                                 },
                                 keyboardType: TextInputType.visiblePassword,
-                                obscureText:  signupProvider.showPassword,
+                                obscureText: signupProvider.edit
+                                    ? userProvider.showPassword
+                                    : signupProvider.showPassword,
                                 //focusNode: textFieldFocusNode2,
                                 enableSuggestions: false,
                                 autocorrect: false,
@@ -395,22 +434,24 @@ class PersonalInfoScreen extends StatelessWidget {
                                   prefixIcon: const Icon(Icons.lock_outlined),
                                   hintText: "Confirm password",
                                   hintStyle:
-                                      const TextStyle(color: Color(0xFF8189B0)),
+                                  const TextStyle(color: Color(0xFF8189B0)),
                                   enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )),
+                                        color: Colors.white,
+                                      )),
                                   border: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )),
+                                        color: Colors.white,
+                                      )),
                                   suffixIcon: Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                    const EdgeInsets.fromLTRB(0, 0, 4, 0),
                                     child: GestureDetector(
                                       // onTap:signupProvider.edit?userProvider.setShowPassword() :signupProvider.setShowPassword(),
                                       child: Icon(
-                                        ( signupProvider.showPassword)
+                                        (signupProvider.edit
+                                            ? userProvider.showPassword
+                                            : signupProvider.showPassword)
                                             ? Icons.visibility_off_rounded
                                             : Icons.visibility_rounded,
                                         size: 24,
@@ -423,12 +464,30 @@ class PersonalInfoScreen extends StatelessWidget {
                                 height: 20,
                               ),
                               CustomButon(
-                                text: "Sign Up",
+                                text: signupProvider.edit ? "Edit" : "Sign Up",
                                 onTap: () async {
+                                  signupProvider.edit
+                                      ? userProvider.setName(usernameContoller.text)
+                                      : signupProvider.setName(usernameContoller.text);
                                   // if (formKey.currentState!.validate()) {
+                                  signupProvider.edit
+                                      ? userProvider
+                                      .setPhone(controller.text)
+                                      : signupProvider.setPhoneNumber(
+                                      controller.text);
 
+                                  signupProvider.edit
+                                      ? userProvider.editProfile()
+                                      : signupProvider.createUser();
+                                  var success = signupProvider.edit
+                                      ? userProvider.success
+                                      : signupProvider.success;
 
-                                  if (await signupProvider.createUser()) {
+                                  if (success) {
+                                    signupProvider.edit
+                                        ? ""
+                                        : signupProvider.setEdit();
+
                                     //Position position = await _locationServices.getCurrentPosition(context);
                                     Navigator.pushReplacement(
                                         context,
@@ -441,64 +500,66 @@ class PersonalInfoScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                               Column(
-                                      children: [
-                                        const Text("or",
-                                            style: TextStyle(
-                                                color: Color(0xFF45A6DD),
-                                                fontSize: 20)),
-                                        const SizedBox(
-                                          height: 20,
+                              (signupProvider.edit
+                                  ? const Text("")
+                                  : Column(
+                                children: [
+                                  const Text("or",
+                                      style: TextStyle(
+                                          color: Color(0xFF45A6DD),
+                                          fontSize: 20)),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      // const FaIcon(FontAwesomeIcons.google),
+                                      Container(
+                                        width: 39,
+                                        height: 39,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color:
+                                              const Color(0xFF707070),
+                                            ),
+                                            borderRadius:
+                                            const BorderRadius.all(
+                                                Radius.circular(20))),
+                                        child: const Icon(
+                                          Icons.facebook,
+                                          size: 37,
+                                          color: Color(0xFF3B5998),
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            // const FaIcon(FontAwesomeIcons.google),
-                                            Container(
-                                              width: 39,
-                                              height: 39,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color:
-                                                        const Color(0xFF707070),
-                                                  ),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(20))),
-                                              child: const Icon(
-                                                Icons.facebook,
-                                                size: 37,
-                                                color: Color(0xFF3B5998),
-                                              ),
+                                      ),
+                                      const SizedBox(
+                                        height: 0,
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 39,
+                                        height: 39,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color:
+                                              const Color(0xFF707070),
                                             ),
-                                            const SizedBox(
-                                              height: 0,
-                                              width: 5,
-                                            ),
-                                            Container(
-                                              width: 39,
-                                              height: 39,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color:
-                                                        const Color(0xFF707070),
-                                                  ),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(20))),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(2.0),
-                                                child: Center(
-                                                    child: Image.asset(
-                                                        'assets/images/googleIcon.png')),
-                                              ),
-                                            ),
-                                          ],
+                                            borderRadius:
+                                            const BorderRadius.all(
+                                                Radius.circular(20))),
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets.all(2.0),
+                                          child: Center(
+                                              child: Image.asset(
+                                                  'assets/images/googleIcon.png')),
                                         ),
-                                      ],
-                                    )
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ))
                             ],
                           ),
                         )

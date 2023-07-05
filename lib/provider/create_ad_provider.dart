@@ -28,7 +28,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
   XFile? NidImage;
 
   HomeServices services = HomeServices();
-  late String errorMsg;
+  String errorMsg="";
 
   //model att
   List<String> photoList = [];
@@ -210,13 +210,15 @@ class CreateAdvertisementProvider with ChangeNotifier{
         return path ;
       });
     });
+    return "string";
   }
 
   //Api
   createAdvertisement() async {
     photoList = [] ;
     for (int i = 0; i < photos.length; i++) {
-      photoList.add(await uploadPhoto(photos[i]));
+      var ppp= await uploadPhoto(photos[i]);
+      photoList.add(ppp);
     }
     setLoading(true);
     if(!photoList.isEmpty)
@@ -230,8 +232,8 @@ class CreateAdvertisementProvider with ChangeNotifier{
         title: titleController.text,
         category: isSelected[0] ? "RENT" : "SELL",
         apartmentDetails: detailsController.text,
-        city: "city",
-        gov: "gov",
+        city: "Zamalek",
+        gov: "Giza",
         price: double.parse(priceController.text),
         lng: currentPosition.longitude,
         lat: currentPosition.latitude,

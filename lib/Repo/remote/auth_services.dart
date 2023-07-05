@@ -16,12 +16,8 @@ class AuthServices {
     'content-Type': 'application/json',
     'Accept': "application/json"
   };
-  // Future<bool> forgetPassVerification(String email) async {
-  //   dynamic data = await Api()
-  //       .post(url: 'forgetPassword/', body: jsonEncode({"email": email}));
-  //   return true;
-  // }
-  //
+
+
   // Future<bool> checkOtp(String email, String OTP) async {
   //   dynamic data = await Api().post(
   //       url: 'forgetPassword/checkOtp',
@@ -122,6 +118,80 @@ class AuthServices {
     }
   }
 
+  Future forgetPassEmailVerification(email) async {
+    String url = '$FORGET_PASSWORD';
+    try {
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode({"email": email})
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: "",
+
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
+
+  Future forgetPassCheckOtp(email,otp) async {
+    String url = '$FORGETPASSWORD_CHECK_OTP';
+    try {
+      http.Response response = await http.post(
+          Uri.parse(url),
+          headers: headers,
+          body: jsonEncode({"otp": otp, "email": email})
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: "",
+
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
+
+
+  Future updatePAssword(email,otp,password) async {
+    String url = '$UPDATE_PASSWORD';
+    try {
+      http.Response response = await http.post(
+          Uri.parse(url),
+          headers: headers,
+          body: jsonEncode({"email": email,"password":password,"otp": otp})
+      );
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: jsonDecode(response.body)['token'],
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
 
 
   Future verifyEmail(email) async {
