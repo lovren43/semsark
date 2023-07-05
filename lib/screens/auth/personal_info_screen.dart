@@ -64,11 +64,11 @@ class PersonalInfoScreen extends StatelessWidget {
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.image),
-                        SizedBox(
+                        const Icon(Icons.image),
+                        const SizedBox(
                           width: 2,
                         ),
-                        Text('From Gallery'),
+                        const Text('From Gallery'),
                       ],
                     ),
                   ),
@@ -148,11 +148,11 @@ class PersonalInfoScreen extends StatelessWidget {
                                     userProvider.reset() ;
                                     Navigator.pop(context);
                                   },
-                                  icon:Icon(Icons.arrow_back,color: Colors.black,size: 33,),
+                                  icon:const Icon(Icons.arrow_back,color: Colors.black,size: 33,),
 
                                 )
                             )
-                            : Text("")
+                            : const Text("")
                           ),
                           Positioned(
                             bottom: 0,
@@ -227,7 +227,7 @@ class PersonalInfoScreen extends StatelessWidget {
                                     inputDecoration:  InputDecoration(
                                       hintText:signupProvider.edit? userProvider.phone:'Mobile Number'  ,
                                         filled: true,
-                                        fillColor: Color(0xFFf1f6fb)),
+                                        fillColor: const Color(0xFFf1f6fb)),
                                     validator: _phoneValidator,
                                     selectorConfig: const SelectorConfig(
                                       selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
@@ -275,7 +275,7 @@ class PersonalInfoScreen extends StatelessWidget {
                                     //isExpanded: true,
                                     hint: Text(
                                       signupProvider.edit? userProvider.gender:'Gender',
-                                      style: TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 16),
                                     ),
                                     icon: const Icon(
                                       Icons.arrow_drop_down,
@@ -444,7 +444,7 @@ class PersonalInfoScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                              (signupProvider.edit?Text(""):
+                              (signupProvider.edit?const Text(""):
                                   Column(
                                     children: [
                                       const Text("or",

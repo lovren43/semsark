@@ -21,6 +21,34 @@ class HomeServices {
   };
 
 
+  Future verifyNID(face1 , face2) async
+  {
+    headers['Authorization'] = 'Bearer $token';
+
+    try {
+      final http.Response response = await http.post(
+          Uri.parse(VERIFY_NID),
+          headers: headers,
+          body: jsonEncode({
+            "face1": face1,
+            "face2": face2
+          }),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Success(
+          code: 200,
+          response:"",
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: jsonDecode(response.body)["message"]);
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: FormatException);
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: e);
+    }
+  }
   //String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlc0Blcy5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjg5MjQ2NTI4LCJpYXQiOjE2ODc0NDY1Mjh9._Bzg1j7vSXPvY9QA6cVpRhAHTcDCBZSmaZSGtbn0-ypnL3lrUEgjuN7YaKFYpBAf9a0-m4IrdaC-1NehnAoKHA";
   String token = Helper.token;
   Future createAdvertisement(CreateAdvertisementModel model) async
@@ -48,6 +76,7 @@ class HomeServices {
       return Failure(code: UNKNOWN, errorResponse: e);
     }
   }
+
 
   // Future<String> getToken() async {
   //   var box =await Hive.openBox('myBox');

@@ -1,124 +1,148 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/provider/verify_user_provider.dart';
 
+import '../../utils/helper.dart';
+
 class VerifyUserScreen extends StatelessWidget {
-  final picker = ImagePicker();
-  PickedFile? _image;
+  VerifyUserScreen({super.key});
 
-  Future<void> _takePhoto() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-    if (pickedFile != null) {
 
-    }
-  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => _ui(context) ;
+
+  _ui(context){
     double height = MediaQuery.of(context).size.height ;
     double width = MediaQuery.of(context).size.width ;
     var provider = Provider.of<VerifyUserProvider>(context);
-    return Scaffold(
-      body: Stack(
-        children: [
-          if (_image != null)
-            Positioned.fill(
-              child: Image.file(
-                File(_image!.path),
-                fit: BoxFit.cover,
+    if(provider.loading) return const LoadingScreen() ;
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            SizedBox(height: height*0.05,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  height: height * 0.3,
+                  width: width*0.9,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1.0,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  child: provider.userImage==null ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Pick a photo for yourself',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(height: 10.0),
+                      IconButton(
+                        icon: const Icon(Icons.camera_alt),
+                        color: Colors.black,
+                        iconSize: 80.0,
+                        onPressed: provider.takeUserPhoto,
+                      ),
+                    ],
+                  ) :
+                  Image.file(File(provider.userImage!.path) ,
+                    fit: BoxFit.fill,
+                  )
+                  ,
+                ),
               ),
             ),
-          Column(
-            children: [
-              SizedBox(height: height*0.1,),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    height: height * 0.3,
-                    width: width*0.9,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 1.0,
-                        style: BorderStyle.solid,
-                      ),
+            SizedBox(height: height*0.05,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  height: height * 0.3,
+                  width: width*0.9,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1.0,
+                      style: BorderStyle.solid,
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Pick a photo for yourself',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 10.0),
-                        IconButton(
-                          icon: const Icon(Icons.camera_alt),
+                  ),
+                  child:provider.NidImage==null ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Pick a photo for your National ID',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black,
-                          iconSize: 80.0,
-                          onPressed: _takePhoto,
                         ),
-                      ],
+                      ),
+                      const SizedBox(height: 10.0),
+                      IconButton(
+                        icon: const Icon(Icons.camera_alt),
+                        color: Colors.black,
+                        iconSize: 80.0,
+                        onPressed: provider.takeNIdPhoto,
+                      ),
+                    ],
+                  ) :
+                  Image.file(File(provider.NidImage!.path) ,fit: BoxFit.fill,
+                  )
+                  ,
+                ),
+              ),
+            ),
+            SizedBox(height: height*0.05,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: width*0.89,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadiusDirectional.circular(100),
+                ),
+                child: MaterialButton(
+                  onPressed: () async{
+                    provider.verify();
+                  },
+                  color: Helper.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                      "Verify".toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: height*0.1,),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    height: height * 0.3,
-                    width: width*0.9,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 1.0,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Pick a photo for your National ID',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 10.0),
-                        IconButton(
-                          icon: const Icon(Icons.camera_alt),
-                          color: Colors.black,
-                          iconSize: 80.0,
-                          onPressed: _takePhoto,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

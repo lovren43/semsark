@@ -6,13 +6,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:semsark/Repo/home_services.dart';
 import 'package:semsark/Repo/location_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
-import 'package:semsark/components/map_ad_item.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
 import 'package:semsark/utils/helper.dart';
 
+import '../components/map_ad_item.dart';
 import '../components/my_ad_item.dart';
 import '../utils/constants.dart';
-
+import 'dart:ui' as ui;
 class HomeProvider with ChangeNotifier{
 
   // att
@@ -54,6 +54,12 @@ class HomeProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  }
   //Api
   getAllAdvertisement() async {
     setLoading(true);
@@ -63,24 +69,22 @@ class HomeProvider with ChangeNotifier{
     if(response is Success){
       advertisements = response.response as List<AdvertisementModel> ;
       markers = {} ;
+      final Uint8List markerIcon = await getBytesFromAsset("assets/images/markerm.png", 200);
+
       setLoading(false);
       for(int i = 0 ; i<advertisements!.length ; i++){
         var position = LatLng(
           double.tryParse('${advertisements![i].lat}')!.toDouble() ,
           double.tryParse('${advertisements![i].lng}')!.toDouble() ,
         );
-        final imageByteData = await rootBundle.load("assets/images/marker.png");
-        final bytes = imageByteData.buffer.asUint8List();
         markers.add(Marker(markerId: MarkerId("$i"),
           position: position,
-          //icon: BitmapDescriptor.fromBytes(bytes,
-
-          //),
+          icon: BitmapDescriptor.fromBytes(markerIcon),
           onTap: (){
-          mapController.addInfoWindow!(
-              MyAdvertisementItem(model: advertisements![i],),
-            position
-          );
+            mapController.addInfoWindow!(
+                MapAdvertisementItem(model: advertisements![i],) ,
+              position
+            );
           },
         ));
 

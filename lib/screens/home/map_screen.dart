@@ -10,6 +10,8 @@ class AdvertisementMapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<HomeProvider>(context) ;
+    double height = MediaQuery.of(context).size.height ;
+    double width = MediaQuery.of(context).size.width ;
     return SafeArea(
       child: Stack(
         children: [
@@ -23,6 +25,9 @@ class AdvertisementMapScreen extends StatelessWidget {
             onMapCreated: (cotroller){
               provider.mapController.googleMapController = cotroller;
             },
+            onCameraMove: (position) {
+              provider.mapController.onCameraMove!();
+            },
             onTap: (po){
               print(po);
               provider.mapController.hideInfoWindow!();
@@ -31,8 +36,11 @@ class AdvertisementMapScreen extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 90, right: 10),
             markers: provider.markers,
           ),
-          CustomInfoWindow(controller: provider.mapController,
-          width: double.infinity,
+          CustomInfoWindow(
+            controller: provider.mapController,
+            height: height*0.25,
+            width: width*0.85,
+            offset: 35,
           ),
         ]
       ),

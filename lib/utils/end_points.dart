@@ -6,6 +6,7 @@ const String VERFIY_EMAIL = "$baseURL/insecure/userDetails/checkEmail";
 const String LOGIN = "$baseURL/insecure/authenticate";
 const String SEND_OTP = "$baseURL/email/sendOtp";
 const String VERIFY_OTP = "$baseURL/email/verifyEmail";
+const String VERIFY_NID = "$baseURL/user/faceRecognition";
 const String CREATE_USER = "$baseURL/insecure/userDetails";
 const String GET_ALL_ADS = "$baseURL/common/getAllAds";
 const String FILTER = "$baseURL/user/filter";

@@ -7,27 +7,50 @@ class MapAdvertisementItem extends StatelessWidget {
   AdvertisementModel model;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          const SizedBox(height: 8.0),
-          Text(
-            "${model.price.toStringAsFixed(2)}",
-            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            width: double.infinity,
+            height: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    "I am here",
+                    style:
+                    Theme.of(context).textTheme.headline6!.copyWith(
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-          const SizedBox(height: 8.0),
-          Text(
-            'Area: ${model.area.toStringAsFixed(2)} m',
-            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8.0),
-          Text(
-            '${model.city}, ${model.gov}',
-            style: const TextStyle(fontSize: 14.0),
-          ),
-        ],
-      ),
+        ),
+        // Triangle.isosceles(
+        //   edge: Edge.BOTTOM,
+        //   child: Container(
+        //     color: Colors.blue,
+        //     width: 20.0,
+        //     height: 10.0,
+        //   ),
+        // ),
+      ],
     );
   }
 }
