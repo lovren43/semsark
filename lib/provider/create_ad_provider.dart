@@ -22,7 +22,6 @@ class CreateAdvertisementProvider with ChangeNotifier{
   // att
   bool isConfirmed = true;
   bool isLoading = false;
-  bool isVerified = false;
   bool success = false;
 
   XFile? userImage;

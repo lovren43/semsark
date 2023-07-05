@@ -4,13 +4,12 @@ import '../utils/helper.dart';
 
 class CustomDropDownField extends StatelessWidget {
    CustomDropDownField({
-     required this.key,
      required this.value,
      required this.list,
      required this.onChange,
      required this.labelText,
-   }) : super(key: key);
-  var value , key , list , onChange , labelText;
+   }) ;
+  var value, list , onChange , labelText;
 
   @override
   Widget build(BuildContext context) {

@@ -14,9 +14,7 @@ import 'package:semsark/utils/helper.dart';
 import 'package:provider/provider.dart';
 
 class CreateAdvertisementScreen extends StatelessWidget {
-  var typeKey = GlobalKey<FormState>();
-  GlobalKey<FormState> _formKey = GlobalKey();
-  var signal_key = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +26,7 @@ class CreateAdvertisementScreen extends StatelessWidget {
   _ui(CreateAdvertisementProvider provider , width , context){
     if(provider.isLoading) return const LoadingScreen() ;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -139,7 +138,6 @@ class CreateAdvertisementScreen extends StatelessWidget {
                           ),
                           CustomDropDownField(
                             labelText: "Type",
-                            key: typeKey,
                             list: provider.types,
                             value: provider.type_val,
                             onChange: (newValue) {
@@ -151,7 +149,6 @@ class CreateAdvertisementScreen extends StatelessWidget {
                           ),
                           CustomDropDownField(
                             labelText: "Signal Power",
-                            key: signal_key,
                             list: provider.signals,
                             value: provider.signal_val,
                             onChange: (newValue) {

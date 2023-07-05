@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:semsark/provider/create_ad_provider.dart';
 
 import '../utils/helper.dart';
 
@@ -7,10 +9,11 @@ class CustomFieldInput extends StatelessWidget {
     Key? key,
     required this.txt,
     required this.controller,
-    TextInputType? inputType,
-    Color? color,
-    int? maxLine,
-    int? maxLen,
+    this.inputType,
+    this.color,
+    this.maxLine,
+    this.maxLen,
+    this.auto,
   }) : super(key: key);
 
   String txt;
@@ -18,6 +21,7 @@ class CustomFieldInput extends StatelessWidget {
   TextInputType? inputType;
   Color? color;
   int? maxLine, maxLen;
+  bool? auto ;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +36,9 @@ class CustomFieldInput extends StatelessWidget {
       maxLines: maxLine ?? 1,
       maxLength: maxLen ?? 50,
       minLines: 1,
+      autofocus: auto ?? false,
+      enabled: true,
+      textInputAction: TextInputAction.done,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter $txt';

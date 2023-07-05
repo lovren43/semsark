@@ -1,79 +1,130 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
+import 'package:semsark/provider/advertisement_detailes_provider.dart';
+import 'package:semsark/screens/advertisementDetails/advertisement_details_screen.dart';
+
+import '../utils/helper.dart';
 
 class MapAdvertisementItem extends StatelessWidget {
   MapAdvertisementItem({Key? key, required this.model}) : super(key: key);
   AdvertisementModel model;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 200,
-                    height: 100,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          bottom: 0,
-                          child: Image(
-                            image: AssetImage(model.photosList[0] == "string" ||
-                                    model.photosList[0].isEmpty
-                                ? "assets/images/haha.webp"
-                                : model.photosList[
-                                    0]), // Replace with your image path
-                            fit: BoxFit.cover,
-                            height: 100,
-                            width: 150,
-                          ),
-                        )
-                      ],
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    height *= 0.15 ;
+    width = width*0.84 ;
+    return InkWell(
+      onTap: (){
+        Provider.of<AdvertisementDetailsProvider>(context, listen: false).setID(model.id) ;
+        Navigator.push(context, MaterialPageRoute(builder: (_) =>
+        AdvertisementDetailsScreen()
+        )) ;
+      },
+      child: Container(
+        padding: const EdgeInsetsDirectional.all(2),
+        decoration: BoxDecoration(
+          color: const Color(0xe6ffffff),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Row(
+          children: [
+            model.photosList[0] == null ||
+                model.photosList[0]=="" ||
+                model.photosList[0] == "string"?
+                Image.asset("assets/images/haha.jpeg",
+                  fit: BoxFit.fill,
+                  width: width*0.35,
+                  height: height,
+                ) :
+                Image.network(model.photosList[0],
+                  fit: BoxFit.fill,
+                  width: width*0.35,
+                  height: height,
+                ),
+            SizedBox(width: width*0.05,),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: width*0.5,
+                  height: height*0.25,
+                  child: Text(model.title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  ),
+                ),
+                SizedBox(
+                  width: width*0.5,
+                  height: height*0.2,
+                  child: Text("${model.price} LE",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
                     ),
                   ),
-                  Column(
-                    children: [
-                      Text(model.apartmentDetails),
-                      const SizedBox(height: 5,),
-                      Text(model.price.toString()),
-                      const SizedBox(height: 5,),
-                      Row(
-                        children: [
-                          Text(model.numOfBathroom.toString()),
-                          const SizedBox(width: 5,),
-                          Container(width:40, child: const Image(image: AssetImage("assets/images/bath.png"))),
-                          const SizedBox(width: 5,),
-                          Text(model.numOfRoom.toString()),
-                          const SizedBox(width: 5,),
-                          Container(width:40, child: const Image(image: AssetImage("assets/images/bed.png"))),
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
+                ),
+                const SizedBox(height: 5,),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.bed,
+                      color: Helper.blue,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "${model.numOfRoom}",
+                      style: Helper.textStyle,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.format_size, color: Helper.blue),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "${model.area}",
+                      style: Helper.textStyle,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.bathtub_outlined, color: Helper.blue),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "${model.numOfBathroom}",
+                      style: Helper.textStyle,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5,),
+                SizedBox(
+                  width: width*0.5,
+                  height: height*0.2,
+                  child: Text("${model.city}, ${model.gov}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                      color: Helper.grey
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
-        // Triangle.isosceles(
-        //   edge: Edge.BOTTOM,
-        //   child: Container(
-        //     color: Colors.blue,
-        //     width: 20.0,
-        //     height: 10.0,
-        //   ),
-        // ),
-      ],
+      ),
     );
   }
 }

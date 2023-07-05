@@ -39,7 +39,7 @@ class AdvertisementMapScreen extends StatelessWidget {
 
           CustomInfoWindow(
             controller: provider.mapController,
-            height: height*0.25,
+            height: height*0.15,
             width: width*0.85,
             offset: 35,
           ),
