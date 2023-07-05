@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 // import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/provider/chat_provider.dart';
 
 import '../../models/chat/chat_message_model.dart';
@@ -13,6 +14,10 @@ class ChatDetailPage extends StatelessWidget {
   ChatDetailPage({required this.index});
   @override
   Widget build(BuildContext context) {
+    ScrollController _scrollController = ScrollController();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
     var provider = Provider.of<ChatProvider>(context);
     DateTime currentDate = DateTime.now();
     String formattedDate = DateFormat('dd-MM-yyyy HH:mm:ss').format(currentDate);
@@ -75,143 +80,139 @@ class ChatDetailPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Icon(
-                  Icons.settings,
-                  color: Colors.black54,
-                ),
+              
               ],
             ),
           ),
         ),
       ),
-      body: Stack(
-        children:[
-          SingleChildScrollView(
-            child: ListView.builder(
-              itemCount: messages.length,
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return Container(
-                  padding:
-                      const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
-                  child: Align(
-                    alignment:
-                        (messages[index].receiverEmail != provider.currentUserEmail
-                            ? Alignment.topRight
-                            : Alignment.topLeft),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color:
-                            (messages[index].receiverEmail == provider.currentUserEmail
-                                ? Colors.grey.shade200
-                                : Colors.blue[200]),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child:Column(
-                        children: [
-                          SizedBox(
-                            // width: width * messages[index].message.length/10,
-                            child: Text(
-                              messages[index].message,
-                              style: const TextStyle(fontSize: 15),
-
-                            ),
+      body: 
+        Column(
+            children: [
+              messages.isNotEmpty ?
+              Expanded(
+                child: ListView.builder(
+                  itemCount: messages.length,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  controller: _scrollController,
+                  itemBuilder: (context, index) {
+                    final reversedIndex = messages.length - 1 - index;
+                    return Container(
+                      padding:
+                          const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                      child: Align(
+                        alignment:
+                            (messages[reversedIndex].receiverEmail != provider.currentUserEmail
+                                ? Alignment.topRight
+                                : Alignment.topLeft),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color:
+                                (messages[reversedIndex].receiverEmail == provider.currentUserEmail
+                                    ? Colors.grey.shade200
+                                    : Colors.blue[200]),
                           ),
-                          SizedBox(height: 10,),
-                          SizedBox(
-                            width: width*0.3,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  messages[index].date.substring(0,10),
-                                  style: const TextStyle(fontSize: 10,),
-                                  textAlign: TextAlign.left,
-                                ),
+                          padding: const EdgeInsets.all(16),
+                          child:Column(
+                            children: [
+                              SizedBox(
+                                // width: width * messages[index].message.length/10,
+                                child: Text(
+                                  messages[reversedIndex].message,
+                                  style: const TextStyle(fontSize: 15),
 
-                                Text(
-                                  messages[index].date.substring(11),
-                                  style: const TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.right,
                                 ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(height: 10,),
+
+                                SizedBox(
+                                  width: width*0.3,
+                                  child: Text(
+                                    messages[reversedIndex].date,
+                                    style: const TextStyle(fontSize: 10,),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                )
+
+
+                            ],
                           )
-                        ],
-                      )
-                    ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+              :
+              Expanded(child: Center(child: const Text("No messages yet",textAlign: TextAlign.center,))),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
+                  height: 60,
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Row(
+                    children: <Widget>[
+                      // GestureDetector(
+                      //   onTap: () {},
+                      //   child: Container(
+                      //     height: 30,
+                      //     width: 30,
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.lightBlue,
+                      //       borderRadius: BorderRadius.circular(30),
+                      //     ),
+                      //     child: const Icon(
+                      //       Icons.add,
+                      //       color: Colors.white,
+                      //       size: 20,
+                      //     ),
+                      //   ),
+                      // ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          controller: _textEditingController,
+                          onChanged: (value) => {provider.setMessage(value)},
+                          decoration: const InputDecoration(
+                              hintText: "Write message...",
+                              hintStyle: TextStyle(color: Colors.black54),
+                              border: InputBorder.none),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      FloatingActionButton(
+                        onPressed: () {
+                          provider.setReciverEmail(provider.chatUsers[index].email);
+                          provider.setDate(formattedDate);
+                          provider.setMessage(_textEditingController.text);
+                          provider.sendMessage();
+                          //provider.setMessage("");
+                          _textEditingController.clear();
+                        },
+                        backgroundColor: Colors.blue,
+                        elevation: 0,
+                        child: const Icon(
+                          Icons.send,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Container(
-              padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
-              height: 60,
-              width: double.infinity,
-              color: Colors.white,
-              child: Row(
-                children: <Widget>[
-                  // GestureDetector(
-                  //   onTap: () {},
-                  //   child: Container(
-                  //     height: 30,
-                  //     width: 30,
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.lightBlue,
-                  //       borderRadius: BorderRadius.circular(30),
-                  //     ),
-                  //     child: const Icon(
-                  //       Icons.add,
-                  //       color: Colors.white,
-                  //       size: 20,
-                  //     ),
-                  //   ),
-                  // ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: _textEditingController,
-                      //onChanged: (value) => {provider.setMessage(value)},
-                      decoration: const InputDecoration(
-                          hintText: "Write message...",
-                          hintStyle: TextStyle(color: Colors.black54),
-                          border: InputBorder.none),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  FloatingActionButton(
-                    onPressed: () {
-                      provider.setReciverEmail(provider.chatUsers[index].email);
-                      provider.setDate(formattedDate);
-                      provider.setMessage(_textEditingController.text);
-                      provider.sendMessage();
-                      //provider.setMessage("");
-                      _textEditingController.clear();
-                    },
-                    backgroundColor: Colors.blue,
-                    elevation: 0,
-                    child: const Icon(
-                      Icons.send,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ],
-      ),
+            ],
+          ) 
+     
+      
     );
   }
 }

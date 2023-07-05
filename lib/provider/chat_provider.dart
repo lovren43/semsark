@@ -1,4 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:semsark/Repo/home_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/chat/chat_user_model.dart';
@@ -51,16 +54,36 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> getAllMessage() async {
-    var response = await services.getChatMessage(room);
-    if (response.isNotEmpty) {
-      chatMessages = response as List<ChatMessage>;
-    }
+    chatMessages=[];
+    FirebaseApp firebaseApp = Firebase.app();
+    FirebaseDatabase database = FirebaseDatabase.instanceFor(app:firebaseApp);
+
+    database.ref('chat/$room/').onValue.listen((DatabaseEvent event) {
+      final snapshot = event.snapshot.value;
+
+
+      Map<dynamic, dynamic>? dataMap = snapshot as Map<dynamic, dynamic>?;
+
+      if (dataMap != null) {
+        print(dataMap);
+        dataMap.forEach((key, value) {
+          chatMessages.add(ChatMessage( receiverEmail: value["receiverEmail"], message: value["message"], status: value["status"], date: value["dates"]));
+          print(value["message"]);
+          notifyListeners();
+        });
+      }
+
+    });
+
+    print(chatMessages);
+
     notifyListeners();
+
   }
 
   Future<void> sendMessage() async {
-    chatMessages.add(ChatMessage(receiverEmail: message.receiverEmail, message: message.message, status: true, date: message.date));
-    await services.sendChatMessage(message);
+    chatMessages.add(ChatMessage(receiverEmail: reciverEmail!, message: message.message, status: true, date: message.date));
+    await services.sendChatMessage(ChatMessage(receiverEmail: reciverEmail!, message: message.message, status: true, date: message.date));
     notifyListeners();
   }
 

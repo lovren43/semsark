@@ -95,30 +95,7 @@ class ChatServices {
     }
   }
 
-  Future<List<dynamic>> getChatMessage(room) async {
-    var returnArr = [];
 
-    FirebaseApp firebaseApp = Firebase.app();
-    FirebaseDatabase database = FirebaseDatabase.instanceFor(app:firebaseApp, databaseURL: "https://semsark-529c0-default-rtdb.firebaseio.com/");
-    // final database = FirebaseDatabase.instance.reference().child('chat/');
-    // FirebaseDatabase database = FirebaseDatabase.instance;
-
-    database.ref('chat/$room/').onValue.listen((DatabaseEvent event) {
-      final snapshot = event.snapshot.value;
-
-
-        Map<dynamic, dynamic>? dataMap = snapshot as Map<dynamic, dynamic>?;
-
-        if (dataMap != null) {
-          dataMap.forEach((key, value) {
-            returnArr.add(value);
-          });
-        }
-
-    });
-    print(returnArr);
-    return returnArr;
-  }
 
   Future sendChatMessage(message) async {
     String url = '$SEND_MESSAGE';

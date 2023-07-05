@@ -8,16 +8,12 @@ import 'package:flutter/foundation.dart'
 ///
 /// Example:
 /// ```dart
-// import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart';
-//
-//  await Firebase.initializeApp(
-//    options: DefaultFirebaseOptions.currentPlatform,
-//  );
-
-
-
-
+/// import 'firebase_options.dart';
+/// // ...
+/// await Firebase.initializeApp(
+///   options: DefaultFirebaseOptions.currentPlatform,
+/// );
+/// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -57,6 +53,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'semsark-529c0.appspot.com',
     measurementId: 'G-L876XYDSSH',
   );
+
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCPQk_gpB_exnXm0xUftlMmE2fWn0XQb88',

@@ -86,7 +86,7 @@ class ChatScreen extends StatelessWidget {
                   },
                   child: ConversationList(
                     name: chatUsers[index].username,
-                    messageText: "messages[messages.length-1].message",
+                    messageText: "",
                     imageUrl: chatUsers[index].image,
                     time: "",
                     isMessageRead: true,
