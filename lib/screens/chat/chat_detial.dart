@@ -87,20 +87,19 @@ class ChatDetailPage extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   controller: _scrollController,
                   itemBuilder: (context, index) {
-                    final reversedIndex = provider.chatMessages.length - 1 - index;
                     return Container(
                       padding:
                           const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                       child: Align(
                         alignment:
-                            (provider.chatMessages[reversedIndex].receiverEmail == provider.currentUserEmail
+                            (provider.chatMessages[index].receiverEmail != provider.currentUserEmail
                                 ? Alignment.topRight
                                 : Alignment.topLeft),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color:
-                                (provider.chatMessages[reversedIndex].receiverEmail != provider.currentUserEmail
+                                (provider.chatMessages[index].receiverEmail == provider.currentUserEmail
                                     ? Colors.grey.shade200
                                     : Colors.blue[200]),
                           ),
@@ -110,7 +109,7 @@ class ChatDetailPage extends StatelessWidget {
                               SizedBox(
                                 // width: width * messages[index].message.length/10,
                                 child: Text(
-                                  provider.chatMessages[reversedIndex].message,
+                                  provider.chatMessages[index].message,
                                   style: const TextStyle(fontSize: 15),
 
                                 ),
@@ -120,7 +119,7 @@ class ChatDetailPage extends StatelessWidget {
                                 SizedBox(
                                   width: width*0.3,
                                   child: Text(
-                                    provider.chatMessages[reversedIndex].date,
+                                    provider.chatMessages[index].date,
                                     style: const TextStyle(fontSize: 10,),
                                     textAlign: TextAlign.left,
                                   ),

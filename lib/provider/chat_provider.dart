@@ -53,37 +53,64 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getAllMessage() async {
+  // Future<void> getAllMessage() async {
+  //   chatMessages=[];
+  //   FirebaseApp firebaseApp = Firebase.app();
+  //   FirebaseDatabase database = FirebaseDatabase.instanceFor(app:firebaseApp);
+  //
+  //   database.ref('chat/$room/').onValue.listen((DatabaseEvent event) {
+  //     final snapshot = event.snapshot.value;
+  //     print(snapshot) ;
+  //     Map<dynamic, dynamic>? dataMap = snapshot as Map<dynamic, dynamic>?;
+  //
+  //     if (dataMap != null) {
+  //       print(dataMap);
+  //       dataMap.forEach((key, value) {
+  //         if(value["receiverEmail"] == reciverEmail)
+  //           chatMessages.add(ChatMessage( receiverEmail: value["receiverEmail"], message: value["message"], status: value["status"], date: value["dates"]));
+  //         print(value["message"]);
+  //         notifyListeners();
+  //       });
+  //     }
+  //
+  //   });
+  //
+  //   print(chatMessages);
+  //
+  //   notifyListeners();
+  //
+  // }
+  Future<void> getChatsFromFirebase() async {
     chatMessages=[];
     FirebaseApp firebaseApp = Firebase.app();
-    FirebaseDatabase database = FirebaseDatabase.instanceFor(app:firebaseApp);
+    FirebaseDatabase database = FirebaseDatabase.instanceFor(app: firebaseApp);
 
-    database.ref('chat/$room/').onValue.listen((DatabaseEvent event) {
-      final snapshot = event.snapshot.value;
-      print(snapshot) ;
-      Map<dynamic, dynamic>? dataMap = snapshot as Map<dynamic, dynamic>?;
+    DatabaseReference chatRef = database.ref('chat/${room}/');
+    DatabaseEvent snapshot = await chatRef.once();
+    Map<dynamic, dynamic>? dataMap = snapshot.snapshot.value as Map<dynamic, dynamic>?;
 
-      if (dataMap != null) {
-        print(dataMap);
-        dataMap.forEach((key, value) {
-          if(value["receiverEmail"] == reciverEmail)
-            chatMessages.add(ChatMessage( receiverEmail: value["receiverEmail"], message: value["message"], status: value["status"], date: value["dates"]));
-          print(value["message"]);
-          notifyListeners();
-        });
-      }
+    if (dataMap != null) {
+      dataMap.forEach((key, value) {
 
-    });
+          chatMessages.add(ChatMessage(
+            receiverEmail: value["receiverEmail"],
+            message: value["message"],
+            status: value["status"],
+            date: value["dates"],
+          ));
 
-    print(chatMessages);
+      });
 
-    notifyListeners();
+      // Sort messages based on the desired criteria (e.g., date)
+      chatMessages.removeWhere((element) => element.receiverEmail!=reciverEmail&&element.receiverEmail!=currentUserEmail);
+      chatMessages.sort((a, b) => a.date.compareTo(b.date));
+    }
 
   }
-
   Future<void> sendMessage() async {
     chatMessages.add(ChatMessage(receiverEmail: reciverEmail!, message: message.message, status: true, date: message.date));
     await services.sendChatMessage(ChatMessage(receiverEmail: reciverEmail!, message: message.message, status: true, date: message.date));
+    await getChatsFromFirebase();
     notifyListeners();
   }
 
@@ -112,7 +139,8 @@ class ChatProvider with ChangeNotifier {
     if (response is Success) {
       print(response.response);
       this.room = response.response.toString();
-      await getAllMessage();
+      //await getAllMessage();
+      await getChatsFromFirebase();
     }
     notifyListeners();
   }

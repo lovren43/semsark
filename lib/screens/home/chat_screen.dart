@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
@@ -8,16 +10,25 @@ import '../../provider/chat_provider.dart';
 import '../chat/chat_detial.dart';
 import '../chat/conversationList.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  List<ChatMessage> chatMessages = [];
+
   @override
   Widget build(BuildContext context) {
+
     return _ui(context);
   }
 
   _ui(context){
+
     double height = MediaQuery.of(context).size.height ;
     var provider = Provider.of<ChatProvider>(context);
-    List<ChatUsers> chatUsers = provider.chatUsers;
+    //getAllMessage(provider);
     List<ChatMessage> messages = provider.chatMessages;
     if(provider.loading) return const LoadingScreen() ;
     return Scaffold(
@@ -69,30 +80,30 @@ class ChatScreen extends StatelessWidget {
                 ),
               ),
             ),
-            (chatUsers.isNotEmpty
+            (provider.chatUsers.isNotEmpty
                 ? ListView.builder(
-              itemCount: chatUsers.length,
+              itemCount: provider.chatUsers.length,
               shrinkWrap: true,
               padding: const EdgeInsets.only(top: 16),
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () async {
-                    provider.setReciverEmail(chatUsers[index].email);
-                    await provider.getRoom(chatUsers[index].email);
+                    provider.setReciverEmail(provider.chatUsers[index].email);
+                    await provider.getRoom(provider.chatUsers[index].email);
                     await provider.getCurrentUser();
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return ChatDetailPage(index: index);
                     }));
                   },
                   child: ConversationList(
-                    name: chatUsers[index].username,
+                    name: provider.chatUsers[index].username,
                     messageText: "",
-                    imageUrl: chatUsers[index].image,
+                    imageUrl: provider.chatUsers[index].image,
                     time: "",
                     isMessageRead: true,
-                    email: chatUsers[index].email,
-                    id: chatUsers[index].id,
+                    email: provider.chatUsers[index].email,
+                    id: provider.chatUsers[index].id,
                   ),
                 );
               },
@@ -109,5 +120,28 @@ class ChatScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void getAllMessage(ChatProvider provider)  {
+    chatMessages=[];
+    FirebaseApp firebaseApp = Firebase.app();
+    FirebaseDatabase database = FirebaseDatabase.instanceFor(app:firebaseApp);
+    database.ref('chat/${provider.room}/').onValue.listen((DatabaseEvent event) {
+      final snapshot = event.snapshot.value;
+      Map<dynamic, dynamic>? dataMap = snapshot as Map<dynamic, dynamic>?;
+      if (dataMap != null) {
+        dataMap.forEach((key, value) {
+          if(value["receiverEmail"] == provider.reciverEmail)
+            chatMessages.add(ChatMessage( receiverEmail: value["receiverEmail"], message: value["message"], status: value["status"], date: value["dates"]));
+          print(value["message"]);
+          setState(() {
+
+          });
+        });
+      }
+      chatMessages.sort((a, b) => a.date.compareTo(b.date));
+
+    });
+    print(chatMessages);
   }
 }

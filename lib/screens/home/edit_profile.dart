@@ -45,7 +45,7 @@ class EditProfile extends StatelessWidget {
   }
 
   //show popup dialog
-  void myAlert(context, SignUpProvider provider) {
+  void myAlert(context, ProfileProvider provider) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -104,11 +104,10 @@ class EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var signupProvider = Provider.of<SignUpProvider>(context);
     var userProvider = Provider.of<ProfileProvider>(context);
-    usernameContoller.text =signupProvider.edit? userProvider.name:"";
+    usernameContoller.text = userProvider.name;
     PhoneNumber initialValue = PhoneNumber(isoCode: 'EG', phoneNumber: "");
-    controller.text = signupProvider.edit ? userProvider.phone : '';
+    controller.text = userProvider.phone;
 
     if (!userProvider.success) return const LoadingScreen();
 
@@ -145,8 +144,7 @@ class EditProfile extends StatelessWidget {
                               ),
                             ],
                           ),
-                          (signupProvider.edit
-                              ? Positioned(
+                          Positioned(
                               top: 30,
                               left: 0,
                               child: IconButton(
@@ -160,7 +158,7 @@ class EditProfile extends StatelessWidget {
                                   size: 33,
                                 ),
                               ))
-                              : const Text("")),
+                              ,
                           Positioned(
                             bottom: 0,
                             left: 20,
@@ -170,7 +168,7 @@ class EditProfile extends StatelessWidget {
                                         color: Colors.white, width: 5),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(80))),
-                                child: signupProvider.image == null
+                                child: userProvider.user.img == null||userProvider.user.img == "string"||userProvider.user.img == ""
                                     ? Image.asset(
                                   'assets/images/Mask.png',
                                   height: 120,
@@ -179,16 +177,16 @@ class EditProfile extends StatelessWidget {
                                     height: 120,
                                     width: 120,
                                     child: CircleAvatar(
-                                        backgroundImage: FileImage(File(
-                                            signupProvider
-                                                .image!.path!))))),
+                                        backgroundImage: NetworkImage(
+                                            userProvider.user
+                                                .img!)))),
                           ),
                           Positioned(
                             bottom: 5,
                             left: 105,
                             child: GestureDetector(
                               onTap: () {
-                                myAlert(context, signupProvider);
+                                myAlert(context,userProvider);
                               },
                               child: Container(
                                   decoration: BoxDecoration(
