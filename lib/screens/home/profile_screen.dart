@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
-import 'package:semsark/models/response/user_details.dart';
 import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/screens/auth/sign_in_screen.dart';
@@ -29,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
 
   _ui(context) {
     var provider = Provider.of<ProfileProvider>(context);
-    List<AdvertisementModel> fav = provider.fav.buildings;
+    List<AdvertisementModel> fav = provider.fav;
     List<AdvertisementModel> ads = provider.myAds;
     List<AdvertisementModel> cur = provider.adClick ? ads : fav;
     height = MediaQuery.of(context).size.height;
@@ -65,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
           height: 10,
         ),
         Text(
-          provider.user!.email == "" ? "user@email.com" : provider.user!.email,
+          provider.user.email,
           style: const TextStyle(
               fontSize: 14,
               color: Color.fromRGBO(129, 137, 176, 1),

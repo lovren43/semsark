@@ -33,15 +33,15 @@ class EditProfile extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final TextEditingController usernameContoller = TextEditingController();
   final TextEditingController pass = TextEditingController();
-  final TextEditingController drop = TextEditingController();
   final TextEditingController confirmPass = TextEditingController();
   String initialCountry = 'EG';
   final TextEditingController controller = TextEditingController();
-  final ImagePicker picker = ImagePicker();
 
-  Future getImage(ImageSource media, context) async {
-    var img = await picker.pickImage(source: media);
-    return img;
+  pickImage(ImageSource source, ProfileProvider provider) async {
+    var image = await ImagePicker().pickImage(source: source);
+    if (image != null) {
+      provider.setImage(image);
+    }
   }
 
   //show popup dialog
@@ -51,18 +51,17 @@ class EditProfile extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: const Text('Please choose media to select'),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 8,
+              height: MediaQuery.of(context).size.height / 7,
               child: Column(
                 children: [
                   ElevatedButton(
                     //if user click this button, user can upload image from gallery
                     onPressed: () async {
                       Navigator.pop(context);
-                      provider.setImage(
-                          await getImage(ImageSource.gallery, context));
+                      await pickImage(ImageSource.gallery, provider);
                     },
                     child: Row(
                       children: const [
@@ -74,15 +73,11 @@ class EditProfile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   ElevatedButton(
                     //if user click this button. user can upload image from camera
                     onPressed: () async {
                       Navigator.pop(context);
-                      provider.setImage(
-                          await getImage(ImageSource.camera, context));
+                      await pickImage(ImageSource.camera, provider);
                     },
                     child: Row(
                       children: const [
@@ -104,12 +99,12 @@ class EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userProvider = Provider.of<ProfileProvider>(context);
-    usernameContoller.text = userProvider.name;
+    var provider = Provider.of<ProfileProvider>(context);
+    usernameContoller.text = provider.user.username ?? "";
     PhoneNumber initialValue = PhoneNumber(isoCode: 'EG', phoneNumber: "");
-    controller.text = userProvider.phone;
+    controller.text = provider.user.phone ?? "";
 
-    if (!userProvider.success) return const LoadingScreen();
+    if (!provider.success) return const LoadingScreen();
 
     return SafeArea(
       child: Scaffold(
@@ -129,16 +124,16 @@ class EditProfile extends StatelessWidget {
                             children: [
                               ClipRRect(
                                   child: ImageFiltered(
-                                    imageFilter:
+                                imageFilter:
                                     ImageFilter.blur(sigmaX: 7, sigmaY: 7),
-                                    child: SizedBox(
-                                        height: 190,
-                                        width: double.infinity,
-                                        child: Image.asset(
-                                          'assets/images/back.png',
-                                          fit: BoxFit.fill,
-                                        )),
-                                  )),
+                                child: SizedBox(
+                                    height: 190,
+                                    width: double.infinity,
+                                    child: Image.asset(
+                                      'assets/images/back.png',
+                                      fit: BoxFit.fill,
+                                    )),
+                              )),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -149,7 +144,6 @@ class EditProfile extends StatelessWidget {
                               left: 0,
                               child: IconButton(
                                 onPressed: () {
-                                  userProvider.reset();
                                   Navigator.pop(context);
                                 },
                                 icon: const Icon(
@@ -157,8 +151,7 @@ class EditProfile extends StatelessWidget {
                                   color: Colors.black,
                                   size: 33,
                                 ),
-                              ))
-                              ,
+                              )),
                           Positioned(
                             bottom: 0,
                             left: 20,
@@ -167,26 +160,42 @@ class EditProfile extends StatelessWidget {
                                     border: Border.all(
                                         color: Colors.white, width: 5),
                                     borderRadius: const BorderRadius.all(
-                                        Radius.circular(80))),
-                                child: userProvider.user.img == null||userProvider.user.img == "string"||userProvider.user.img == ""
-                                    ? Image.asset(
-                                  'assets/images/Mask.png',
+                                        Radius.circular(80))
+                                ),
+                                
+                                child:provider.image!=null
+                              ?SizedBox(
                                   height: 120,
-                                )
+                                  width: 120,
+                                child: CircleAvatar(
+                                  backgroundImage: FileImage(
+                                            File(provider.image!.path),
+                                          ),
+                                ),
+                              )
                                     : SizedBox(
-                                    height: 120,
-                                    width: 120,
-                                    child: CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            userProvider.user
-                                                .img!)))),
+                                        height: 120,
+                                        width: 120,
+                                        child: CircleAvatar(
+                                            backgroundImage: provider.user.img==null ||
+                                        provider.user.img=="string" ||
+                                        provider.user.img==""?
+                                             null:NetworkImage(
+                                                provider.user.img!),
+                                          foregroundImage: provider.user.img==null ||
+                                              provider.user.img=="string" ||
+                                              provider.user.img==""? AssetImage("assets/images/Mask.png"):null,
+                                          
+                                        ))
+                                    
+                            ),
                           ),
                           Positioned(
                             bottom: 5,
                             left: 105,
                             child: GestureDetector(
                               onTap: () {
-                                myAlert(context,userProvider);
+                                myAlert(context, provider);
                               },
                               child: Container(
                                   decoration: BoxDecoration(
@@ -210,9 +219,6 @@ class EditProfile extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   TextFormField(
-                                    // onChanged: (data) {
-                                    //   signupProvider.edit? userProvider.setName(data):signupProvider.setName(data);
-                                    // },
                                     controller: usernameContoller,
                                     decoration: const InputDecoration(
                                       filled: true,
@@ -221,8 +227,7 @@ class EditProfile extends StatelessWidget {
                                       icon: Icon(Icons.person_outlined),
                                     ),
                                     validator: (value) {
-                                      if ((value == null || value.isEmpty) &&
-                                          !signupProvider.edit) {
+                                      if (value == null || value.isEmpty) {
                                         return 'Field is required';
                                       }
                                     },
@@ -233,9 +238,7 @@ class EditProfile extends StatelessWidget {
                                   InternationalPhoneNumberInput(
                                     maxLength: 12,
                                     hintText: "Mobile number",
-                                    onInputChanged: (PhoneNumber number) {
-
-                                    },
+                                    onInputChanged: (PhoneNumber number) {},
                                     onInputValidated: (bool value) {},
                                     inputDecoration: const InputDecoration(
                                         hintText: 'Mobile Number',
@@ -244,18 +247,18 @@ class EditProfile extends StatelessWidget {
                                     validator: _phoneValidator,
                                     selectorConfig: const SelectorConfig(
                                       selectorType:
-                                      PhoneInputSelectorType.BOTTOM_SHEET,
+                                          PhoneInputSelectorType.BOTTOM_SHEET,
                                     ),
                                     ignoreBlank: false,
                                     autoValidateMode: AutovalidateMode.disabled,
                                     selectorTextStyle:
-                                    const TextStyle(color: Colors.black),
+                                        const TextStyle(color: Colors.black),
                                     initialValue: initialValue,
                                     textFieldController: controller,
                                     formatInput: true,
                                     keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        signed: true, decimal: true),
+                                        const TextInputType.numberWithOptions(
+                                            signed: true, decimal: true),
                                     inputBorder: const OutlineInputBorder(),
                                     onSaved: (PhoneNumber number) {
                                       print('On Saved: $number');
@@ -264,72 +267,24 @@ class EditProfile extends StatelessWidget {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  DropdownButtonFormField(
-                                    decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: const Color(0xFFF1F6FB),
-                                        prefixIcon: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Image.asset(
-                                            'assets/images/gender.png',
-                                            height: 5,
-                                            width: 5,
-                                          ),
-                                        ),
-                                        hintStyle: const TextStyle(
-                                            color: Color(0xFF8189B0)),
-                                        enabledBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Colors.white,
-                                            )),
-                                        border: const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Colors.white,
-                                            ))),
-                                    //isExpanded: true,
-                                    hint: Text(
-                                      signupProvider.edit
-                                          ? userProvider.gender
-                                          : 'Gender',
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                    icon: const Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.black45,
-                                    ),
-                                    iconSize: 30,
-                                    items: genderItems
-                                        .map((item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ))
-                                        .toList(),
-                                    validator: (value) {
-                                      if (value == null) {
-                                        return 'Field is required';
-                                      }
-                                    },
-                                    onChanged: (value) {
-                                      signupProvider.edit
-                                          ? userProvider
-                                          .setGender(value.toString())
-                                          : signupProvider
-                                          .setGender(value.toString());
-
-                                      //Do something when changing the item if you want.
-                                    },
-                                    onSaved: (value) {
-                                      signupProvider.edit
-                                          ? userProvider
-                                          .setGender(value.toString())
-                                          : signupProvider
-                                          .setGender(value.toString());
-                                    },
+                                  TextFormField(
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: const Color(0xFFF1F6FB),
+                                          prefixIcon: provider.user.gender == "Female" ?
+                                              Icon(Icons.female_outlined):
+                                          Icon(Icons.male),
+                                          hintText: provider.user.gender??"Male",
+                                          hintStyle: const TextStyle(color: Color(0xFF8189B0)),
+                                          enabledBorder: const OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Colors.white,
+                                              )),
+                                          border: const OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Colors.white,
+                                              ))),
+                                      enabled: false
                                   ),
                                 ],
                               ),
@@ -337,25 +292,15 @@ class EditProfile extends StatelessWidget {
                                 height: 20,
                               ),
                               EmailInputField(
-                                  hintText: signupProvider.edit
-                                      ? userProvider.email
-                                      : signupProvider.email,
+                                  hintText: provider.user.email,
                                   enabled: false),
                               const SizedBox(
                                 height: 20,
                               ),
                               TextFormField(
                                 controller: pass,
-                                onChanged: (data) {
-                                  signupProvider.edit
-                                      ? userProvider
-                                      .setPassword(data.toString())
-                                      : signupProvider
-                                      .setPassword(data.toString());
-                                  // signUp_provider.setPassword(data.toString());
-                                },
                                 validator: (data) {
-                                  if (data!.isEmpty && !signupProvider.edit) {
+                                  if (data!.isEmpty) {
                                     return "Field is required";
                                   }
                                   if (data.length < 7 && data.length > 0) {
@@ -364,9 +309,7 @@ class EditProfile extends StatelessWidget {
                                 },
                                 //onTap: ,
                                 keyboardType: TextInputType.visiblePassword,
-                                obscureText: signupProvider.edit
-                                    ? userProvider.showPassword
-                                    : signupProvider.showPassword,
+                                obscureText: provider.showPassword,
                                 //focusNode: ,
                                 enableSuggestions: false,
                                 autocorrect: false,
@@ -376,24 +319,22 @@ class EditProfile extends StatelessWidget {
                                   prefixIcon: const Icon(Icons.lock_outlined),
                                   hintText: "Password",
                                   hintStyle:
-                                  const TextStyle(color: Color(0xFF8189B0)),
+                                      const TextStyle(color: Color(0xFF8189B0)),
                                   enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.white,
-                                      )),
+                                    color: Colors.white,
+                                  )),
                                   border: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.white,
-                                      )),
+                                    color: Colors.white,
+                                  )),
                                   suffixIcon: Padding(
                                     padding:
-                                    const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                        const EdgeInsets.fromLTRB(0, 0, 4, 0),
                                     child: GestureDetector(
                                       //onTap:signupProvider.edit ?userProvider.setShowPassword() :signupProvider.setShowPassword(),
                                       child: Icon(
-                                        (signupProvider.edit
-                                            ? userProvider.showPassword
-                                            : signupProvider.showPassword)
+                                        provider.showPassword
                                             ? Icons.visibility_off_rounded
                                             : Icons.visibility_rounded,
                                         size: 24,
@@ -411,7 +352,7 @@ class EditProfile extends StatelessWidget {
                                   confirmPassword = val;
                                 },
                                 validator: (val) {
-                                  if (val!.isEmpty && !signupProvider.edit) {
+                                  if (val!.isEmpty) {
                                     return 'Field is required';
                                   }
                                   if (val != pass.text) {
@@ -420,9 +361,7 @@ class EditProfile extends StatelessWidget {
                                   return null;
                                 },
                                 keyboardType: TextInputType.visiblePassword,
-                                obscureText: signupProvider.edit
-                                    ? userProvider.showPassword
-                                    : signupProvider.showPassword,
+                                obscureText:  provider.showPassword,
                                 //focusNode: textFieldFocusNode2,
                                 enableSuggestions: false,
                                 autocorrect: false,
@@ -432,24 +371,21 @@ class EditProfile extends StatelessWidget {
                                   prefixIcon: const Icon(Icons.lock_outlined),
                                   hintText: "Confirm password",
                                   hintStyle:
-                                  const TextStyle(color: Color(0xFF8189B0)),
+                                      const TextStyle(color: Color(0xFF8189B0)),
                                   enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.white,
-                                      )),
+                                    color: Colors.white,
+                                  )),
                                   border: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.white,
-                                      )),
+                                    color: Colors.white,
+                                  )),
                                   suffixIcon: Padding(
                                     padding:
-                                    const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                                        const EdgeInsets.fromLTRB(0, 0, 4, 0),
                                     child: GestureDetector(
                                       // onTap:signupProvider.edit?userProvider.setShowPassword() :signupProvider.setShowPassword(),
-                                      child: Icon(
-                                        (signupProvider.edit
-                                            ? userProvider.showPassword
-                                            : signupProvider.showPassword)
+                                      child: Icon(provider.showPassword
                                             ? Icons.visibility_off_rounded
                                             : Icons.visibility_rounded,
                                         size: 24,
@@ -462,102 +398,19 @@ class EditProfile extends StatelessWidget {
                                 height: 20,
                               ),
                               CustomButon(
-                                text: signupProvider.edit ? "Edit" : "Sign Up",
+                                text: "Edit",
                                 onTap: () async {
-                                  signupProvider.edit
-                                      ? userProvider.setName(usernameContoller.text)
-                                      : signupProvider.setName(usernameContoller.text);
-                                  // if (formKey.currentState!.validate()) {
-                                  signupProvider.edit
-                                      ? userProvider
-                                      .setPhone(controller.text)
-                                      : signupProvider.setPhoneNumber(
-                                      controller.text);
-
-                                  signupProvider.edit
-                                      ? userProvider.editProfile()
-                                      : signupProvider.createUser();
-                                  var success = signupProvider.edit
-                                      ? userProvider.success
-                                      : signupProvider.success;
-
-                                  if (success) {
-                                    signupProvider.edit
-                                        ? ""
-                                        : signupProvider.setEdit();
-
                                     //Position position = await _locationServices.getCurrentPosition(context);
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 HomeScreen()));
-                                  }
                                 },
                               ),
                               const SizedBox(
                                 height: 20,
                               ),
-                              (signupProvider.edit
-                                  ? const Text("")
-                                  : Column(
-                                children: [
-                                  const Text("or",
-                                      style: TextStyle(
-                                          color: Color(0xFF45A6DD),
-                                          fontSize: 20)),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    children: [
-                                      // const FaIcon(FontAwesomeIcons.google),
-                                      Container(
-                                        width: 39,
-                                        height: 39,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color:
-                                              const Color(0xFF707070),
-                                            ),
-                                            borderRadius:
-                                            const BorderRadius.all(
-                                                Radius.circular(20))),
-                                        child: const Icon(
-                                          Icons.facebook,
-                                          size: 37,
-                                          color: Color(0xFF3B5998),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 0,
-                                        width: 5,
-                                      ),
-                                      Container(
-                                        width: 39,
-                                        height: 39,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color:
-                                              const Color(0xFF707070),
-                                            ),
-                                            borderRadius:
-                                            const BorderRadius.all(
-                                                Radius.circular(20))),
-                                        child: Padding(
-                                          padding:
-                                          const EdgeInsets.all(2.0),
-                                          child: Center(
-                                              child: Image.asset(
-                                                  'assets/images/googleIcon.png')),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ))
                             ],
                           ),
                         )

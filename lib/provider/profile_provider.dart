@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:semsark/Repo/profile_service.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/response/user_details.dart';
@@ -6,19 +7,18 @@ import '../models/response/advertisement_response_model.dart';
 import '../utils/helper.dart';
 
 class ProfileProvider with ChangeNotifier {
-  bool adClick = true;
-  Favourites fav = Favourites(id: 0, userId: 0, buildings: []);
+
   List<AdvertisementModel> myAds = [];
-  UserDetails user = UserDetails(id: 1, email: 'emai.@email.com',);
+  List<AdvertisementModel> fav = [];
+  UserDetails user = UserDetails(id: 1, email: 'email.@email.com',);
+  XFile? image ;
+
+
   bool loading = false;
   ProfileServices services = ProfileServices();
-  String name = "";
-  String phone = "";
-  String email = "";
-  String password = "";
-  String gender = "";
   bool showPassword = false;
   bool success = true;
+  bool adClick = true;
 
   init() async {
     setLoading(true);
@@ -30,24 +30,11 @@ class ProfileProvider with ChangeNotifier {
   ProfileProvider() {
     init();
   }
-
-  reset(){
-
-    name = user.username??"";
-    email = user.email;
-    gender = user.gender??"";
-    phone = user.phone??"";
-    if (user.favourites!=null){
-      fav = user.favourites!;
-    }
-    notifyListeners() ;
-  }
   Future<void> getUser() async {
     setLoading(true);
     var response = await services.getUser();
     if (response is Success) {
       user = response.response as UserDetails;
-      reset();
     }
     setLoading(false);
 
@@ -101,33 +88,13 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  setEmail(email) {
-    this.email = email;
-    notifyListeners();
-  }
-
-  setName(name) {
-    this.name = name;
-    notifyListeners();
-  }
-
-  setPhone(phoneNumber) {
-    this.phone = phoneNumber;
-    notifyListeners();
-  }
-
-  setGender(gender) {
-    this.gender = gender;
-    notifyListeners();
-  }
-
-  setPassword(password) {
-    this.password = password;
-    notifyListeners();
-  }
-
   setShowPassword() {
     showPassword = !showPassword;
+    notifyListeners();
+  }
+
+  setImage(_image){
+    image = _image ;
     notifyListeners();
   }
 
