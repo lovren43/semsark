@@ -60,14 +60,14 @@ class ChatProvider with ChangeNotifier {
 
     database.ref('chat/$room/').onValue.listen((DatabaseEvent event) {
       final snapshot = event.snapshot.value;
-
-
+      print(snapshot) ;
       Map<dynamic, dynamic>? dataMap = snapshot as Map<dynamic, dynamic>?;
 
       if (dataMap != null) {
         print(dataMap);
         dataMap.forEach((key, value) {
-          chatMessages.add(ChatMessage( receiverEmail: value["receiverEmail"], message: value["message"], status: value["status"], date: value["dates"]));
+          if(value["receiverEmail"] == reciverEmail)
+            chatMessages.add(ChatMessage( receiverEmail: value["receiverEmail"], message: value["message"], status: value["status"], date: value["dates"]));
           print(value["message"]);
           notifyListeners();
         });

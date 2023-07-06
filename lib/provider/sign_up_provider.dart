@@ -78,8 +78,6 @@ class SignUpProvider with ChangeNotifier {
     var response = await services.verifyEmail(email);
     setLoading(false);
     if (response is Success) {
-      // var box = await Hive.openBox(MY_BOX);
-      // box.put('token', response.response);
       success = true;
     } else if (response is Failure) {
       errorMessage = response.errorResponse as String?;
@@ -109,8 +107,6 @@ class SignUpProvider with ChangeNotifier {
       var response = await services.sendOtp(email);
       setLoading(false);
       if (response is Success) {
-        // var box = await Hive.openBox(MY_BOX);
-        // box.put('token', response.response);
         success = true;
       } else if (response is Failure) {
         errorMessage = response.errorResponse as String?;
@@ -126,8 +122,6 @@ class SignUpProvider with ChangeNotifier {
     await services.verifyOtp(email,otp);
     setLoading(false);
     if (response is Success) {
-      // var box = await Hive.openBox(MY_BOX);
-      // box.put('token', response.response);
       success = true;
     } else if (response is Failure) {
       errorMessage = response.errorResponse as String?;
@@ -144,9 +138,7 @@ class SignUpProvider with ChangeNotifier {
     await services.createUser(RegisterationModel(username: name!, phone: phoneNumber!, email: email!, social: false, img: imagePath,   password: password!, gender: ""));
     setLoading(false);
     if (response is Success) {
-      // var box = await Hive.openBox(MY_BOX);
-      // box.put('token', response.response);
-      Helper.token=response.response as String;
+      await Helper.setToken(response.response as String);
       notifyListeners();
       return true;
     } else if (response is Failure) {

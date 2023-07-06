@@ -138,6 +138,57 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> {
                               ),
                             ],
                           ),
+                          if(provider.isSelected[0])
+                            Row(
+                              children: [
+                                Radio(
+                                  value: "DAILY",
+                                  groupValue: provider.dailyPrice,
+                                  onChanged: (value) {
+                                    provider.setDailyPrice(value);
+                                  },
+                                ),
+                                const Text("Daily Price"),
+                                Radio(
+                                  value: "MONTHLY",
+                                  groupValue: provider.dailyPrice,
+                                  onChanged: (value) {
+                                    provider.setDailyPrice(value);
+                                  },
+                                ),
+                                const Text("Monthly Price"),
+                                Radio(
+                                  value: "YEARLY",
+                                  groupValue: provider.dailyPrice,
+                                  onChanged: (value) {
+                                    provider.setDailyPrice(value);
+                                  },
+                                ),
+                                const Text("Yearly Price"),
+                              ],
+                            ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomDropDownField(
+                            labelText: "Government",
+                            list: provider.governors.keys,
+                            value: provider.gov,
+                            onChange: (newValue) {
+                              provider.setGov(newValue);
+                            },
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomDropDownField(
+                            labelText: "City",
+                            list: provider.governors[provider.gov],
+                            value: provider.city,
+                            onChange: (newValue) {
+                              provider.setCity(newValue);
+                            },
+                          ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -153,7 +204,7 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> {
                             height: 20,
                           ),
                           CustomDropDownField(
-                            labelText: "Signal Power",
+                            labelText: "Signal Type",
                             list: provider.signals,
                             value: provider.signal_val,
                             onChange: (newValue) {
@@ -313,78 +364,79 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15.0),
-                                      child: Text(
-                                        "ACCEPT SINGLES",
-                                        style: Helper.textStyle,
+                          if(provider.isSelected[0])
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 15.0),
+                                        child: Text(
+                                          "ACCEPT SINGLES",
+                                          style: Helper.textStyle,
+                                        ),
                                       ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Radio(
-                                          value: "YES",
-                                          groupValue: provider.acceptSingle,
-                                          onChanged: (value) {
-                                            provider.setAcceptSingle(value);
-                                          },
-                                        ),
-                                        const Text("YES"),
-                                        Radio(
-                                          value: "NO",
-                                          groupValue: provider.acceptSingle,
-                                          onChanged: (value) {
-                                            provider.setAcceptSingle(value);
-                                          },
-                                        ),
-                                        const Text("NO"),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15.0),
-                                      child: Text(
-                                        "ACCEPT BUSINESS",
-                                        style: Helper.textStyle,
+                                      Row(
+                                        children: [
+                                          Radio(
+                                            value: "YES",
+                                            groupValue: provider.acceptSingle,
+                                            onChanged: (value) {
+                                              provider.setAcceptSingle(value);
+                                            },
+                                          ),
+                                          const Text("YES"),
+                                          Radio(
+                                            value: "NO",
+                                            groupValue: provider.acceptSingle,
+                                            onChanged: (value) {
+                                              provider.setAcceptSingle(value);
+                                            },
+                                          ),
+                                          const Text("NO"),
+                                        ],
                                       ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Radio(
-                                          value: "YES",
-                                          groupValue: provider.acceptBusiness,
-                                          onChanged: (value) {
-                                            provider.setAcceptBusiness(value);
-                                          },
-                                        ),
-                                        const Text("YES"),
-                                        Radio(
-                                          value: "NO",
-                                          groupValue: provider.acceptBusiness,
-                                          onChanged: (value) {
-                                            provider.setAcceptBusiness(value);
-                                          },
-                                        ),
-                                        const Text("NO"),
-                                      ],
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 15.0),
+                                        child: Text(
+                                          "ACCEPT BUSINESS",
+                                          style: Helper.textStyle,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Radio(
+                                            value: "YES",
+                                            groupValue: provider.acceptBusiness,
+                                            onChanged: (value) {
+                                              provider.setAcceptBusiness(value);
+                                            },
+                                          ),
+                                          const Text("YES"),
+                                          Radio(
+                                            value: "NO",
+                                            groupValue: provider.acceptBusiness,
+                                            onChanged: (value) {
+                                              provider.setAcceptBusiness(value);
+                                            },
+                                          ),
+                                          const Text("NO"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           const SizedBox(
                             height: 20,
                           ),

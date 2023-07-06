@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/models/response/user_details.dart';
@@ -34,8 +35,8 @@ import 'screens/home/verify_user_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // await Hive.initFlutter();
-  // Hive.registerAdapter(LocalAdvertisementAdapter());
+  await Hive.initFlutter();
+  //Hive.registerAdapter(LocalAdvertisementAdapter());
   runApp(const Semsark());
 }
 
@@ -57,7 +58,7 @@ class Semsark extends StatelessWidget {
         ChangeNotifierProvider(create: (create) => ForgetPasswordProvider()),
 
       ],
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: LoginScreen()),
+      child: MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()),
     );
   }
 }

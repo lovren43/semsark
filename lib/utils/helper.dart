@@ -1,18 +1,31 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'constants.dart';
 
 class Helper {
-  static Color blue = Color(0xff4885c5);
+  static Color blue = const Color(0xff4885c5);
   static Color light_blue = Colors.grey[200]!;
-  //static Color light_blue = Color(0xff9ad6f5);
+  static Color light_blue_or = Colors.lightBlueAccent;
   static Color grey = Colors.grey;
-  static Color input_field_color = Color(0xfff1f6fb);
-  static String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpc2xhbW1hYm91b3VmQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJleHAiOjE2OTAzODYyOTEsImlhdCI6MTY4ODU4NjI5MX0.kvwEeZNAMnC9TXLhptfofERSPPCg2ygV7hcIAsh0gnXYSINUHixX_1aMCDl47RhTzJFDdbGvjUdq49qWH8ngww";
+  static Color input_field_color = const Color(0xfff1f6fb);
+  static String token = "";
   static TextStyle textStyle = TextStyle(
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: FontWeight.bold,
     color: Colors.white.withRed(93).withGreen(109).withBlue(129),
   );
 
-  static TextStyle stlye = TextStyle(color: Colors.grey);
+  static TextStyle stlye = const TextStyle(color: Colors.grey);
+
+  static getToken() async {
+    var box = await Hive.openBox(MY_BOX) ;
+    token = box.get("token") ?? "";
+  }
+  static setToken(_token) async {
+    var box = await Hive.openBox(MY_BOX) ;
+    box.put("token" , _token);
+    token = _token ;
+  }
 }

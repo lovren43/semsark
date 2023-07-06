@@ -15,9 +15,6 @@ class AdvertisementListScreen extends StatelessWidget {
   final List<String> _sortOptions = [
     'Price (High to Low)',
     'Price (Low to High)',
-    'Name (A to Z)',
-    'Name (Z to A)',
-    'Nearest',
   ];
   String _selectedSortOption = '';
 
@@ -179,8 +176,8 @@ class AdvertisementListScreen extends StatelessWidget {
             child:provider.advertisements != null ? ListView.builder(
                 itemBuilder: (context, index) =>
                     InkWell(
-                      onTap: () {
-                         Provider.of<AdvertisementDetailsProvider>(context , listen: false).setModel(
+                      onTap: () async {
+                        await Provider.of<AdvertisementDetailsProvider>(context , listen: false).setModel(
                             provider.advertisements![index]
                         );
 
@@ -191,6 +188,7 @@ class AdvertisementListScreen extends StatelessWidget {
             const Text("No Ads Yet")
             ,
           ),
+          SizedBox(height: 10,),
         ],
       ),
     );

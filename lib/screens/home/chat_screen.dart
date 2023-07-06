@@ -77,9 +77,10 @@ class ChatScreen extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: (){
-                    provider.setReciverEmail(chatUsers[index].email) ;
-                    provider.getRoom(chatUsers[index].email);
+                  onTap: () async {
+                    provider.setReciverEmail(chatUsers[index].email);
+                    await provider.getRoom(chatUsers[index].email);
+                    await provider.getCurrentUser();
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return ChatDetailPage(index: index);
                     }));

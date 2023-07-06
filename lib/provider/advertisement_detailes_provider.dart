@@ -6,7 +6,7 @@ import 'package:semsark/models/response/advertisement_response_model.dart';
 class AdvertisementDetailsProvider with ChangeNotifier{
 
   bool isLoading = false ;
-  bool isFav = true ;
+  bool isFav = false ;
   String errorMsg = "" ;
   HomeServices services = HomeServices();
   AdvertisementModel? model;
@@ -26,7 +26,6 @@ class AdvertisementDetailsProvider with ChangeNotifier{
   }
   removeFromFav(id) async {
     await services.removeFromFav(id) ;
-
   }
   setID(nId) async {
     id = nId ;
@@ -37,6 +36,8 @@ class AdvertisementDetailsProvider with ChangeNotifier{
   setModel(AdvertisementModel model) async {
     this.model = model ;
     id = model.id ;
+    var res = await services.checkIsFav(id) ;
+    isFav = res == "true";
     notifyListeners() ;
   }
 
@@ -45,8 +46,6 @@ class AdvertisementDetailsProvider with ChangeNotifier{
   // }
   // init() async {
   //   setLoading(true) ;
-  //   await getRecommended() ;
-  //   await
   //   setLoading(false);
   // }
 

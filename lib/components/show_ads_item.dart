@@ -10,6 +10,8 @@ class AdItem extends StatelessWidget {
   AdvertisementModel? model;
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height ;
+    double width = MediaQuery.of(context).size.width ;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -20,6 +22,7 @@ class AdItem extends StatelessWidget {
           borderRadius: BorderRadiusDirectional.circular(20),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
@@ -28,50 +31,72 @@ class AdItem extends StatelessWidget {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  child: model!.photosList==null || model!.photosList.isEmpty ?
+                  child: model!.photosList[0]=="" ||
+                      model!.photosList[0] == "string"?
                   Image.asset(
                     "assets/images/haha.jpeg",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: 250,
-                  ) : Image.network("${model!.photosList[0]}",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: 250,
+                    fit: BoxFit.fill,
+                    width: width,
+                    height: height*0.25,
+                  ) :
+                  Image.network(
+                    model!.photosList[0],
+                    fit: BoxFit.fill,
+                    width: 150,
+                    height: 110,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    MaterialButton(
-                      onPressed: () {},
-                      shape: const CircleBorder(),
-                      color: Colors.white,
-                      padding: EdgeInsets.zero,
-                      minWidth: 50,
-                      child: const Icon(Icons.favorite_outline),
+                Align(
+                  alignment: AlignmentDirectional.topEnd,
+                    child: Container(
+                      width: width*0.18,
+                      height: height*0.04,
+                      margin: const EdgeInsetsDirectional.only(top: 10 ,end: 10),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+    model!.category.toUpperCase() == "SELL" ? "For Sell" : "For Rent",
+                          style: TextStyle(
+                            color: Colors.white
+                          ),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        color: model!.category=="SELL" ?Color(0xff9b3333) :Helper.blue,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(15)
+                        ),
+                      ),
                     ),
-                  ],
                 ),
               ],
             ),
-            Container(
-              margin: const EdgeInsetsDirectional.only(
-                  start: 12, top: 10, bottom: 8),
+            SizedBox(height: height*0.01,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${model?.price} EGP",
-                    style: Helper.textStyle,
+                  "${model?.title.toUpperCase()}",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    //color : Color(0xff000000)
+                    color: Colors.white.withRed(93).withGreen(109).withBlue(129),
                   ),
+                ),
                   const SizedBox(
-                    height: 10,
+                    height: 5,
                   ),
                   Text(
                     "${model!.city}, ${model!.gov}",
                     style: Helper.stlye,
                   ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+
                   Row(
                     children: [
                       Icon(
@@ -108,14 +133,27 @@ class AdItem extends StatelessWidget {
                         style: Helper.stlye,
                       ),
                       const SizedBox(
-                        width: 10,
+                        width: 25,
                       ),
+                      Text(
+                        "${model?.price} EGP",
+                        style: Helper.textStyle,
+                      ),
+                      if(model!.category=="RENT")
+                        Text(
+                          "/${model!.dailyPrice.toUpperCase()}",
+                          //"MONTHLY",
+                          style: Helper.stlye,
+                        ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+
                 ],
               ),
             ),
-            const SizedBox(height: 20,),
           ],
         ),
       ),

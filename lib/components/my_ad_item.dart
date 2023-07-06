@@ -15,21 +15,18 @@ class MyAdvertisementItem extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              SizedBox(
-                width: 150,
-                height: 110,
-                child: model.photosList[0] == null ||
-                    model.photosList[0]=="" ||
-                    model.photosList[0] == "string"?
-                Image.asset("assets/images/haha.jpeg",
+              model.photosList[0]=="" ||
+              model.photosList[0] == "string"?
+                Image.asset(
+                  "assets/images/haha.jpeg",
                   fit: BoxFit.fill,
-
+                  width: 150,
+                  height: 110,
                 ) :
-                Image.network(model.photosList[0],
+                Image.network(
+                  model.photosList[0],
                   fit: BoxFit.fill,
-
                 ),
-              ),
               Container(
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsetsDirectional.only(start: 12, top: 10, bottom: 8),

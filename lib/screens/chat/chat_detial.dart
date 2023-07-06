@@ -21,8 +21,6 @@ class ChatDetailPage extends StatelessWidget {
     var provider = Provider.of<ChatProvider>(context);
     DateTime currentDate = DateTime.now();
     String formattedDate = DateFormat('dd-MM-yyyy HH:mm:ss').format(currentDate);
-
-    List<ChatMessage> messages = provider.chatMessages;
     double width = MediaQuery.of(context).size.width ;
     return Scaffold(
       appBar: AppBar(
@@ -46,15 +44,15 @@ class ChatDetailPage extends StatelessWidget {
                 const SizedBox(
                   width: 2,
                 ),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      provider.chatUsers[index].image == null ||
-                              provider.chatUsers[index].image == "string" ||
-                              provider.chatUsers[index].image == ""
-                          ? 'assets/images/avtar.png'
-                          : provider.chatUsers[index].image),
-                  maxRadius: 20,
-                  backgroundColor: Colors.white,
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CircleAvatar(
+                    backgroundImage:provider.chatUsers[index].image==null||provider.chatUsers[index].image=="string"||provider.chatUsers[index].image==""? AssetImage('assets/images/avtar.png'):null,
+                    foregroundImage:provider.chatUsers[index].image==null||provider.chatUsers[index].image=="string"||provider.chatUsers[index].image==""? null:NetworkImage(provider.chatUsers[index].image),
+                    backgroundColor: Colors.white,
+                    maxRadius: 30,
+                  ),
                 ),
                 const SizedBox(
                   width: 12,
@@ -69,14 +67,6 @@ class ChatDetailPage extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Text(
-                        "Online",
-                        style: TextStyle(
-                            color: Colors.grey.shade600, fontSize: 13),
-                      ),
                     ],
                   ),
                 ),
@@ -89,28 +79,28 @@ class ChatDetailPage extends StatelessWidget {
       body: 
         Column(
             children: [
-              messages.isNotEmpty ?
+              provider.chatMessages.isNotEmpty ?
               Expanded(
                 child: ListView.builder(
-                  itemCount: messages.length,
+                  itemCount: provider.chatMessages.length,
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   controller: _scrollController,
                   itemBuilder: (context, index) {
-                    final reversedIndex = messages.length - 1 - index;
+                    final reversedIndex = provider.chatMessages.length - 1 - index;
                     return Container(
                       padding:
                           const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                       child: Align(
                         alignment:
-                            (messages[reversedIndex].receiverEmail != provider.currentUserEmail
+                            (provider.chatMessages[reversedIndex].receiverEmail == provider.currentUserEmail
                                 ? Alignment.topRight
                                 : Alignment.topLeft),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color:
-                                (messages[reversedIndex].receiverEmail == provider.currentUserEmail
+                                (provider.chatMessages[reversedIndex].receiverEmail != provider.currentUserEmail
                                     ? Colors.grey.shade200
                                     : Colors.blue[200]),
                           ),
@@ -120,7 +110,7 @@ class ChatDetailPage extends StatelessWidget {
                               SizedBox(
                                 // width: width * messages[index].message.length/10,
                                 child: Text(
-                                  messages[reversedIndex].message,
+                                  provider.chatMessages[reversedIndex].message,
                                   style: const TextStyle(fontSize: 15),
 
                                 ),
@@ -130,7 +120,7 @@ class ChatDetailPage extends StatelessWidget {
                                 SizedBox(
                                   width: width*0.3,
                                   child: Text(
-                                    messages[reversedIndex].date,
+                                    provider.chatMessages[reversedIndex].date,
                                     style: const TextStyle(fontSize: 10,),
                                     textAlign: TextAlign.left,
                                   ),

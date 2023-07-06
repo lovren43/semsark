@@ -69,7 +69,6 @@ class HomeProvider with ChangeNotifier{
   //Api
   getAllAdvertisement() async {
     setLoading(true);
-    print(Helper.token) ;
     var response = await services.getAdvertisements();
     print(response);
     if(response is Success){

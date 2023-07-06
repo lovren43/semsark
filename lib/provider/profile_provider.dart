@@ -3,6 +3,7 @@ import 'package:semsark/Repo/profile_service.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/response/user_details.dart';
 import '../models/response/advertisement_response_model.dart';
+import '../utils/helper.dart';
 
 class ProfileProvider with ChangeNotifier {
   bool adClick = true;
@@ -72,7 +73,8 @@ class ProfileProvider with ChangeNotifier {
     setLoading(true);
     var response = await services.logout();
     if (response is Success) {
-      print("logged out");
+      await Helper.setToken("");
+
     }
     setLoading(false);
     notifyListeners();

@@ -50,10 +50,13 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                   margin: const EdgeInsets.all(5.0),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                    child: Image.network(
-                      image == "" || image == "string"
-                          ? "assets/images/haha.jpeg"
-                          : image,
+                    child:image == "" || image == "string"
+                        ? Image.asset("assets/images/haha.jpeg",
+                      fit: BoxFit.cover,
+                      width: width,
+                    ):
+                    Image.network(
+                      image,
                       fit: BoxFit.cover,
                       width: width,
                     ),
@@ -85,17 +88,20 @@ class AdvertisementDetailsScreen extends StatelessWidget {
             createRowWithItems(
                 Icons.bathtub_outlined, false, "Num Of Bathrooms", width,
                 additionalText: "${provider.model?.numOfBathroom}"),
+            createRowWithItems(
+                Icons.signal_cellular_alt, true, "Signal Type", width,
+                additionalText: "${provider.model?.signalPower}"),
             if (provider.model!.single)
-              createRowWithItems(Icons.person, true, "Accept Singles? ", width),
+              createRowWithItems(Icons.person, false, "Accept Singles? ", width),
             if (provider.model!.elevator)
               createRowWithItems(
-                  Icons.elevator, false, "Found Elevator? ", width),
+                  Icons.elevator, true, "Found Elevator? ", width),
             if (provider.model!.acceptBusiness)
               createRowWithItems(
-                  Icons.business_outlined, true, "Accept Business ?", width),
+                  Icons.business_outlined, false, "Accept Business ?", width),
             if (provider.model!.finished)
               createRowWithItems(
-                  Icons.business_outlined, false, "Finished ?", width),
+                  Icons.business_outlined, true, "Finished ?", width),
             Container(
               alignment: AlignmentDirectional.centerStart,
               padding: const EdgeInsets.only(

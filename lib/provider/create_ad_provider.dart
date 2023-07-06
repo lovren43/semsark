@@ -37,16 +37,19 @@ class CreateAdvertisementProvider with ChangeNotifier{
       num_of_bath_rooms = 1,
       num_of_halls = 1,
       num_of_level = 1;
-  var type_val = "ALL";
-  var signal_val = "ALL";
-  var types = ["ALL", "APARTMENT", "DUPLEX", "STUDIO"];
-  var signals = ["ALL", "Vodafone", "Orange", "Etisalat", "WE"];
+  var type_val = "APARTMENT";
+  var dailyPrice = "MONTHLY";
+  var signal_val = "Vodafone";
+  var city = "Faisal";
+  var gov = "Cairo";
+  var types = ["APARTMENT", "DUPLEX", "STUDIO"];
+  var signals = ["Vodafone", "Orange", "Etisalat", "WE"];
   List<bool> isSelected = [true, false]; // Initialize the selection state of buttons
 
   List<XFile> photos = [];
   late Position currentPosition;
   Map<String , List<String>> governors = {
-    'Cairo': [],
+    'Cairo': ['Faisal','Haram'],
     'Alexandria': [],
     'Port Said': [],
     'Suez' : [],
@@ -122,6 +125,14 @@ class CreateAdvertisementProvider with ChangeNotifier{
     acceptBusiness = val;
     notifyListeners();
   }
+  setGov(val){
+    gov = val;
+    notifyListeners();
+  }
+  setCity(val){
+    city = val;
+    notifyListeners();
+  }
   setAcceptSingle(val){
     acceptSingle = val;
     notifyListeners();
@@ -157,6 +168,10 @@ class CreateAdvertisementProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  setDailyPrice(num){
+    dailyPrice = num;
+    notifyListeners();
+  }
   setLoading(load){
     isLoading = load;
     notifyListeners();
@@ -228,7 +243,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
         signalPower: signal_val,
         elevator: elevator=="YES",
         acceptBusiness: acceptBusiness == "YES",
-        dailyPrice: "dailyPrice",
+        dailyPrice: dailyPrice,
         title: titleController.text,
         category: isSelected[0] ? "RENT" : "SELL",
         apartmentDetails: detailsController.text,

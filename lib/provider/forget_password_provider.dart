@@ -62,7 +62,7 @@ class ForgetPasswordProvider with ChangeNotifier{
     await services.updatePAssword(email,otp, pass);
     setLoading(false);
     if (response is Success) {
-      Helper.token = response.response as String ;
+      await Helper.setToken(response.response as String);
       success = true;
     } else if (response is Failure) {
       errorMessage = response.errorResponse as String?;

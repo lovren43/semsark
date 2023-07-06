@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:semsark/Repo/home_services.dart';
 import 'package:semsark/Repo/location_services.dart';
 import 'package:semsark/provider/create_ad_provider.dart';
 import 'package:semsark/provider/filter_provider.dart';
@@ -30,11 +31,14 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 3) , () async {
       // get Token
+      await Helper.getToken() ;
       String token = Helper.token;
       if(token!=""){
+        String token = await HomeServices().refreshToken() as String;
+        await Helper.setToken(token) ;
         await Provider.of<HomeProvider>(context , listen: false).init();
         await Provider.of<ProfileProvider>(context, listen: false).init();
-        await Provider.of<ChatProvider>(context, listen: false).init();
+        //await Provider.of<ChatProvider>(context, listen: false).init();
         await Provider.of<CreateAdvertisementProvider>(context, listen: false).init();
         //await Provider.of<FilterProvider>(context).init();
         setState(() {

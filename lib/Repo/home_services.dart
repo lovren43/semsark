@@ -13,14 +13,37 @@ class HomeServices {
 
   var headers = {
     'Access-Control-Allow-Headers':
-    "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Authorization",
+    "DNT,X-CustomHeader,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Authorization",
     'Access-Control-Allow-Origin': "*",
     'Access-Control-Allow-Credentials': "true",
     'content-Type': 'application/json',
     'Accept': "application/json",
+    "Connection": "Keep-Alive",
+    "Keep-Alive": "timeout=5, max=1000"
   };
 
 
+  Future checkIsFav(id) async {
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      final http.Response response = await http.get(
+        Uri.parse("$CHECK_IS_FAV$id"),
+        headers: headers,
+      );
+      return response.body ;
+    } catch (e) {
+      return false ;
+    }
+  }
+  Future refreshToken() async {
+  headers['Authorization'] = 'Bearer $token';
+
+  final http.Response response = await http.get(
+  Uri.parse("$baseURL/token/refresh"),
+  headers: headers,
+  );
+  return jsonDecode(response.body)["refreshToken"] ;
+}
   Future addToFav(id) async
   {
     headers['Authorization'] = 'Bearer $token';
@@ -30,7 +53,7 @@ class HomeServices {
         Uri.parse("$ADD_TO_FAV/$id"),
         headers: headers,
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 302) {
         return Success(
           code: 200,
           response:"",
@@ -48,12 +71,15 @@ class HomeServices {
   Future removeFromFav(id) async
   {
     headers['Authorization'] = 'Bearer $token';
-
+    print(token);
     try {
       final http.Response response = await http.delete(
-        Uri.parse("$DELETE_FROM_FAV/$id"),
+        Uri.parse("${DELETE_FROM_FAV}$id"),
         headers: headers,
       );
+      print(response.statusCode);
+      print(response.body);
+
       if (response.statusCode == 200) {
         return Success(
           code: 200,
@@ -97,7 +123,6 @@ class HomeServices {
       return Failure(code: UNKNOWN, errorResponse: e);
     }
   }
-  //String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlc0Blcy5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNjg5MjQ2NTI4LCJpYXQiOjE2ODc0NDY1Mjh9._Bzg1j7vSXPvY9QA6cVpRhAHTcDCBZSmaZSGtbn0-ypnL3lrUEgjuN7YaKFYpBAf9a0-m4IrdaC-1NehnAoKHA";
   String token = Helper.token;
   Future createAdvertisement(CreateAdvertisementModel model) async
   {
@@ -125,11 +150,6 @@ class HomeServices {
     }
   }
 
-
-  // Future<String> getToken() async {
-  //   var box =await Hive.openBox('myBox');
-  //   return box.get('token');
-  // }
   Future getUser() async {
     headers['Authorization'] = 'Bearer $token';
     try {
@@ -150,13 +170,12 @@ class HomeServices {
     } on FormatException {
       return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
     } catch (e) {
+      print(e);
       return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
     }
   }
 
   Future getAdvertisements() async {
-    // String token = await getToken();
-    // headers['Authorization'] = 'Bearer $token';
     try {
       final http.Response response = await http.get(
         Uri.parse(GET_ALL_ADS),

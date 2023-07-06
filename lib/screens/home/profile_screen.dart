@@ -330,8 +330,8 @@ class ProfileScreen extends StatelessWidget {
         const AssetImage("assets/images/Mask.png") : null,
       ),
       Icon(
-        provider.user.verifyId == null || !provider.user.verifyId! ? Icons.cancel : Icons.check_circle,
-        color: provider.user.verifyId == null || !provider.user.verifyId! ? Colors.redAccent : Colors.green,
+        provider.user.verifyId == null || !provider.user.verifyId! ? Icons.warning : Icons.check_circle,
+        color: provider.user.verifyId == null || !provider.user.verifyId! ? Colors.orange : Helper.blue,
       ),
     ],
   );
