@@ -112,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
         ),
         // const SizedBox(height: 0,),
         SizedBox(
-          height: height*0.5,
+          height: height*0.35,
           child: cur.isNotEmpty
               ? ListView.builder(
                   itemCount: cur.length,

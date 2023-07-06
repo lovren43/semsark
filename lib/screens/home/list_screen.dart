@@ -188,7 +188,7 @@ class AdvertisementListScreen extends StatelessWidget {
             const Text("No Ads Yet")
             ,
           ),
-          SizedBox(height: 10,),
+          SizedBox(height: 30,)
         ],
       ),
     );

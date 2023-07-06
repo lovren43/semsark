@@ -31,7 +31,9 @@ class AdItem extends StatelessWidget {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  child: model!.photosList[0]=="" ||
+                  child: model!.photosList==null ||
+                      model!.photosList.isEmpty||
+                  model!.photosList[0]=="" ||
                       model!.photosList[0] == "string"?
                   Image.asset(
                     "assets/images/haha.jpeg",
@@ -50,7 +52,7 @@ class AdItem extends StatelessWidget {
                   alignment: AlignmentDirectional.topEnd,
                     child: Container(
                       width: width*0.18,
-                      height: height*0.04,
+                      height: height*0.05,
                       margin: const EdgeInsetsDirectional.only(top: 10 ,end: 10),
                       child: Padding(
                         padding: EdgeInsets.all(8.0),

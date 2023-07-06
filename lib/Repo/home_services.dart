@@ -198,6 +198,29 @@ class HomeServices {
       return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
     }
   }
+  Future getRecommendations(id) async {
+    try {
+      final http.Response response = await http.post(
+        Uri.parse("$GET_RECOMMENDED_ADS$id"),
+        headers: headers,
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response: allAdvertisementFromJson(response.body),
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      print(e) ;
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
   Future getAdvertisementById( id ) async {
     // String token = await getToken();
     headers['Authorization'] = 'Bearer $token';

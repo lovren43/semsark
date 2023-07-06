@@ -11,7 +11,7 @@ class AdvertisementDetailsProvider with ChangeNotifier{
   HomeServices services = HomeServices();
   AdvertisementModel? model;
   int id = 0 ;
-  List<AdvertisementModel>? recomended;
+  List<AdvertisementModel> recomended =[];
   changeFav() async {
     if(!isFav){
       await addToFav(id) ;
@@ -38,6 +38,10 @@ class AdvertisementDetailsProvider with ChangeNotifier{
     id = model.id ;
     var res = await services.checkIsFav(id) ;
     isFav = res == "true";
+    var response = await services.getRecommendations(id) ;
+    if(response is Success)
+      recomended = response.response as List<AdvertisementModel> ;
+    print(recomended);
     notifyListeners() ;
   }
 

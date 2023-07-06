@@ -23,3 +23,4 @@ const String FORGETPASSWORD_CHECK_OTP= "$baseURL/forgetPassword/checkOtp";
 const String ADD_TO_FAV= "$baseURL/user/addFavourite";
 const String DELETE_FROM_FAV= "$baseURL/user/deleteFavourite/";
 const String CHECK_IS_FAV= "$baseURL/user/getMyFavouriteById/";
+const String GET_RECOMMENDED_ADS= "$baseURL/user/recommendation/";

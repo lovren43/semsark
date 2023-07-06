@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -8,6 +10,8 @@ import 'package:semsark/utils/end_points.dart';
 import 'package:semsark/utils/helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
+
+import '../../components/my_ad_item.dart';
 
 class AdvertisementDetailsScreen extends StatelessWidget {
   @override
@@ -227,6 +231,25 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
+            Container(
+              height: (height*0.22)* min(provider.recomended.length, 3),
+              padding: EdgeInsetsDirectional.all(10),
+              child:provider.recomended.isNotEmpty?
+
+              ListView.builder(
+                  itemCount: min(provider.recomended.length, 3),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) => InkWell(
+                      onTap: () {
+                        Provider.of<AdvertisementDetailsProvider>(context, listen: false).setModel(provider.recomended[index]) ;
+                        Navigator.push(context, MaterialPageRoute(builder: (_) =>
+                            AdvertisementDetailsScreen()
+                        )) ;
+                      },
+                      child: MyAdvertisementItem(
+                        model: provider.recomended[index],
+                      ))) : LoadingScreen(),
             ),
           ],
         ),
