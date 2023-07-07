@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:semsark/Repo/profile_service.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/response/user_details.dart';
+import '../Repo/remote/firebase_services.dart';
 import '../models/response/advertisement_response_model.dart';
+import '../utils/constants.dart';
 import '../utils/helper.dart';
 
 class ProfileProvider with ChangeNotifier {
@@ -12,6 +16,10 @@ class ProfileProvider with ChangeNotifier {
   List<AdvertisementModel> fav = [];
   UserDetails user = UserDetails(id: 1, email: 'email.@email.com',);
   XFile? image ;
+
+  XFile? userImage;
+  XFile? NidImage;
+  String errorMsg= "";
 
 
   bool loading = false;
@@ -79,6 +87,54 @@ class ProfileProvider with ChangeNotifier {
     setLoading(false);
     notifyListeners();
   }
+
+  Future uploadPhoto(XFile element) async {
+    final FirebaseServices firebaseServices = FirebaseServices();
+    var currentTime = DateTime.now().millisecondsSinceEpoch;
+    await firebaseServices.upload_image(File(element.path), APP_NAME, "$currentTime") ;
+    var path = await firebaseServices.get_url(APP_NAME, "$currentTime");
+    return path;
+  }
+
+  verify() async {
+    setLoading(true) ;
+    if(userImage!=null && NidImage != null){
+      var path1 = await uploadPhoto(userImage!) ;
+      var path2 = await uploadPhoto(NidImage!) ;
+      var response =await services.verifyNID(path1 , path2) ;
+      print(response) ;
+      if(response is Success){
+        if(response.response == true){
+          success = true ;
+        }else {
+          errorMsg = "Some Error The 2 faces doesn't match,\n Please upload a clear Images" ;
+        }
+
+      }else if(response is Failure){
+        errorMsg = response.errorResponse as String;
+      }
+    }
+    else {
+      errorMsg = "Please Add Photos";
+    }
+    setLoading(false) ;
+  }
+
+  Future<void> takeUserPhoto() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      userImage = pickedFile ;
+      notifyListeners();
+    }
+  }
+  Future<void> takeNIdPhoto() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      NidImage = pickedFile ;
+      notifyListeners();
+    }
+  }
+
 
   deleteAd(id) async{
     setLoading(true) ;

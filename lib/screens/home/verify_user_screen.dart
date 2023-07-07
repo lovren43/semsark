@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/provider/create_ad_provider.dart';
+import 'package:semsark/provider/profile_provider.dart';
 
 import '../../utils/helper.dart';
 
@@ -18,7 +19,7 @@ class VerifyUserScreen extends StatelessWidget {
   _ui(context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    var provider = Provider.of<CreateAdvertisementProvider>(context);
+    var provider = Provider.of<ProfileProvider>(context);
 
     return SafeArea(
       child: Stack(
@@ -150,7 +151,11 @@ class VerifyUserScreen extends StatelessWidget {
                       ),
                       child: MaterialButton(
                         onPressed: () async {
-                          provider.verify();
+                          await provider.verify();
+                          if(provider.success){
+                            Navigator.pop(context);
+                            await provider.init();
+                          }
                         },
                         color: Helper.blue,
                         child: Padding(
@@ -173,7 +178,7 @@ class VerifyUserScreen extends StatelessWidget {
               ),
             ),
           ),
-          if (provider.isLoading) const LoadingScreen(),
+          if (provider.loading) const LoadingScreen(),
         ],
       ),
     );

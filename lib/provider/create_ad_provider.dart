@@ -25,9 +25,6 @@ class CreateAdvertisementProvider with ChangeNotifier{
   bool isLoading = false;
   bool success = false;
 
-  XFile? userImage;
-  XFile? NidImage;
-
   HomeServices services = HomeServices();
   String errorMsg="";
 
@@ -198,44 +195,6 @@ class CreateAdvertisementProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  verify() async {
-    setLoading(true) ;
-    if(userImage!=null && NidImage != null){
-      var path1 = await uploadPhoto(userImage!) ;
-      var path2 = await uploadPhoto(NidImage!) ;
-      var response =await HomeServices().verifyNID(path1 , path2) ;
-      if(response is Success){
-        if(response.response == true){
-          success = true ;
-        }else {
-          errorMsg = "Some Error The 2 faces doesn't match,\n Please upload a clear Images" ;
-        }
-
-      }else if(response is Failure){
-        errorMsg = response.errorResponse as String;
-      }
-    }
-    else {
-      errorMsg = "Please Add Photos";
-    }
-    setLoading(false) ;
-  }
-
-  Future<void> takeUserPhoto() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      userImage = pickedFile ;
-      notifyListeners();
-    }
-  }
-  Future<void> takeNIdPhoto() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      NidImage = pickedFile ;
-      notifyListeners();
-    }
-  }
-
   Future uploadPhoto(XFile element) async {
     final FirebaseServices firebaseServices = FirebaseServices();
     var currentTime = DateTime.now().millisecondsSinceEpoch;
@@ -291,26 +250,4 @@ class CreateAdvertisementProvider with ChangeNotifier{
     }
   }
 
-
-  EditAdvertisement() async {
-    photoList = [] ;
-    for (int i = 0; i < photos.length; i++) {
-      var ppp= await uploadPhoto(photos[i]);
-      photoList.add(ppp);
-    }
-    setLoading(true);
-    if(!photoList.isEmpty)
-      print(photoList[0]);
-
-    // var response = await services.editAdvertisement(model);
-    // setLoading(false);
-    //
-    // if(response is Success){
-    //   success = true ;
-    //   notifyListeners() ;
-    // }else if (response is Failure){
-    //   print(response);
-    //   errorMsg = response.errorResponse as String;
-    // }
-  }
 }

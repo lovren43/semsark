@@ -74,6 +74,33 @@ class ProfileServices {
     }
   }
 
+  Future verifyNID(face1 , face2) async
+  {
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(VERIFY_NID),
+        headers: headers,
+        body: jsonEncode({
+          "face1": face1,
+          "face2": face2
+        }),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Success(
+          code: 200,
+          response:jsonDecode(response.body)["result"],
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: jsonDecode(response.body)["message"]);
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: FormatException);
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: e);
+    }
+  }
   Future getMyAds() async {
     String url = '$GET_MY_ADS';
     headers['Authorization'] = 'Bearer $token';
