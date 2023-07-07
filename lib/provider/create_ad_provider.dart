@@ -273,4 +273,49 @@ class CreateAdvertisementProvider with ChangeNotifier{
       errorMsg = response.errorResponse as String;
     }
   }
+
+  EditAdvertisement() async {
+    photoList = [] ;
+    for (int i = 0; i < photos.length; i++) {
+      var ppp= await uploadPhoto(photos[i]);
+      photoList.add(ppp);
+    }
+    setLoading(true);
+    if(!photoList.isEmpty)
+      print(photoList[0]);
+    CreateAdvertisementModel model = CreateAdvertisementModel(
+        photosList: photoList,
+        signalPower: signal_val,
+        elevator: elevator=="YES",
+        acceptBusiness: acceptBusiness == "YES",
+        dailyPrice: dailyPrice,
+        title: titleController.text,
+        category: isSelected[0] ? "RENT" : "SELL",
+        apartmentDetails: detailsController.text,
+        city: "Zamalek",
+        gov: "Giza",
+        price: double.parse(priceController.text),
+        lng: currentPosition.longitude,
+        lat: currentPosition.latitude,
+        area: int.parse(areaController.text),
+        numOfRoom: num_of_rooms,
+        numOfBathroom: num_of_bath_rooms,
+        numOfHalls: num_of_halls,
+        level: num_of_level,
+        finished: fin_value=="YES",
+        single: acceptSingle == "YES",
+        types: type_val
+    );
+
+    var response = await services.createAdvertisement(model);
+    setLoading(false);
+
+    if(response is Success){
+      success = true ;
+      notifyListeners() ;
+    }else if (response is Failure){
+      print(response);
+      errorMsg = response.errorResponse as String;
+    }
+  }
 }

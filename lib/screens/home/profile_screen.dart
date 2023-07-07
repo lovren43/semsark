@@ -14,6 +14,7 @@ import '../../models/response/advertisement_response_model.dart';
 import '../../provider/advertisement_detailes_provider.dart';
 import '../advertisementDetails/advertisement_details_screen.dart';
 import '../auth/personal_info_screen.dart';
+import 'edit_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
 
@@ -178,8 +179,6 @@ class ProfileScreen extends StatelessWidget {
                         alignment: Alignment.topRight,
                         onPressed: () {
 
-
-
                           showMenu(
                             context: context,
                               position: const RelativeRect.fromLTRB(kToolbarHeight, 80, 20, 0),
@@ -198,7 +197,7 @@ class ProfileScreen extends StatelessWidget {
                             if (selectedValue == 'Edit Profile') {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => PersonalInfoScreen()),
+                                MaterialPageRoute(builder: (context) => EditProfileScreen()),
                               );
                               // Handle Option 1 selection
                             } else if (selectedValue == 'Logout') {

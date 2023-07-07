@@ -150,6 +150,32 @@ class HomeServices {
     }
   }
 
+  Future editAdvertisement(CreateAdvertisementModel model) async
+  {
+    headers['Authorization'] = 'Bearer $token';
+
+    try {
+      final http.Response response = await http.patch(
+          Uri.parse(EDIT_AD),
+          headers: headers,
+          body: createAdvertisementModelToJson(model)
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Success(
+          code: 200,
+          response:"",
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: jsonDecode(response.body)["message"]);
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: FormatException);
+    } catch (e) {
+      return Failure(code: UNKNOWN, errorResponse: e);
+    }
+  }
+
   Future getUser() async {
     headers['Authorization'] = 'Bearer $token';
     try {

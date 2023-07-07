@@ -18,8 +18,8 @@ import '../../components/loading_screen.dart';
 import '../../provider/sign_up_provider.dart';
 import '../home/home_screen.dart';
 
-class EditProfile extends StatelessWidget {
-  EditProfile({
+class EditProfileScreen extends StatelessWidget {
+  EditProfileScreen({
     Key? key,
   }) : super(key: key);
 
@@ -162,7 +162,7 @@ class EditProfile extends StatelessWidget {
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(80))
                                 ),
-                                
+
                                 child:provider.image!=null
                               ?SizedBox(
                                   height: 120,
@@ -185,9 +185,9 @@ class EditProfile extends StatelessWidget {
                                           foregroundImage: provider.user.img==null ||
                                               provider.user.img=="string" ||
                                               provider.user.img==""? AssetImage("assets/images/Mask.png"):null,
-                                          
+
                                         ))
-                                    
+
                             ),
                           ),
                           Positioned(
@@ -400,6 +400,7 @@ class EditProfile extends StatelessWidget {
                               CustomButon(
                                 text: "Edit",
                                 onTap: () async {
+
                                     //Position position = await _locationServices.getCurrentPosition(context);
                                     Navigator.pushReplacement(
                                         context,

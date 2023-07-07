@@ -17,6 +17,7 @@ import 'package:semsark/provider/login_provider.dart';
 import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/provider/sign_up_provider.dart';
 import 'package:semsark/screens/advertisementDetails/advertisement_details_screen.dart';
+import 'package:semsark/screens/advertisementDetails/edit_ad_details.dart';
 import 'package:semsark/screens/auth/forget_password_screen.dart';
 import 'package:semsark/screens/auth/new_password_screen.dart';
 import 'package:semsark/screens/auth/password_verfication_code.dart';
@@ -58,7 +59,7 @@ class Semsark extends StatelessWidget {
         ChangeNotifierProvider(create: (create) => AdvertisementDetailsProvider()),
         ChangeNotifierProvider(create: (create) => ForgetPasswordProvider()),
       ],
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()),
+      child: MaterialApp(debugShowCheckedModeBanner: false, home: EditAdScreen()),
     );
   }
 }

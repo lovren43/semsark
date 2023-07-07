@@ -24,6 +24,7 @@ class ProfileProvider with ChangeNotifier {
     setLoading(true);
     await getUser();
     await getMyAds();
+
     setLoading(false);
   }
 
@@ -55,7 +56,20 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getMyFavourits() async {
+    setLoading(true);
+    var response = await services.getMyFavs();
 
+    if (response is Success) {
+
+      fav = response.response as List<AdvertisementModel>;
+
+      setLoading(false);
+
+    }
+    setLoading(false);
+    notifyListeners();
+  }
   Future<void> logout() async {
     setLoading(true);
     var response = await services.logout();
@@ -66,27 +80,23 @@ class ProfileProvider with ChangeNotifier {
     setLoading(false);
     notifyListeners();
   }
-  Future<void> editProfile() async {
-    setSuccess(false);
-    // Profile userDetails = Profile(
-    //     username: name,
-    //     gender: gender,
-    //     email: email,
-    //     password: password,
-    //     phone: phone,
-    //     img: "");
-    //
-    // var res = await services.editUser(userDetails);
-    //
-    // if (res is Success) {
-    //   user = res.response as UserDetails;
-    //   myAds = user.myAds;
-    //
-    //   success = true;
-    // }
-
-    notifyListeners();
-  }
+  // Future<void> editProfile() async {
+  //   setSuccess(false);
+  //   Profile userDetails = Profile(
+  //       name: name,
+  //       gender: gender,
+  //       email: email,
+  //       password: password,
+  //       phone: phone, id: null, roles: [],
+  //       );
+  //   var res = await services.editUser(userDetails);
+  //   if (res is Success) {
+  //     user = res.response as UserDetails;
+  //     success = true;
+  //   }
+  //
+  //   notifyListeners();
+  // }
 
   setShowPassword() {
     showPassword = !showPassword;
@@ -108,8 +118,10 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setAd(clk) {
+  Future<void> setAd(clk) async {
+    await getMyFavourits();
     adClick = clk;
     notifyListeners();
+
   }
 }

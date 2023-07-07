@@ -71,6 +71,30 @@ class ProfileServices {
     }
   }
 
+  Future getMyFavs() async {
+    String url = '$GET_MY_FAVS';
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+
+        return Success(code: 200, response: allAdvertisementFromJson(response.body));
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      print(e) ;
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
+
   Future editUser(user) async {
     String url = '$UPDATE_USER';
     headers['Authorization'] = 'Bearer $token';
