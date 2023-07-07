@@ -98,7 +98,7 @@ class AdvertisementListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     var provider = Provider.of<HomeProvider>(context);
-    print(Helper.token) ;
+
 
     return SafeArea(
       child: Column(
@@ -174,7 +174,7 @@ class AdvertisementListScreen extends StatelessWidget {
             ],
           ),
           Expanded(
-            child:provider.advertisements != null ? ListView.builder(
+            child:provider.advertisements != null || provider.advertisements!.length!=0? ListView.builder(
                 itemBuilder: (context, index) =>
                     InkWell(
                       onTap: () async {

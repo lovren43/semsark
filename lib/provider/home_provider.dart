@@ -17,6 +17,7 @@ import 'dart:ui' as ui;
 class HomeProvider with ChangeNotifier{
 
   // att
+  bool filter = false;
   bool isMap = true;
   bool isLoading = false;
   bool isVerified = false;
@@ -34,11 +35,15 @@ class HomeProvider with ChangeNotifier{
     setLoading(true);
     currentPosition = await LocationServices().getCurrentPosition();
     await getAllAdvertisement();
-    print(advertisements);
+
     setLoading(false);
   }
   HomeProvider(){
     init();
+  }
+  setFilter(val){
+    filter=val;
+    notifyListeners();
   }
   changeMap(){
     isMap = !isMap;
@@ -69,10 +74,8 @@ class HomeProvider with ChangeNotifier{
   //Api
   getAllAdvertisement() async {
     setLoading(true);
-    var response = await services.getAdvertisements();
-    print(response);
-    if(response is Success){
-      advertisements = response.response as List<AdvertisementModel> ;
+    if(filter){
+
       markers = {} ;
       final Uint8List markerIcon = await getBytesFromAsset("assets/images/markerm.png", 200);
 
@@ -88,15 +91,44 @@ class HomeProvider with ChangeNotifier{
           onTap: (){
             mapController.addInfoWindow!(
                 MapAdvertisementItem(model: advertisements![i],) ,
-              position
+                position
             );
           },
         ));
 
       }
-    }else if (response is Failure){
-      errorMsg = response.errorResponse as String;
+    }else{
+      var response = await services.getAdvertisements();
+
+      if(response is Success){
+        advertisements = response.response as List<AdvertisementModel> ;
+        markers = {} ;
+        final Uint8List markerIcon = await getBytesFromAsset("assets/images/markerm.png", 200);
+
+        setLoading(false);
+        for(int i = 0 ; i<advertisements!.length ; i++){
+          var position = LatLng(
+            double.tryParse('${advertisements![i].lat}')!.toDouble() ,
+            double.tryParse('${advertisements![i].lng}')!.toDouble() ,
+          );
+          markers.add(Marker(markerId: MarkerId("$i"),
+            position: position,
+            icon: BitmapDescriptor.fromBytes(markerIcon),
+            onTap: (){
+              mapController.addInfoWindow!(
+                  MapAdvertisementItem(model: advertisements![i],) ,
+                  position
+              );
+            },
+          ));
+
+        }
+      }else if (response is Failure){
+        errorMsg = response.errorResponse as String;
+      }
     }
     setLoading(false);
+
+    setFilter(false);
   }
 }

@@ -18,13 +18,13 @@ class MyAdvertisementItem extends StatelessWidget {
             model.photosList[0] == "string"?
               Image.asset(
                 "assets/images/haha.jpeg",
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 width: 150,
                 height: 110,
               ) :
               Image.network(
                 model.photosList[0],
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 width: 150,
                 height: 110,
               ),

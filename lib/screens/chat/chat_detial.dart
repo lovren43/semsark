@@ -121,7 +121,7 @@ class ChatDetailPage extends StatelessWidget {
                                   child: Text(
                                     provider.chatMessages[index].date,
                                     style: const TextStyle(fontSize: 10,),
-                                    textAlign: TextAlign.left,
+                                    textAlign: TextAlign.right,
                                   ),
                                 )
 

@@ -207,7 +207,7 @@ class HomeServices {
         Uri.parse(GET_ALL_ADS),
         headers: headers,
       );
-      print(response.body);
+
       if (response.statusCode == 200) {
         return Success(
           code: 200,
@@ -259,6 +259,32 @@ class HomeServices {
         return Success(
           code: 200,
           response: advertisementModelFromJson(response.body),
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+    } catch (e) {
+      print(e) ;
+      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+    }
+  }
+  Future filter(data) async {
+    // String token = await getToken();
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      final http.Response response = await http.post(
+          Uri.parse("$FILTER"),
+          headers: headers,
+          body: jsonEncode(data)
+      );
+      if (response.statusCode == 200) {
+        List<AdvertisementModel>list=[];
+        return Success(
+          code: 200,
+          response: jsonDecode(response.body).length==0||jsonDecode(response.body)==[]? list:allAdvertisementFromJson(response.body),
         );
       }
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
