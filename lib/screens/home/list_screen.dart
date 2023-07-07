@@ -7,6 +7,7 @@ import 'package:semsark/utils/constants.dart';
 
 import '../../components/show_ads_item.dart';
 import '../../utils/helper.dart';
+import '../advertisementDetails/edit_ad_details.dart';
 
 class AdvertisementListScreen extends StatelessWidget {
   AdvertisementListScreen({Key? key}) : super(key: key);
@@ -181,7 +182,7 @@ class AdvertisementListScreen extends StatelessWidget {
                             provider.advertisements![index]
                         );
 
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdvertisementDetailsScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => EditAdScreen()));
                       },
                         child: AdItem(model: provider.advertisements![index],)),
                 itemCount: provider.advertisements!.length) :

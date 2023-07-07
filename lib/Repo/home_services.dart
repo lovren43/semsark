@@ -150,15 +150,15 @@ class HomeServices {
     }
   }
 
-  Future editAdvertisement(CreateAdvertisementModel model) async
+  Future editAdvertisement(AdvertisementModel model) async
   {
     headers['Authorization'] = 'Bearer $token';
 
     try {
       final http.Response response = await http.patch(
-          Uri.parse(EDIT_AD),
+          Uri.parse("$EDIT_AD/$model"),
           headers: headers,
-          body: createAdvertisementModelToJson(model)
+          body: advertisementModelToJson(model as List<AdvertisementModel>)
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Success(

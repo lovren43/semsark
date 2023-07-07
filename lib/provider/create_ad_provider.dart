@@ -7,6 +7,7 @@ import 'package:semsark/Repo/home_services.dart';
 import 'package:semsark/Repo/location_services.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/request/ad_model.dart';
+import 'package:semsark/models/response/advertisement_response_model.dart';
 import 'package:semsark/utils/constants.dart';
 
 import '../Repo/remote/firebase_services.dart';
@@ -283,7 +284,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
     setLoading(true);
     if(!photoList.isEmpty)
       print(photoList[0]);
-    CreateAdvertisementModel model = CreateAdvertisementModel(
+    AdvertisementModel model = AdvertisementModel(
         photosList: photoList,
         signalPower: signal_val,
         elevator: elevator=="YES",
@@ -304,10 +305,10 @@ class CreateAdvertisementProvider with ChangeNotifier{
         level: num_of_level,
         finished: fin_value=="YES",
         single: acceptSingle == "YES",
-        types: type_val
+        types: type_val, id: 1, user: , views: 0, date: DateTime.now()
     );
 
-    var response = await services.createAdvertisement(model);
+    var response = await services.editAdvertisement(model);
     setLoading(false);
 
     if(response is Success){

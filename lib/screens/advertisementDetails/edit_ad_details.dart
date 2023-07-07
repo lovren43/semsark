@@ -449,7 +449,7 @@ class _EditAdScreenState extends State<EditAdScreen> {
                             child: MaterialButton(
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  await provider.createAdvertisement() ;
+                                  await provider.EditAdvertisement() ;
                                   if(provider.success) {
                                     Provider.of<HomeProvider>(context , listen: false).changePosition(PROFILE_PAGE);
                                   }
@@ -493,7 +493,7 @@ class _EditAdScreenState extends State<EditAdScreen> {
                               child: const Padding(
                                 padding: EdgeInsets.all(15.0),
                                 child: Text(
-                                  "CREATE",
+                                  "Edit",
                                   style: TextStyle(
                                     fontSize: 22,
                                     color: Colors.white,
