@@ -32,8 +32,8 @@ class ProfileProvider with ChangeNotifier {
     await getUser();
     await getMyAds();
     await getMyFavourits();
-    controller.text=user.phone!.substring(3);
-    usernameContoller.text=user.username!;
+    controller.text=user.phone==null? "" :user.phone!.substring(3);
+    usernameContoller.text=user.username??"";
     setLoading(false);
   }
 

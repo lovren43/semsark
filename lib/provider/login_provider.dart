@@ -34,12 +34,12 @@ class LoginProvider with ChangeNotifier {
         await services.login(email, password);
     setLoading(false);
     if (response is Success) {
-
       await Helper.setToken(response.response as String);
-      notifyListeners();
+
       success = true;
     } else if (response is Failure) {
       errorMessage = response.errorResponse as String?;
     }
+    notifyListeners();
   }
 }
