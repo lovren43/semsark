@@ -6,12 +6,14 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/provider/advertisement_detailes_provider.dart';
+import 'package:semsark/screens/home/chat_screen.dart';
 import 'package:semsark/utils/end_points.dart';
 import 'package:semsark/utils/helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 
 import '../../components/my_ad_item.dart';
+import '../../provider/chat_provider.dart';
 
 class AdvertisementDetailsScreen extends StatelessWidget {
   @override
@@ -21,6 +23,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     var provider = Provider.of<AdvertisementDetailsProvider>(context);
+    var chatProvider = Provider.of<ChatProvider>(context);
     if(provider.isLoading) return const LoadingScreen() ;
     return Scaffold(
       appBar: AppBar(
@@ -286,8 +289,14 @@ class AdvertisementDetailsScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.chat_outlined),
               color: Helper.blue,
-              onPressed: () {
-                // Handle call button press
+              onPressed: () async{
+                chatProvider.setReciverEmail(provider.model!.user.email);
+                await chatProvider.getRoom(provider.model!.user.email);
+                await chatProvider.getCurrentUser();
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ChatScreen();
+                }));
               },
             ),
             IconButton(

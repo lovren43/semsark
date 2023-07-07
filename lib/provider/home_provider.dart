@@ -17,6 +17,7 @@ import 'dart:ui' as ui;
 class HomeProvider with ChangeNotifier{
 
   // att
+  String search="";
   bool filter = false;
   bool isMap = true;
   bool isLoading = false;
@@ -182,4 +183,15 @@ class HomeProvider with ChangeNotifier{
       }
     notifyListeners();
   }
+
+  get searchList {
+    return advertisements!.where((element) => element.title.toLowerCase().contains(search.toLowerCase()) || element.category.toLowerCase().contains(search.toLowerCase()) || element.types.toLowerCase().contains(search.toLowerCase()) || element.city.toLowerCase().contains(search.toLowerCase()) || element.gov.toLowerCase().contains(search.toLowerCase()) || element.area.toString().toLowerCase().contains(search.toLowerCase())).toList();
+  }
+
+  setSearch(txt){
+    search = txt;
+    print(search);
+    notifyListeners();
+  }
+
 }

@@ -1,6 +1,7 @@
 const String baseURL = "http://10.0.2.2:8080";
 //const String baseURL = "http://localhost:8080";
 const String GET_USER = "$baseURL/user/getUser";
+
 const String UPDATE_USER = "$baseURL/insecure/userDetails/updateUser";
 const String VERFIY_EMAIL = "$baseURL/insecure/userDetails/checkEmail";
 const String LOGIN = "$baseURL/insecure/authenticate";

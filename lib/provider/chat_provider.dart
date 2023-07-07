@@ -13,8 +13,10 @@ class ChatProvider with ChangeNotifier {
   String currentUserEmail = "";
   String? reciverEmail;
   UserDetails? curUser;
+  UserDetails userById=UserDetails(id: 0, email: "");
+  String userByIdImage="";
   String room = "";
-
+  var uid='';
   ChatMessage message =
       ChatMessage(receiverEmail: "", message: "", status: true, date: "");
 
@@ -44,6 +46,15 @@ class ChatProvider with ChangeNotifier {
       currentUserEmail = "islammabououf@gmail.com";
     }
   }
+  getUserById(id) async {
+    var response = await HomeServices().getUserById(id) ;
+    if(response is Success){
+      userById = response.response as UserDetails ;
+      userByIdImage=userById.img!;
+    }
+    notifyListeners();
+  }
+
   ChatProvider() {
     init();
   }
@@ -130,6 +141,10 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  setUid(id){
+    uid=id.toString();
+    notifyListeners();
+  }
   setDate(date) {
     this.message.date = date;
     notifyListeners();

@@ -29,7 +29,6 @@ class _ChatScreenState extends State<ChatScreen> {
     double height = MediaQuery.of(context).size.height ;
     var provider = Provider.of<ChatProvider>(context);
     //getAllMessage(provider);
-    List<ChatMessage> messages = provider.chatMessages;
     if(provider.loading) return const LoadingScreen() ;
     return Scaffold(
       body: SingleChildScrollView(

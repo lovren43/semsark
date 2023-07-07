@@ -108,9 +108,10 @@ class AdvertisementListScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              controller: _textEditingController,
+
               onChanged: (txt) {
-                print(txt);
+                provider.setSearch(txt);
+
               },
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
@@ -179,18 +180,18 @@ class AdvertisementListScreen extends StatelessWidget {
             ],
           ),
           Expanded(
-            child:provider.advertisements != null || provider.advertisements!.length!=0? ListView.builder(
+            child:provider.searchList != null || provider.searchList!.length!=0? ListView.builder(
                 itemBuilder: (context, index) =>
                     InkWell(
                       onTap: () async {
                         await Provider.of<AdvertisementDetailsProvider>(context , listen: false).setModel(
-                            provider.advertisements![index]
+                            provider.searchList![index]
                         );
 
                         Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdvertisementDetailsScreen()));
                       },
-                        child: AdItem(model: provider.advertisements![index],)),
-                itemCount: provider.advertisements!.length) :
+                        child: AdItem(model: provider.searchList![index],)),
+                itemCount: provider.searchList!.length) :
             const Text("No Ads Yet")
             ,
           ),
