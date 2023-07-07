@@ -44,8 +44,8 @@ class AdItem extends StatelessWidget {
                   Image.network(
                     model!.photosList[0],
                     fit: BoxFit.fill,
-                    width: 150,
-                    height: 110,
+                    width: width,
+                    height: height*0.25,
                   ),
                 ),
                 Align(

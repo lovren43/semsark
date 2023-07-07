@@ -31,6 +31,7 @@ class MapAdvertisementItem extends StatelessWidget {
         ),
         child: Row(
           children: [
+            model.photosList.isEmpty ||
             model.photosList[0] == null ||
                 model.photosList[0]=="" ||
                 model.photosList[0] == "string"?

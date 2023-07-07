@@ -24,7 +24,7 @@ class ProfileProvider with ChangeNotifier {
     setLoading(true);
     await getUser();
     await getMyAds();
-
+    await getMyFavourits();
     setLoading(false);
   }
 
@@ -118,8 +118,7 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setAd(clk) async {
-    await getMyFavourits();
+  setAd(clk){
     adClick = clk;
     notifyListeners();
 

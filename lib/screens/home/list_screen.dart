@@ -182,7 +182,7 @@ class AdvertisementListScreen extends StatelessWidget {
                             provider.advertisements![index]
                         );
 
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => EditAdScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdvertisementDetailsScreen()));
                       },
                         child: AdItem(model: provider.advertisements![index],)),
                 itemCount: provider.advertisements!.length) :

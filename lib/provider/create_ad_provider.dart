@@ -118,6 +118,28 @@ class CreateAdvertisementProvider with ChangeNotifier{
     init();
   }
 
+  reset(){
+    photoList = [];
+    fin_value = "NO" ;
+    elevator = "YES" ;
+    acceptBusiness = "YES" ;
+    acceptSingle = "YES";
+    num_of_rooms = 1;
+    num_of_bath_rooms = 1;
+    num_of_halls = 1;
+    num_of_level = 1;
+    type_val = "APARTMENT";
+    dailyPrice = "MONTHLY";
+    signal_val = "Vodafone";
+    city = "Faisal";
+    gov = "Cairo";
+
+    titleController.text = "" ;
+    detailsController.text = "" ;
+    priceController.text = "" ;
+    areaController.text = "" ;
+    notifyListeners();
+  }
   setElevator(val){
     elevator = val;
     notifyListeners();
@@ -219,23 +241,18 @@ class CreateAdvertisementProvider with ChangeNotifier{
   Future uploadPhoto(XFile element) async {
     final FirebaseServices firebaseServices = FirebaseServices();
     var currentTime = DateTime.now().millisecondsSinceEpoch;
-    await firebaseServices
-        .upload_image(File(element.path), APP_NAME, "$currentTime")
-        .then((value) async {
-      await firebaseServices.get_url(APP_NAME, "$currentTime").then((path) {
-        return path ;
-      });
-    });
-    return "string";
+    await firebaseServices.upload_image(File(element.path), APP_NAME, "$currentTime") ;
+    var path = await firebaseServices.get_url(APP_NAME, "$currentTime");
+    return path;
   }
 
   //Api
   createAdvertisement() async {
-    photoList = [] ;
     for (int i = 0; i < photos.length; i++) {
       var ppp= await uploadPhoto(photos[i]);
       photoList.add(ppp);
     }
+    photos = [] ;
     setLoading(true);
     if(!photoList.isEmpty)
       print(photoList[0]);
@@ -248,8 +265,8 @@ class CreateAdvertisementProvider with ChangeNotifier{
         title: titleController.text,
         category: isSelected[0] ? "RENT" : "SELL",
         apartmentDetails: detailsController.text,
-        city: "Zamalek",
-        gov: "Giza",
+        city: city,
+        gov: gov,
         price: double.parse(priceController.text),
         lng: currentPosition.longitude,
         lat: currentPosition.latitude,
@@ -269,6 +286,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
     if(response is Success){
       success = true ;
       notifyListeners() ;
+      reset();
     }else if (response is Failure){
       print(response);
       errorMsg = response.errorResponse as String;
@@ -284,39 +302,16 @@ class CreateAdvertisementProvider with ChangeNotifier{
     setLoading(true);
     if(!photoList.isEmpty)
       print(photoList[0]);
-    AdvertisementModel model = AdvertisementModel(
-        photosList: photoList,
-        signalPower: signal_val,
-        elevator: elevator=="YES",
-        acceptBusiness: acceptBusiness == "YES",
-        dailyPrice: dailyPrice,
-        title: titleController.text,
-        category: isSelected[0] ? "RENT" : "SELL",
-        apartmentDetails: detailsController.text,
-        city: "Zamalek",
-        gov: "Giza",
-        price: double.parse(priceController.text),
-        lng: currentPosition.longitude,
-        lat: currentPosition.latitude,
-        area: int.parse(areaController.text),
-        numOfRoom: num_of_rooms,
-        numOfBathroom: num_of_bath_rooms,
-        numOfHalls: num_of_halls,
-        level: num_of_level,
-        finished: fin_value=="YES",
-        single: acceptSingle == "YES",
-        types: type_val, id: 1, user: , views: 0, date: DateTime.now()
-    );
 
-    var response = await services.editAdvertisement(model);
-    setLoading(false);
-
-    if(response is Success){
-      success = true ;
-      notifyListeners() ;
-    }else if (response is Failure){
-      print(response);
-      errorMsg = response.errorResponse as String;
-    }
+    // var response = await services.editAdvertisement(model);
+    // setLoading(false);
+    //
+    // if(response is Success){
+    //   success = true ;
+    //   notifyListeners() ;
+    // }else if (response is Failure){
+    //   print(response);
+    //   errorMsg = response.errorResponse as String;
+    // }
   }
 }

@@ -9,6 +9,7 @@ import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/components/numaric_data_field.dart';
 import 'package:semsark/provider/create_ad_provider.dart';
 import 'package:semsark/provider/home_provider.dart';
+import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/utils/constants.dart';
 import 'package:semsark/utils/helper.dart';
 import 'package:provider/provider.dart';
@@ -490,6 +491,7 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> {
                                   await provider.createAdvertisement() ;
                                   if(provider.success) {
                                     Provider.of<HomeProvider>(context , listen: false).changePosition(PROFILE_PAGE);
+                                    await Provider.of<ProfileProvider>(context , listen: false).init();
                                   }
                                   if(provider.errorMsg !=""){
                                     showDialog(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/provider/home_provider.dart';
+import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/screens/home/advertisements_screen.dart';
 import 'package:semsark/screens/home/chat_screen.dart';
 import 'package:semsark/screens/home/create_advertisement_screen.dart';
@@ -10,6 +11,7 @@ import 'package:semsark/screens/home/filter_screen.dart';
 import 'package:semsark/screens/home/map_screen.dart';
 import 'package:semsark/screens/home/profile_screen.dart';
 import 'package:semsark/screens/home/verify_user_screen.dart';
+import 'package:semsark/utils/constants.dart';
 import 'package:semsark/utils/helper.dart';
 
 import '../auth/sign_in_screen.dart';
@@ -57,7 +59,10 @@ class HomeScreen extends StatelessWidget {
             color: Colors.white,
           ),
         ],
-        onTap: (_index) {
+        onTap: (_index) async {
+          if(_index==PROFILE_PAGE){
+            await Provider.of<ProfileProvider>(context,listen: false).init();
+          }
           provider.changePosition(_index);
         },
         color: Helper.blue,

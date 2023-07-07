@@ -25,6 +25,8 @@ class MyAdvertisementItem extends StatelessWidget {
               Image.network(
                 model.photosList[0],
                 fit: BoxFit.fill,
+                width: 150,
+                height: 110,
               ),
             Container(
               alignment: Alignment.centerRight,
