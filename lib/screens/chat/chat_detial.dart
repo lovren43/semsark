@@ -8,10 +8,8 @@ import 'package:semsark/provider/chat_provider.dart';
 import '../../models/chat/chat_message_model.dart';
 
 class ChatDetailPage extends StatelessWidget {
-  int index;
-  final TextEditingController _textEditingController = TextEditingController();
+  //int index;
 
-  ChatDetailPage({required this.index});
   @override
   Widget build(BuildContext context) {
     ScrollController _scrollController = ScrollController();
@@ -48,8 +46,8 @@ class ChatDetailPage extends StatelessWidget {
                   width: 40,
                   height: 40,
                   child: CircleAvatar(
-                    backgroundImage:provider.chatUsers[index].image==null||provider.chatUsers[index].image=="string"||provider.chatUsers[index].image==""? AssetImage('assets/images/avtar.png'):null,
-                    foregroundImage:provider.chatUsers[index].image==null||provider.chatUsers[index].image=="string"||provider.chatUsers[index].image==""? null:NetworkImage(provider.chatUsers[index].image),
+                    backgroundImage:provider.reciver!.image==null||provider.reciver!.image=="string"||provider.reciver!.image==""? AssetImage('assets/images/avtar.png'):null,
+                    foregroundImage:provider.reciver!.image==null||provider.reciver!.image=="string"||provider.reciver!.image==""? null:NetworkImage(provider.reciver!.image),
                     backgroundColor: Colors.white,
                     maxRadius: 30,
                   ),
@@ -63,7 +61,7 @@ class ChatDetailPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        provider.chatUsers[index].username,
+                        provider.reciver!.username,
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
@@ -166,7 +164,7 @@ class ChatDetailPage extends StatelessWidget {
                       ),
                       Expanded(
                         child: TextField(
-                          controller: _textEditingController,
+                          controller: provider.textEditingController,
                           onChanged: (value) => {provider.setMessage(value)},
                           decoration: const InputDecoration(
                               hintText: "Write message...",
@@ -179,12 +177,12 @@ class ChatDetailPage extends StatelessWidget {
                       ),
                       FloatingActionButton(
                         onPressed: () {
-                          provider.setReciverEmail(provider.chatUsers[index].email);
+                          //provider.setReciverEmail(provider.reciver!.email);
                           provider.setDate(formattedDate);
-                          provider.setMessage(_textEditingController.text);
+                          provider.setMessage(provider.textEditingController.text);
                           provider.sendMessage();
                           //provider.setMessage("");
-                          _textEditingController.clear();
+                          provider.textEditingController.clear();
                         },
                         backgroundColor: Colors.blue,
                         elevation: 0,

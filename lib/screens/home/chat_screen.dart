@@ -28,95 +28,96 @@ class _ChatScreenState extends State<ChatScreen> {
 
     double height = MediaQuery.of(context).size.height ;
     var provider = Provider.of<ChatProvider>(context);
-    //getAllMessage(provider);
-    if(provider.loading) return const LoadingScreen() ;
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Text(
-                      "Conversations",
-                      style:
-                      TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        const Text(
+                          "Conversations",
+                          style:
+                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                        ),
+                        Container(
+                          padding:
+                          const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 2),
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        )
+                      ],
                     ),
-                    Container(
-                      padding:
-                      const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 2),
-                      height: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Search...",
+                      hintStyle: TextStyle(color: Colors.grey.shade600),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.grey.shade600,
+                        size: 20,
                       ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "Search...",
-                  hintStyle: TextStyle(color: Colors.grey.shade600),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.grey.shade600,
-                    size: 20,
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      contentPadding: const EdgeInsets.all(8),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(color: Colors.grey.shade100)),
+                    ),
                   ),
-                  filled: true,
-                  fillColor: Colors.grey.shade100,
-                  contentPadding: const EdgeInsets.all(8),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(color: Colors.grey.shade100)),
                 ),
-              ),
-            ),
-            (provider.chatUsers.isNotEmpty
-                ? ListView.builder(
-              itemCount: provider.chatUsers.length,
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 16),
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () async {
-                    provider.setReciverEmail(provider.chatUsers[index].email);
-                    await provider.getRoom(provider.chatUsers[index].email);
-                    await provider.getCurrentUser();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return ChatDetailPage(index: index);
-                    }));
+                (provider.chatUsers.isNotEmpty
+                    ? ListView.builder(
+                  itemCount: provider.chatUsers.length,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(top: 16),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () async {
+                        await provider.setReciver(provider.chatUsers[index]);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return ChatDetailPage();
+                        }));
+                      },
+                      child: ConversationList(
+                        name: provider.chatUsers[index].username,
+                        messageText: "",
+                        imageUrl: provider.chatUsers[index].image,
+                        time: "",
+                        isMessageRead: true,
+                        email: provider.chatUsers[index].email,
+                        id: provider.chatUsers[index].id,
+                      ),
+                    );
                   },
-                  child: ConversationList(
-                    name: provider.chatUsers[index].username,
-                    messageText: "",
-                    imageUrl: provider.chatUsers[index].image,
-                    time: "",
-                    isMessageRead: true,
-                    email: provider.chatUsers[index].email,
-                    id: provider.chatUsers[index].id,
-                  ),
-                );
-              },
-            )
-                : Column(
-              children: [
-                SizedBox(
-                  height: 0.4*height,
-                ),
-                const Center(child: Text("No messages yet",style:TextStyle(fontSize: 25 )))
+                )
+                    : Column(
+                  children: [
+                    SizedBox(
+                      height: 0.4*height,
+                    ),
+                    const Center(child: Text("No messages yet",style:TextStyle(fontSize: 25 )))
+                  ],
+                ))
               ],
-            ))
-          ],
-        ),
+            ),
+          ),
+          if(provider.loading) const LoadingScreen() ,
+    ],
       ),
     );
   }

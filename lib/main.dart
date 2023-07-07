@@ -61,7 +61,7 @@ class Semsark extends StatelessWidget {
         ChangeNotifierProvider(create: (create) => ForgetPasswordProvider()),
         ChangeNotifierProvider(create: (create) => EditAdProvider()),
       ],
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: LoginScreen()),
+      child: MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/components/loading_screen.dart';
+import 'package:semsark/provider/chat_provider.dart';
 import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/screens/home/advertisements_screen.dart';
@@ -62,6 +63,8 @@ class HomeScreen extends StatelessWidget {
         onTap: (_index) async {
           if(_index==PROFILE_PAGE){
             await Provider.of<ProfileProvider>(context,listen: false).init();
+          }else if(_index==CHAT_PAGE){
+            await Provider.of<ChatProvider>(context,listen: false).init();
           }
           provider.changePosition(_index);
         },
@@ -79,12 +82,15 @@ class HomeScreen extends StatelessWidget {
        ProfileScreen(),
       FilterScreen(),
     ];
-    if(provider.isLoading) {
-      return const LoadingScreen();
-    }
-    return Visibility(
-      visible: !provider.isVerified,
-      child: widgets[provider.index],
+
+    return Stack(
+      children: [
+        Visibility(
+          visible: !provider.isVerified,
+          child: widgets[provider.index],
+        ),
+        if(provider.isLoading) const LoadingScreen(),
+      ],
     );
   }
 }
