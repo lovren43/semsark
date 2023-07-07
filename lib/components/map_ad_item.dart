@@ -65,7 +65,7 @@ class MapAdvertisementItem extends StatelessWidget {
                 SizedBox(
                   width: width*0.5,
                   height: height*0.2,
-                  child: Text("${model.price} LE",
+                  child: Text("${model.price.toInt()} LE",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,

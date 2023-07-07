@@ -138,7 +138,7 @@ class AdItem extends StatelessWidget {
                         width: 25,
                       ),
                       Text(
-                        "${model?.price} EGP",
+                        "${model?.price.toInt()} EGP",
                         style: Helper.textStyle,
                       ),
                       if(model!.category=="RENT")

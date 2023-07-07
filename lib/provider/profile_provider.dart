@@ -115,16 +115,20 @@ class ProfileProvider with ChangeNotifier {
 
   verify() async {
     setLoading(true) ;
+    success = false ;
     if(userImage!=null && NidImage != null){
       var path1 = await uploadPhoto(userImage!) ;
       var path2 = await uploadPhoto(NidImage!) ;
       var response =await services.verifyNID(path1 , path2) ;
       print(response) ;
       if(response is Success){
+        print(response.response) ;
+        userImage = null ;
+        NidImage = null ;
         if(response.response == true){
           success = true ;
         }else {
-          errorMsg = "Some Error The 2 faces doesn't match,\n Please upload a clear Images" ;
+          errorMsg = "The 2 faces are not matching,\n Please upload a clear Images" ;
         }
 
       }else if(response is Failure){

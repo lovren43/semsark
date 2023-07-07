@@ -46,7 +46,7 @@ class MyAdvertisementItem extends StatelessWidget {
                   SizedBox(
                     width: width*0.50,
                     child: Text(
-                      "${model.price} EGP",
+                      "${model.price.toInt()} EGP",
                       style: Helper.textStyle,
                     ),
                   ),
@@ -123,11 +123,35 @@ class MyAdvertisementItem extends StatelessWidget {
                           ),
                           Expanded(
                             child: MaterialButton(
-                              child: Icon(Icons.delete, color: Colors.red,),
-                              onPressed: () async {
-                                await Provider.of<ProfileProvider>(context, listen: false).deleteAd(model.id);
+                              child: Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Confirm Delete'),
+                                      content: Text('Are you sure you want to delete?'),
+                                      actions: [
+                                        TextButton(
+                                          child: Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text('Delete'),
+                                          onPressed: () async {
+                                            await Provider.of<ProfileProvider>(context, listen: false).deleteAd(model.id);
+                                            Navigator.of(context).pop(); // Close the dialog
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
                             ),
+
                           ),
                         ],
                       ),

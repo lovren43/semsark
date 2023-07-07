@@ -155,6 +155,31 @@ class VerifyUserScreen extends StatelessWidget {
                           if(provider.success){
                             Navigator.pop(context);
                             await provider.init();
+                          }else if(provider.errorMsg !=""){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Row(
+                                    children: [
+                                      Icon(Icons.error, color: Colors.red),
+                                      SizedBox(width: 8),
+                                      Text('Error'),
+                                    ],
+                                  ),
+                                  content: Text('${provider.errorMsg}'),
+                                  actions: [
+                                    TextButton(
+                                      child: Text('Ok'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+
                           }
                         },
                         color: Helper.blue,

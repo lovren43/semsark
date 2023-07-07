@@ -488,49 +488,51 @@ class _CreateAdvertisementScreenState extends State<CreateAdvertisementScreen> {
                                 ),
                                 child: MaterialButton(
                                   onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      await provider.createAdvertisement() ;
-                                      if(provider.success) {
-                                        Provider.of<HomeProvider>(context , listen: false).changePosition(PROFILE_PAGE);
-                                        await Provider.of<ProfileProvider>(context , listen: false).init();
-                                      }
-                                      if(provider.errorMsg !=""){
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text('Error'),
-                                              content: Text(provider.errorMsg),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child: const Text('OK'),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop(); // Close the dialog
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                    if(!provider.isLoading){
+                                      if (_formKey.currentState!.validate()) {
+                                        await provider.createAdvertisement() ;
+                                        if(provider.success) {
+                                          Provider.of<HomeProvider>(context , listen: false).changePosition(PROFILE_PAGE);
+                                          await Provider.of<ProfileProvider>(context , listen: false).init();
+                                        }
+                                        if(provider.errorMsg !=""){
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text('Error'),
+                                                content: Text(provider.errorMsg),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: const Text('OK'),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop(); // Close the dialog
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
+                                      } else {
+
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: const Text('Complete All Fields'),
+                                            duration: const Duration(seconds: 2), // Duration for which the SnackBar is displayed
+                                            action: SnackBarAction(
+                                              label: 'Close',
+                                              onPressed: () {
+                                                // Code to execute when the SnackBar action is pressed
+                                              },
+                                            ),
+                                          ),
                                         );
                                       }
-                                    } else {
-
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: const Text('Complete All Fields'),
-                                          duration: const Duration(seconds: 2), // Duration for which the SnackBar is displayed
-                                          action: SnackBarAction(
-                                            label: 'Close',
-                                            onPressed: () {
-                                              // Code to execute when the SnackBar action is pressed
-                                            },
-                                          ),
-                                        ),
-                                      );
                                     }
                                   },
                                   //rgba(69, 166, 221, 1)
-                                  color: Helper.blue,
+                                  color: provider.isLoading ? Colors.grey[200]:Helper.blue,
                                   child: const Padding(
                                     padding: EdgeInsets.all(15.0),
                                     child: Text(
