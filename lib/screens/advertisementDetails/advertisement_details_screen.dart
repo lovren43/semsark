@@ -155,18 +155,27 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 50.0,
-                        backgroundImage: provider.model!.user.img == null ||
-                            provider.model!.user.img == "" ||
-                            provider.model!.user.img == "string"
-                            ? const AssetImage("assets/images/Mask.png")
-                            : null,
-                        foregroundImage: provider.model!.user.img == null ||
-                            provider.model!.user.img == "" ||
-                            provider.model!.user.img == "string"
-                            ? null
-                            : NetworkImage("${provider.model!.user.img}"),
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          CircleAvatar(
+                            radius: 50.0,
+                            backgroundImage: provider.model!.user.img == null ||
+                                provider.model!.user.img == "" ||
+                                provider.model!.user.img == "string"
+                                ? const AssetImage("assets/images/Mask.png")
+                                : null,
+                            foregroundImage: provider.model!.user.img == null ||
+                                provider.model!.user.img == "" ||
+                                provider.model!.user.img == "string"
+                                ? null
+                                : NetworkImage("${provider.model!.user.img}"),
+                          ),
+                          Icon(
+                            provider.model!.user.verifyId == null || !provider.model!.user.verifyId ? Icons.warning : Icons.check_circle,
+                            color: provider.model!.user.verifyId == null || !provider.model!.user.verifyId ? Colors.orange : Helper.blue,
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10.0),
                       Text(
@@ -219,7 +228,8 @@ class AdvertisementDetailsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10.0),
-            Container(
+            if(provider.recomended.isNotEmpty)
+              Container(
               alignment: AlignmentDirectional.centerStart,
               padding: const EdgeInsets.only(
                   left: 10
@@ -249,6 +259,7 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                       },
                       child: MyAdvertisementItem(
                         model: provider.recomended[index],
+                        canEdit: false,
                       ))) : LoadingScreen(),
             ),
           ],

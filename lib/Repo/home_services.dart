@@ -156,11 +156,13 @@ class HomeServices {
 
     try {
       final http.Response response = await http.patch(
-          Uri.parse("$EDIT_AD/$model"),
+          Uri.parse("$EDIT_AD/${model.id}"),
           headers: headers,
-          body: advertisementModelToJson(model as List<AdvertisementModel>)
+          body: jsonEncode(model.toJson())
       );
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
         return Success(
           code: 200,
           response:"",

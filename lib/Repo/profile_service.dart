@@ -24,6 +24,33 @@ class ProfileServices {
 
   String token = Helper.token;
 
+  Future deleteAd(id) async
+  {
+    headers['Authorization'] = 'Bearer $token';
+    try {
+      final http.Response response = await http.delete(
+        Uri.parse("${DELETE_ADVERTISEMENT}$id"),
+        headers: headers,
+      );
+      print(response.statusCode);
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        return Success(
+          code: 200,
+          response:"",
+        );
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: jsonDecode(response.body)["message"]);
+    } on HttpException {
+      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: FormatException);
+    } catch (e) {
+      print(e) ;
+      return Failure(code: UNKNOWN, errorResponse: e);
+    }
+  }
   Future getUser() async {
     String url = '$GET_USER';
     headers['Authorization'] = 'Bearer $token';

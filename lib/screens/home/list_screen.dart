@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:semsark/provider/advertisement_detailes_provider.dart';
 import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/screens/advertisementDetails/advertisement_details_screen.dart';
+import 'package:semsark/screens/home/filter_screen.dart';
 import 'package:semsark/utils/constants.dart';
 
 import '../../components/show_ads_item.dart';
@@ -19,7 +20,7 @@ class AdvertisementListScreen extends StatelessWidget {
   ];
   String _selectedSortOption = '';
 
-  void _showSortOptionsDialog(context) {
+  void _showSortOptionsDialog(context ,HomeProvider provider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -28,7 +29,7 @@ class AdvertisementListScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: SizedBox(
-            height: _sortOptions.length*61,
+            height: _sortOptions.length*80,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -49,6 +50,7 @@ class AdvertisementListScreen extends StatelessWidget {
                         return GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
+                            provider.sort(index) ;
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -129,7 +131,10 @@ class AdvertisementListScreen extends StatelessWidget {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    provider.changePosition(FILTER_PAGE);
+                    //provider.changePosition(FILTER_PAGE);
+                    Navigator.push(context, MaterialPageRoute(builder:(_) =>
+                    FilterScreen()
+                    )) ;
                   },
                   child: Container(
                     margin: const EdgeInsets.all(10),
@@ -152,7 +157,7 @@ class AdvertisementListScreen extends StatelessWidget {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    _showSortOptionsDialog(context);
+                    _showSortOptionsDialog(context,provider);
                   },
                   child: Container(
                     margin: const EdgeInsets.all(10),
@@ -189,7 +194,7 @@ class AdvertisementListScreen extends StatelessWidget {
             const Text("No Ads Yet")
             ,
           ),
-          SizedBox(height: 30,)
+          SizedBox(height: 10,)
         ],
       ),
     );

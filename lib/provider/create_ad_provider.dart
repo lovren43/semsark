@@ -41,7 +41,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
   var type_val = "APARTMENT";
   var dailyPrice = "MONTHLY";
   var signal_val = "Vodafone";
-  var city = "Faisal";
+  var city = "";
   var gov = "Cairo";
   var types = ["APARTMENT", "DUPLEX", "STUDIO"];
   var signals = ["Vodafone", "Orange", "Etisalat", "WE"];
@@ -50,20 +50,21 @@ class CreateAdvertisementProvider with ChangeNotifier{
   List<XFile> photos = [];
   late Position currentPosition;
   Map<String , List<String>> governors = {
-    'Cairo': ['Faisal','Haram'],
-    'Alexandria': [],
+    'Cairo': ['Nasr City' ,'Madinty', 'Tagamo3', '3abaseya' , 'Sheraton' , 'Salam'],
+    'Giza' : ['Faisal','Haram' , 'Dokki' , 'October' , 'Zaied City'],
+    'Alexandria': ['Miami' , 'Ma3mora' , 'Borj El 3arab'],
+    'Gharbia' : ['Tanta' , 'Ma7ala' ,'Santa'],
+    'Matrouh' : ['3alm El room' , 'Alex St'],
     'Port Said': [],
     'Suez' : [],
     'Luxor' : [],
     'Aswan' : [],
-    'Giza' : [],
     'Red Sea' : [],
     'South Sinai' : [],
     'Beheira' : [],
     'Ismailia' : [],
     'Minya' : [],
     'Qalyubia' : [],
-    'Gharbia' : [],
     'Fayoum' : [],
     'Beni Suef' : [],
     'Sharqia' : [],
@@ -75,16 +76,13 @@ class CreateAdvertisementProvider with ChangeNotifier{
     'Qena' : [],
     'Sohag' : [],
     'Monufia' : [],
-    'Matrouh' : [],
     'North Sinai' : [],
     'Assiut' : [],
     'Menofia' : [],
     'El Wadi El Gedid' : [],
     'Kafr El Sheikh' : [],
-    'Marsa Matrouh' : [],
     'Qena' : [],
     'Aswan' : [],
-    'Gharbia' : [],
     'Beni Suef' : [],
     'North Sinai' : [],
     'Sharqia' : [],
@@ -131,7 +129,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
     type_val = "APARTMENT";
     dailyPrice = "MONTHLY";
     signal_val = "Vodafone";
-    city = "Faisal";
+    city = "";
     gov = "Cairo";
 
     titleController.text = "" ;
@@ -248,12 +246,12 @@ class CreateAdvertisementProvider with ChangeNotifier{
 
   //Api
   createAdvertisement() async {
+    setLoading(true);
     for (int i = 0; i < photos.length; i++) {
       var ppp= await uploadPhoto(photos[i]);
       photoList.add(ppp);
     }
     photos = [] ;
-    setLoading(true);
     if(!photoList.isEmpty)
       print(photoList[0]);
     CreateAdvertisementModel model = CreateAdvertisementModel(
@@ -292,6 +290,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
       errorMsg = response.errorResponse as String;
     }
   }
+
 
   EditAdvertisement() async {
     photoList = [] ;

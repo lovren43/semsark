@@ -4,7 +4,7 @@ import '../utils/helper.dart';
 
 class CustomDropDownField extends StatelessWidget {
    CustomDropDownField({
-     required this.value,
+     this.value,
      required this.list,
      required this.onChange,
      required this.labelText,

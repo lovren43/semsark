@@ -4,6 +4,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/provider/home_provider.dart';
 
+import '../../utils/helper.dart';
+
 
 class AdvertisementMapScreen extends StatelessWidget {
 
@@ -15,6 +17,7 @@ class AdvertisementMapScreen extends StatelessWidget {
     return SafeArea(
       child: Stack(
         children: [
+
           GoogleMap(
             zoomGesturesEnabled: true,
             initialCameraPosition:
@@ -42,6 +45,65 @@ class AdvertisementMapScreen extends StatelessWidget {
             height: height*0.16,
             width: width*0.85,
             offset: 35,
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              margin: EdgeInsetsDirectional.only(top: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              child: ToggleButtons(
+                borderRadius: BorderRadius.circular(8),
+                selectedColor: Colors.white,
+                fillColor: Helper.blue,
+                onPressed: (int index) async {
+                  for (int i = 0;
+                  i < provider.isSelected.length;
+                  i++) {
+                    provider.isSelected[i] = false;
+                  }
+                  provider.isSelected[index] = true ;
+                  provider.notifyListeners();
+                  provider.setFilterIndex(index) ;
+                  await provider.getFilteredAdvertisement();
+                },
+                isSelected: provider.isSelected,
+                children: [
+                  SizedBox(
+                    width: width / 4,
+                    child: const Center(child: Text("ALL" ,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                      ),
+
+                    )),
+                  ),
+                  SizedBox(
+                    width: width / 4,
+                    child: const Center(child: Text("Renting" ,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15
+                      ),
+
+                    )),
+                  ),
+                  SizedBox(
+                    width: width / 4,
+                    child: const Center(child: Text("Selling",
+
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15
+                      ),
+                    )),
+                  ),
+                ],
+              ),
+            ),
           ),
         ]
       ),

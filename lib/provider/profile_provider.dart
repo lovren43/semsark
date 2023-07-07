@@ -57,17 +57,16 @@ class ProfileProvider with ChangeNotifier {
   }
 
   Future<void> getMyFavourits() async {
-    setLoading(true);
+    //setLoading(true);
     var response = await services.getMyFavs();
 
     if (response is Success) {
 
       fav = response.response as List<AdvertisementModel>;
 
-      setLoading(false);
 
     }
-    setLoading(false);
+    //setLoading(false);
     notifyListeners();
   }
   Future<void> logout() async {
@@ -80,24 +79,15 @@ class ProfileProvider with ChangeNotifier {
     setLoading(false);
     notifyListeners();
   }
-  // Future<void> editProfile() async {
-  //   setSuccess(false);
-  //   Profile userDetails = Profile(
-  //       name: name,
-  //       gender: gender,
-  //       email: email,
-  //       password: password,
-  //       phone: phone, id: null, roles: [],
-  //       );
-  //   var res = await services.editUser(userDetails);
-  //   if (res is Success) {
-  //     user = res.response as UserDetails;
-  //     success = true;
-  //   }
-  //
-  //   notifyListeners();
-  // }
 
+  deleteAd(id) async{
+    setLoading(true) ;
+    var response = await services.deleteAd(id);
+    if(response is Success) {
+      await getMyAds() ;
+    }
+    setLoading(false) ;
+  }
   setShowPassword() {
     showPassword = !showPassword;
     notifyListeners();
@@ -118,8 +108,9 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  setAd(clk){
+  setAd(clk) async {
     adClick = clk;
+    await getMyFavourits();
     notifyListeners();
 
   }

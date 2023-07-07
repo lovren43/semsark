@@ -24,11 +24,14 @@ class HomeProvider with ChangeNotifier{
   HomeServices services = HomeServices();
   late String errorMsg;
   int index = 0 ;
+  int f_index = 0 ;
+  var ff = ["",'rent' , 'sell'];
   //
   List<AdvertisementModel>? advertisements ;
   late Position currentPosition;
   CustomInfoWindowController mapController = CustomInfoWindowController();
 
+  List<bool> isSelected = [true , false, false];
   Set<Marker> markers ={};
 
   init() async {
@@ -37,6 +40,22 @@ class HomeProvider with ChangeNotifier{
     await getAllAdvertisement();
 
     setLoading(false);
+  }
+
+  sort(index){
+    setLoading(true) ;
+    if(index==0){
+
+      advertisements!.sort((a,b) => b.price.compareTo(a.price)) ;
+    }else if(index==1){
+      advertisements!.sort((a,b) => a.price.compareTo(b.price)) ;
+    }
+    setLoading(false);
+    notifyListeners();
+  }
+
+  get filteredAds{
+    return advertisements!.where((service) => service.category.toLowerCase().contains(ff[f_index])).toList();
   }
   HomeProvider(){
     init();
@@ -62,6 +81,11 @@ class HomeProvider with ChangeNotifier{
     if(index == HOME_PAGE){
       await getAllAdvertisement();
     }
+    notifyListeners();
+  }
+
+  setFilterIndex(_index) async {
+    f_index = _index ;
     notifyListeners();
   }
 
@@ -130,5 +154,32 @@ class HomeProvider with ChangeNotifier{
     setLoading(false);
 
     setFilter(false);
+  }
+
+
+  getFilteredAdvertisement() async {
+    //setLoading(true);
+    markers = {} ;
+    final Uint8List markerIcon = await getBytesFromAsset("assets/images/markerm.png", 200);
+
+    //setLoading(false);
+    for(int i = 0 ; i<filteredAds!.length ; i++){
+        var position = LatLng(
+          double.tryParse('${filteredAds![i].lat}')!.toDouble() ,
+          double.tryParse('${filteredAds![i].lng}')!.toDouble() ,
+        );
+        markers.add(Marker(markerId: MarkerId("$i"),
+          position: position,
+          icon: BitmapDescriptor.fromBytes(markerIcon),
+          onTap: (){
+            mapController.addInfoWindow!(
+                MapAdvertisementItem(model: advertisements![i],) ,
+                position
+            );
+          },
+        ));
+
+      }
+    notifyListeners();
   }
 }

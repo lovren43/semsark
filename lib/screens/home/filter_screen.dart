@@ -35,6 +35,13 @@ class FilterScreen extends StatelessWidget {
           ),
         ],
         title: const Text("Filter"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            //provider.changePosition(HOME_PAGE);
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -351,6 +358,7 @@ class FilterScreen extends StatelessWidget {
                             homeProvider.advertisements =await  filterProvider.filter() as List<AdvertisementModel>;
                             print(filterProvider.filter() );
                             provider.changePosition(HOME_PAGE);
+                            Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
