@@ -417,10 +417,6 @@ class ProfileScreen extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => VerifyUserScreen()),
-                            );
                           },
                           style: ElevatedButton.styleFrom(primary: Colors.grey),
                           child: Text('Later'),

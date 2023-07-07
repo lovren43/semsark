@@ -59,6 +59,7 @@ class ProfileServices {
         Uri.parse(url),
         headers: headers,
       );
+      print(response.statusCode);
 
       if (response.statusCode == 200) {
         return Success(code: 200, response: userDetailsFromJson(response.body));
@@ -149,16 +150,22 @@ class ProfileServices {
     }
   }
 
-  Future editUser(user) async {
+  Future editUser(UserDetails user) async {
     String url = '$UPDATE_USER';
     headers['Authorization'] = 'Bearer $token';
     try {
       final http.Response response = await http.patch(Uri.parse(url),
-          headers: headers, body: profileToJson(user));
+          headers: headers, body: jsonEncode({
+            "username": user.username,
+            "password": "",
+            "phone": user.phone,
+            "gender": user.gender,
+            "img": user.img
+          }));
       if (response.statusCode == 200) {
         return Success(
           code: 200,
-          response: userDetailsFromJson(response.body),
+          response: "",
         );
       }
       return Failure(

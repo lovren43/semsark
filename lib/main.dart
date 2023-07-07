@@ -32,6 +32,7 @@ import 'package:semsark/screens/home/filter_screen.dart';
 import 'package:semsark/screens/home/home_screen.dart';
 import 'package:semsark/screens/home/profile_screen.dart';
 import 'package:semsark/screens/splash/splash_screen.dart';
+import 'package:semsark/utils/helper.dart';
 
 import 'screens/home/verify_user_screen.dart';
 
@@ -40,6 +41,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   //Hive.registerAdapter(LocalAdvertisementAdapter());
+  //await Helper.setToken("");
   runApp(const Semsark());
 }
 

@@ -31,12 +31,7 @@ class EditProfileScreen extends StatelessWidget {
   var confirmPassword;
 
   final formKey = GlobalKey<FormState>();
-  final TextEditingController usernameContoller = TextEditingController();
-  final TextEditingController pass = TextEditingController();
-  final TextEditingController confirmPass = TextEditingController();
   String initialCountry = 'EG';
-  final TextEditingController controller = TextEditingController();
-
   pickImage(ImageSource source, ProfileProvider provider) async {
     var image = await ImagePicker().pickImage(source: source);
     if (image != null) {
@@ -100,329 +95,237 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ProfileProvider>(context);
-    usernameContoller.text = provider.user.username ?? "";
     PhoneNumber initialValue = PhoneNumber(isoCode: 'EG', phoneNumber: "");
-    controller.text = provider.user.phone ?? "";
 
-    if (!provider.success) return const LoadingScreen();
 
     return SafeArea(
-      child: Scaffold(
-        body: Form(
-          // key: formKey,
-          child: Stack(
-            alignment: Alignment.topLeft,
-            children: [
-              CustomScrollView(
-                slivers: [
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Column(
-                      children: [
-                        Stack(alignment: Alignment.center, children: <Widget>[
-                          Column(
-                            children: [
-                              ClipRRect(
-                                  child: ImageFiltered(
-                                imageFilter:
-                                    ImageFilter.blur(sigmaX: 7, sigmaY: 7),
-                                child: SizedBox(
-                                    height: 190,
-                                    width: double.infinity,
-                                    child: Image.asset(
-                                      'assets/images/back.png',
-                                      fit: BoxFit.fill,
-                                    )),
-                              )),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ),
-                          Positioned(
-                              top: 30,
-                              left: 0,
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.black,
-                                  size: 33,
-                                ),
-                              )),
-                          Positioned(
-                            bottom: 0,
-                            left: 20,
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white, width: 5),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(80))
-                                ),
-
-                                child:provider.image!=null
-                              ?SizedBox(
-                                  height: 120,
-                                  width: 120,
-                                child: CircleAvatar(
-                                  backgroundImage: FileImage(
-                                            File(provider.image!.path),
-                                          ),
-                                ),
-                              )
-                                    : SizedBox(
-                                        height: 120,
-                                        width: 120,
-                                        child: CircleAvatar(
-                                            backgroundImage: provider.user.img==null ||
-                                        provider.user.img=="string" ||
-                                        provider.user.img==""?
-                                             null:NetworkImage(
-                                                provider.user.img!),
-                                          foregroundImage: provider.user.img==null ||
-                                              provider.user.img=="string" ||
-                                              provider.user.img==""? AssetImage("assets/images/Mask.png"):null,
-
-                                        ))
-
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 5,
-                            left: 105,
-                            child: GestureDetector(
-                              onTap: () {
-                                myAlert(context, provider);
-                              },
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: Colors.black, width: 1),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(80))),
-                                  height: 30,
-                                  child: Image.asset(
-                                    'assets/images/CAM.png',
-                                  )),
-                            ),
-                          ),
-                        ]),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            children: [
+      child: Stack(
+        children: [
+          Scaffold(
+            body: Form(
+              // key: formKey,
+              child: Stack(
+                alignment: Alignment.topLeft,
+                children: [
+                  CustomScrollView(
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          children: [
+                            Stack(alignment: Alignment.center, children: <Widget>[
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  TextFormField(
-                                    controller: usernameContoller,
-                                    decoration: const InputDecoration(
-                                      filled: true,
-                                      fillColor: Color(0xFFf1f6fb),
-                                      label: Text("Full Name"),
-                                      icon: Icon(Icons.person_outlined),
+                                  ClipRRect(
+                                      child: ImageFiltered(
+                                    imageFilter:
+                                        ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+                                    child: SizedBox(
+                                        height: 190,
+                                        width: double.infinity,
+                                        child: Image.asset(
+                                          'assets/images/back.png',
+                                          fit: BoxFit.fill,
+                                        )),
+                                  )),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
+                              Positioned(
+                                  top: 30,
+                                  left: 0,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.black,
+                                      size: 33,
                                     ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Field is required';
+                                  )),
+                              Positioned(
+                                bottom: 0,
+                                left: 20,
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.white, width: 5),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(80))
+                                    ),
+
+                                    child:provider.image!=null
+                                  ?SizedBox(
+                                      height: 120,
+                                      width: 120,
+                                    child: CircleAvatar(
+                                      backgroundImage: FileImage(
+                                                File(provider.image!.path),
+                                              ),
+                                    ),
+                                  )
+                                        : SizedBox(
+                                            height: 120,
+                                            width: 120,
+                                            child: CircleAvatar(
+                                                backgroundImage: provider.user.img==null ||
+                                            provider.user.img=="string" ||
+                                            provider.user.img==""?
+                                                 null:NetworkImage(
+                                                    provider.user.img!),
+                                              foregroundImage: provider.user.img==null ||
+                                                  provider.user.img=="string" ||
+                                                  provider.user.img==""? AssetImage("assets/images/Mask.png"):null,
+
+                                            ))
+
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 5,
+                                left: 105,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    myAlert(context, provider);
+                                  },
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: Colors.black, width: 1),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(80))),
+                                      height: 30,
+                                      child: Image.asset(
+                                        'assets/images/CAM.png',
+                                      )),
+                                ),
+                              ),
+                            ]),
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      TextFormField(
+                                        controller: provider.usernameContoller,
+                                        decoration: const InputDecoration(
+                                          filled: true,
+                                          fillColor: Color(0xFFf1f6fb),
+                                          label: Text("Full Name"),
+                                          icon: Icon(Icons.person_outlined),
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Field is required';
+                                          }
+                                        },
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      InternationalPhoneNumberInput(
+                                        maxLength: 12,
+                                        hintText: "Mobile number",
+                                        onInputChanged: (PhoneNumber number) {},
+                                        onInputValidated: (bool value) {},
+                                        inputDecoration: const InputDecoration(
+                                            hintText: 'Mobile Number',
+                                            filled: true,
+                                            fillColor: Color(0xFFf1f6fb)),
+                                        validator: _phoneValidator,
+                                        selectorConfig: const SelectorConfig(
+                                          selectorType:
+                                              PhoneInputSelectorType.BOTTOM_SHEET,
+                                        ),
+                                        ignoreBlank: false,
+                                        autoValidateMode: AutovalidateMode.disabled,
+                                        selectorTextStyle:
+                                            const TextStyle(color: Colors.black),
+                                        initialValue: initialValue,
+                                        textFieldController: provider.controller,
+                                        formatInput: true,
+                                        keyboardType:
+                                            const TextInputType.numberWithOptions(
+                                                signed: true, decimal: true),
+                                        inputBorder: const OutlineInputBorder(),
+                                        onSaved: (PhoneNumber number) {
+                                          print('On Saved: $number');
+                                        },
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      TextFormField(
+                                          decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: const Color(0xFFF1F6FB),
+                                              prefixIcon: provider.user.gender == "Female" ?
+                                                  Icon(Icons.female_outlined):
+                                              Icon(Icons.male),
+                                              hintText: provider.user.gender??"Male",
+                                              hintStyle: const TextStyle(color: Color(0xFF8189B0)),
+                                              enabledBorder: const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                  )),
+                                              border: const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                  ))),
+                                          enabled: false
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  EmailInputField(
+                                      hintText: provider.user.email,
+                                      enabled: false),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  CustomButon(
+                                    text: "Edit",
+                                    onTap: () async {
+                                        //Position position = await _locationServices.getCurrentPosition(context);
+                                      await provider.editProfile();
+                                      if (provider.success){
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomeScreen()));
                                       }
                                     },
                                   ),
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  InternationalPhoneNumberInput(
-                                    maxLength: 12,
-                                    hintText: "Mobile number",
-                                    onInputChanged: (PhoneNumber number) {},
-                                    onInputValidated: (bool value) {},
-                                    inputDecoration: const InputDecoration(
-                                        hintText: 'Mobile Number',
-                                        filled: true,
-                                        fillColor: Color(0xFFf1f6fb)),
-                                    validator: _phoneValidator,
-                                    selectorConfig: const SelectorConfig(
-                                      selectorType:
-                                          PhoneInputSelectorType.BOTTOM_SHEET,
-                                    ),
-                                    ignoreBlank: false,
-                                    autoValidateMode: AutovalidateMode.disabled,
-                                    selectorTextStyle:
-                                        const TextStyle(color: Colors.black),
-                                    initialValue: initialValue,
-                                    textFieldController: controller,
-                                    formatInput: true,
-                                    keyboardType:
-                                        const TextInputType.numberWithOptions(
-                                            signed: true, decimal: true),
-                                    inputBorder: const OutlineInputBorder(),
-                                    onSaved: (PhoneNumber number) {
-                                      print('On Saved: $number');
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                      decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: const Color(0xFFF1F6FB),
-                                          prefixIcon: provider.user.gender == "Female" ?
-                                              Icon(Icons.female_outlined):
-                                          Icon(Icons.male),
-                                          hintText: provider.user.gender??"Male",
-                                          hintStyle: const TextStyle(color: Color(0xFF8189B0)),
-                                          enabledBorder: const OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Colors.white,
-                                              )),
-                                          border: const OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Colors.white,
-                                              ))),
-                                      enabled: false
-                                  ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              EmailInputField(
-                                  hintText: provider.user.email,
-                                  enabled: false),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: pass,
-                                validator: (data) {
-                                  if (data!.isEmpty) {
-                                    return "Field is required";
-                                  }
-                                  if (data.length < 7 && data.length > 0) {
-                                    return "Password must be longer that seven numbers";
-                                  }
-                                },
-                                //onTap: ,
-                                keyboardType: TextInputType.visiblePassword,
-                                obscureText: provider.showPassword,
-                                //focusNode: ,
-                                enableSuggestions: false,
-                                autocorrect: false,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color(0xFFF1F6FB),
-                                  prefixIcon: const Icon(Icons.lock_outlined),
-                                  hintText: "Password",
-                                  hintStyle:
-                                      const TextStyle(color: Color(0xFF8189B0)),
-                                  enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )),
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )),
-                                  suffixIcon: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 4, 0),
-                                    child: GestureDetector(
-                                      //onTap:signupProvider.edit ?userProvider.setShowPassword() :signupProvider.setShowPassword(),
-                                      child: Icon(
-                                        provider.showPassword
-                                            ? Icons.visibility_off_rounded
-                                            : Icons.visibility_rounded,
-                                        size: 24,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: confirmPass,
-                                onChanged: (val) {
-                                  confirmPassword = val;
-                                },
-                                validator: (val) {
-                                  if (val!.isEmpty) {
-                                    return 'Field is required';
-                                  }
-                                  if (val != pass.text) {
-                                    return 'Password must match';
-                                  }
-                                  return null;
-                                },
-                                keyboardType: TextInputType.visiblePassword,
-                                obscureText:  provider.showPassword,
-                                //focusNode: textFieldFocusNode2,
-                                enableSuggestions: false,
-                                autocorrect: false,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color(0xFFF1F6FB),
-                                  prefixIcon: const Icon(Icons.lock_outlined),
-                                  hintText: "Confirm password",
-                                  hintStyle:
-                                      const TextStyle(color: Color(0xFF8189B0)),
-                                  enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )),
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )),
-                                  suffixIcon: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 4, 0),
-                                    child: GestureDetector(
-                                      // onTap:signupProvider.edit?userProvider.setShowPassword() :signupProvider.setShowPassword(),
-                                      child: Icon(provider.showPassword
-                                            ? Icons.visibility_off_rounded
-                                            : Icons.visibility_rounded,
-                                        size: 24,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              CustomButon(
-                                text: "Edit",
-                                onTap: () async {
-
-                                    //Position position = await _locationServices.getCurrentPosition(context);
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                HomeScreen()));
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  )
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+          if (provider.loading)  const LoadingScreen(),
+    ],
       ),
     );
   }

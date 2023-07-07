@@ -135,7 +135,7 @@ class SignUpProvider with ChangeNotifier {
       await uploadPhoto(image!);
     }
     var response =
-    await services.createUser(RegisterationModel(username: name!, phone: phoneNumber!, email: email!, social: false, img: imagePath,   password: password!, gender: ""));
+    await services.createUser(RegisterationModel(username: name!, phone: phoneNumber!, email: email!, social: false, img: imagePath,   password: password!, gender: gender!));
     setLoading(false);
     if (response is Success) {
       await Helper.setToken(response.response as String);

@@ -30,7 +30,6 @@ class ChatProvider with ChangeNotifier {
   init() async {
     setLoading(true);
     await setUser();
-    await getRoom();
 
     await getCurrentUser() ;
     setLoading(false);

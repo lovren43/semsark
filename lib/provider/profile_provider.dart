@@ -16,12 +16,11 @@ class ProfileProvider with ChangeNotifier {
   List<AdvertisementModel> fav = [];
   UserDetails user = UserDetails(id: 1, email: 'email.@email.com',);
   XFile? image ;
-
+  final TextEditingController controller = TextEditingController();
+  final TextEditingController usernameContoller = TextEditingController();
   XFile? userImage;
   XFile? NidImage;
   String errorMsg= "";
-
-
   bool loading = false;
   ProfileServices services = ProfileServices();
   bool showPassword = false;
@@ -33,6 +32,8 @@ class ProfileProvider with ChangeNotifier {
     await getUser();
     await getMyAds();
     await getMyFavourits();
+    controller.text=user.phone!.substring(3);
+    usernameContoller.text=user.username!;
     setLoading(false);
   }
 
@@ -42,6 +43,7 @@ class ProfileProvider with ChangeNotifier {
   Future<void> getUser() async {
     setLoading(true);
     var response = await services.getUser();
+    print(response);
     if (response is Success) {
       user = response.response as UserDetails;
     }
@@ -77,6 +79,21 @@ class ProfileProvider with ChangeNotifier {
     //setLoading(false);
     notifyListeners();
   }
+  Future<void> editProfile() async {
+    setLoading(true);
+    user.phone="+20${controller.text}";
+    user.username=usernameContoller.text;
+      if (image!=null){
+        user.img=await uploadPhoto(image!);
+      }
+    var response = await services.editUser(user);
+    if (response is Success) {
+      success=true;
+    }
+    setLoading(false);
+    notifyListeners();
+  }
+
   Future<void> logout() async {
     setLoading(true);
     var response = await services.logout();
