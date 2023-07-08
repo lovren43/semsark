@@ -201,34 +201,34 @@ class AdvertisementDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 5.0),
-                          AbsorbPointer(
-                            absorbing: true,
-                            child: RatingBar(
-                              initialRating: provider.model!.user.rate,
-                              minRating: 0,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemSize: 20.0,
-                              onRatingUpdate: (rating) {
-                                // Handle rating update if needed
-                              },
-                              ratingWidget: RatingWidget(
-                                full: const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                half: const Icon(
-                                  Icons.star_half,
-                                  color: Colors.amber,
-                                ),
-                                empty: const Icon(
-                                  Icons.star_border,
-                                  color: Colors.amber,
-                                ),
-                              ),
-                            ),
-                          ),
+                          // AbsorbPointer(
+                          //   absorbing: true,
+                          //   child: RatingBar(
+                          //     initialRating: provider.model!.user.rate,
+                          //     minRating: 0,
+                          //     direction: Axis.horizontal,
+                          //     allowHalfRating: true,
+                          //     itemCount: 5,
+                          //     itemSize: 20.0,
+                          //     onRatingUpdate: (rating) {
+                          //       // Handle rating update if needed
+                          //     },
+                          //     ratingWidget: RatingWidget(
+                          //       full: const Icon(
+                          //         Icons.star,
+                          //         color: Colors.amber,
+                          //       ),
+                          //       half: const Icon(
+                          //         Icons.star_half,
+                          //         color: Colors.amber,
+                          //       ),
+                          //       empty: const Icon(
+                          //         Icons.star_border,
+                          //         color: Colors.amber,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

@@ -427,24 +427,23 @@ class PersonalInfoScreen extends StatelessWidget {
                               CustomButon(
                                 text: "Sign Up",
                                 onTap: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    if (await signupProvider.createUser()) {
-                                      await Provider.of<HomeProvider>(
-                                          context, listen: false).init();
-                                      await Provider.of<ProfileProvider>(
-                                          context, listen: false).init();
-                                      //await Provider.of<ChatProvider>(context, listen: false).init();
-                                      await Provider.of<
-                                          CreateAdvertisementProvider>(
-                                          context, listen: false).init();
-                                      //Position position = await _locationServices.getCurrentPosition(context);
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomeScreen()));
-                                    }
+                                  if (await signupProvider.createUser()) {
+                                    await Provider.of<HomeProvider>(
+                                        context, listen: false).init();
+                                    await Provider.of<ProfileProvider>(
+                                        context, listen: false).init();
+                                    //await Provider.of<ChatProvider>(context, listen: false).init();
+                                    await Provider.of<
+                                        CreateAdvertisementProvider>(
+                                        context, listen: false).init();
+                                    //Position position = await _locationServices.getCurrentPosition(context);
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen()));
                                   }
+
                                 },
                               ),
                               const SizedBox(
