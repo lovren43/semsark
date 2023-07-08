@@ -78,6 +78,9 @@ class ChatProvider with ChangeNotifier {
     var response = await services.getChatUser();
     if (response is Success) {
       chatUsers = response.response as List<ChatUsers>;
+      print(chatUsers) ;
+    }else if(response is Failure){
+      print(response.errorResponse);
     }
     notifyListeners();
   }

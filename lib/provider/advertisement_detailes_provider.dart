@@ -39,8 +39,10 @@ class AdvertisementDetailsProvider with ChangeNotifier{
     var res = await services.checkIsFav(id) ;
     isFav = res == "true";
     var response = await services.getRecommendations(id) ;
-    if(response is Success)
+    if(response is Success) {
       recomended = response.response as List<AdvertisementModel> ;
+      recomended.removeWhere((element) => element.category!=model.category);
+    }
     print(recomended);
     notifyListeners() ;
   }

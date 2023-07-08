@@ -15,6 +15,8 @@ import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/screens/home/profile_screen.dart';
 import '../../components/email_input.dart';
 import '../../components/loading_screen.dart';
+import '../../provider/create_ad_provider.dart';
+import '../../provider/home_provider.dart';
 import '../../provider/sign_up_provider.dart';
 import '../home/home_screen.dart';
 
@@ -429,6 +431,10 @@ class PersonalInfoScreen extends StatelessWidget {
 
 
                                   if (await signupProvider.createUser()) {
+                                    await Provider.of<HomeProvider>(context , listen: false).init();
+                                    await Provider.of<ProfileProvider>(context, listen: false).init();
+                                    //await Provider.of<ChatProvider>(context, listen: false).init();
+                                    await Provider.of<CreateAdvertisementProvider>(context, listen: false).init();
                                     //Position position = await _locationServices.getCurrentPosition(context);
                                     Navigator.pushReplacement(
                                         context,

@@ -46,7 +46,7 @@ class ChatDetailPage extends StatelessWidget {
                   width: 40,
                   height: 40,
                   child: CircleAvatar(
-                    backgroundImage:provider.reciver!.image==null||provider.reciver!.image=="string"||provider.reciver!.image==""? AssetImage('assets/images/avtar.png'):null,
+                    backgroundImage:provider.reciver!.image==null||provider.reciver!.image=="string"||provider.reciver!.image==""? const AssetImage('assets/images/avtar.png'):null,
                     foregroundImage:provider.reciver!.image==null||provider.reciver!.image=="string"||provider.reciver!.image==""? null:NetworkImage(provider.reciver!.image),
                     backgroundColor: Colors.white,
                     maxRadius: 30,
@@ -79,61 +79,66 @@ class ChatDetailPage extends StatelessWidget {
             children: [
               provider.chatMessages.isNotEmpty ?
               Expanded(
-                child: ListView.builder(
-                  itemCount: provider.chatMessages.length,
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  controller: _scrollController,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding:
-                          const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
-                      child: Align(
-                        alignment:
-                            (provider.chatMessages[index].receiverEmail != provider.currentUserEmail
-                                ? Alignment.topRight
-                                : Alignment.topLeft),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color:
-                                (provider.chatMessages[index].receiverEmail == provider.currentUserEmail
-                                    ? Colors.grey.shade200
-                                    : Colors.blue[200]),
-                          ),
-                          padding: const EdgeInsets.all(16),
-                          child:Column(
-                            children: [
-                              SizedBox(
-                                // width: width * messages[index].message.length/10,
-                                child: Text(
-                                  provider.chatMessages[index].message,
-                                  style: const TextStyle(fontSize: 15),
-
-                                ),
+                child: Stack(
+                  children: [
+                    ListView.builder(
+                      itemCount: provider.chatMessages.length,
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      controller: _scrollController,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          padding:
+                              const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                          child: Align(
+                            alignment:
+                                (provider.chatMessages[index].receiverEmail != provider.currentUserEmail
+                                    ? Alignment.topRight
+                                    : Alignment.topLeft),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color:
+                                    (provider.chatMessages[index].receiverEmail == provider.currentUserEmail
+                                        ? Colors.grey.shade200
+                                        : Colors.blue[200]),
                               ),
-                              SizedBox(height: 10,),
+                              padding: const EdgeInsets.all(16),
+                              child:Column(
+                                children: [
+                                  SizedBox(
+                                    // width: width * messages[index].message.length/10,
+                                    child: Text(
+                                      provider.chatMessages[index].message,
+                                      style: const TextStyle(fontSize: 15),
 
-                                SizedBox(
-                                  width: width*0.3,
-                                  child: Text(
-                                    provider.chatMessages[index].date,
-                                    style: const TextStyle(fontSize: 10,),
-                                    textAlign: TextAlign.right,
+                                    ),
                                   ),
-                                )
+                                  const SizedBox(height: 10,),
+
+                                    SizedBox(
+                                      width: width*0.3,
+                                      child: Text(
+                                        provider.chatMessages[index].date,
+                                        style: const TextStyle(fontSize: 10,),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
 
 
-                            ],
-                          )
-                        ),
-                      ),
-                    );
-                  },
+                                ],
+                              )
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    if(provider.loading) const LoadingScreen(),
+                  ],
                 ),
               )
               :
-              Expanded(child: Center(child: const Text("No messages yet",textAlign: TextAlign.center,))),
+              const Expanded(child: Center(child: Text("No messages yet",textAlign: TextAlign.center,))),
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Container(

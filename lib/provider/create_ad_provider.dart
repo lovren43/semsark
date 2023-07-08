@@ -30,7 +30,7 @@ class CreateAdvertisementProvider with ChangeNotifier{
 
   //model att
   List<String> photoList = [];
-  var fin_value = "NO" , elevator = "YES" , acceptBusiness = "YES" , acceptSingle = "YES";
+  var fin_value = "NO" , elevator = "NO" , acceptBusiness = "NO" , acceptSingle = "NO";
   var num_of_rooms = 1,
       num_of_bath_rooms = 1,
       num_of_halls = 1,
@@ -116,9 +116,9 @@ class CreateAdvertisementProvider with ChangeNotifier{
   reset(){
     photoList = [];
     fin_value = "NO" ;
-    elevator = "YES" ;
-    acceptBusiness = "YES" ;
-    acceptSingle = "YES";
+    elevator = "NO" ;
+    acceptBusiness = "NO" ;
+    acceptSingle = "NO";
     num_of_rooms = 1;
     num_of_bath_rooms = 1;
     num_of_halls = 1;

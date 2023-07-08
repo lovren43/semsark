@@ -31,7 +31,7 @@ class ChatServices {
         Uri.parse(url),
         headers: headers,
       );
-      print(response.toString());
+      print(response.body);
       if (response.statusCode == 200) {
         return Success(code: 200, response: ChatUsersFromJson(response.body));
       }
