@@ -356,7 +356,7 @@ class FilterScreen extends StatelessWidget {
                             // Perform filtering logic here
                             homeProvider.setFilter(true);
                             homeProvider.advertisements =await  filterProvider.filter() as List<AdvertisementModel>;
-                            print(filterProvider.filter() );
+                            homeProvider.notifyListeners();
                             provider.changePosition(HOME_PAGE);
                             Navigator.pop(context);
                           },
