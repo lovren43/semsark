@@ -22,10 +22,11 @@ class ProfileServices {
     'Accept': "application/json",
   };
 
-  String token = Helper.token;
+  String token = "";
 
   Future deleteAd(id) async
   {
+    token=await Helper.getToken();
     headers['Authorization'] = 'Bearer $token';
     try {
       final http.Response response = await http.delete(
@@ -51,18 +52,48 @@ class ProfileServices {
       return Failure(code: UNKNOWN, errorResponse: e);
     }
   }
+  // Future getUser() async {
+  //   token=await Helper.getToken();
+  //
+  //   String url = '$GET_USER';
+  //   headers['Authorization'] = 'Bearer $token';
+  //   try {
+  //     http.Response response = await http.get(
+  //       Uri.parse(url),
+  //       headers: headers,
+  //     );
+  //     print(response.statusCode);
+  //
+  //     if (response.statusCode == 200) {
+  //       return Success(code: 200, response: userDetailsFromJson(response.body));
+  //     }
+  //     return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+  //   } on HttpException {
+  //     return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+  //   } on FormatException {
+  //     return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+  //   } catch (e) {
+  //     print(e) ;
+  //     return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+  //   }
+  // }
+
+
   Future getUser() async {
-    String url = '$GET_USER';
+    token=await Helper.getToken();
+
     headers['Authorization'] = 'Bearer $token';
     try {
-      http.Response response = await http.get(
-        Uri.parse(url),
+      final http.Response response = await http.get(
+        Uri.parse(GET_USER),
         headers: headers,
       );
-      print(response.statusCode);
-
+      print(response.body);
       if (response.statusCode == 200) {
-        return Success(code: 200, response: userDetailsFromJson(response.body));
+        return Success(
+          code: 200,
+          response: userDetailsFromJson(response.body),
+        );
       }
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
     } on HttpException {
@@ -70,13 +101,15 @@ class ProfileServices {
     } on FormatException {
       return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
     } catch (e) {
-      print(e) ;
+      print(e);
       return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
     }
   }
 
   Future verifyNID(face1 , face2) async
   {
+    token=await Helper.getToken();
+
     headers['Authorization'] = 'Bearer $token';
     try {
       final http.Response response = await http.post(
@@ -103,6 +136,8 @@ class ProfileServices {
     }
   }
   Future getMyAds() async {
+    token=await Helper.getToken();
+
     String url = '$GET_MY_ADS';
     headers['Authorization'] = 'Bearer $token';
     try {
@@ -127,6 +162,8 @@ class ProfileServices {
   }
 
   Future getMyFavs() async {
+    token=await Helper.getToken();
+
     String url = '$GET_MY_FAVS';
     headers['Authorization'] = 'Bearer $token';
     try {
@@ -151,6 +188,8 @@ class ProfileServices {
   }
 
   Future editUser(UserDetails user) async {
+    token=await Helper.getToken();
+
     String url = '$UPDATE_USER';
     headers['Authorization'] = 'Bearer $token';
     try {
@@ -182,6 +221,8 @@ class ProfileServices {
   }
 
   Future logout() async {
+    token=await Helper.getToken();
+
     String url = '$SIGN_OUT';
     headers['Authorization'] = 'Bearer $token';
     try {

@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:semsark/Repo/home_services.dart';
+import 'package:semsark/Repo/profile_service.dart';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/chat/chat_user_model.dart';
 import 'package:semsark/models/response/user_details.dart';
@@ -30,7 +31,6 @@ class ChatProvider with ChangeNotifier {
   init() async {
     setLoading(true);
     await setUser();
-
     await getCurrentUser() ;
     setLoading(false);
   }
@@ -52,7 +52,7 @@ class ChatProvider with ChangeNotifier {
     notifyListeners() ;
   }
   getCurrentUser() async {
-    var response = await HomeServices().getUser() ;
+    var response = await ProfileServices().getUser() ;
     if(response is Success){
       curUser = response.response as UserDetails ;
       currentUserEmail = curUser!.email ;

@@ -36,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if(token!=""){
         String token = await HomeServices().refreshToken() as String;
         await Helper.setToken(token) ;
+        await HomeServices().createFakeAds();
         await Provider.of<HomeProvider>(context , listen: false).init();
         await Provider.of<ProfileProvider>(context, listen: false).init();
         //await Provider.of<ChatProvider>(context, listen: false).init();

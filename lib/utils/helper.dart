@@ -1,9 +1,16 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:semsark/Repo/home_services.dart';
+import 'package:semsark/models/response/advertisement_response_model.dart';
 
+import '../models/request/ad_model.dart';
 import 'constants.dart';
-
+enum Category { SELL, RENT }
+enum SignalPower { VODAFONE, WE }
+enum DailyPrice { DAILY, MONTHLY }
+enum Types { APARTMENT, DUPLEX }
 class Helper {
   static Color blue = const Color(0xff4885c5);
   static Color light_blue = Colors.grey[200]!;
@@ -22,10 +29,14 @@ class Helper {
   static getToken() async {
     var box = await Hive.openBox(MY_BOX) ;
     token = box.get("token") ?? "";
+    return token;
   }
   static setToken(_token) async {
     var box = await Hive.openBox(MY_BOX) ;
     box.put("token" , _token);
     token = _token ;
   }
+
+
+
 }

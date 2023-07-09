@@ -35,6 +35,7 @@ class ProfileProvider with ChangeNotifier {
     controller.text=user.phone==null? "" :user.phone!.substring(3);
     usernameContoller.text=user.username??"";
     setLoading(false);
+
   }
 
   ProfileProvider() {

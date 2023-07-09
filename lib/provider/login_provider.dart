@@ -35,6 +35,7 @@ class LoginProvider with ChangeNotifier {
     setLoading(false);
     if (response is Success) {
       await Helper.setToken(response.response as String);
+      notifyListeners();
 
       success = true;
     } else if (response is Failure) {

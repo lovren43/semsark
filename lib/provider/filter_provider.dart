@@ -45,11 +45,11 @@ class FilterProvider with ChangeNotifier{
         "minArea": areaRangeValue.start,
         "maxArea": areaRangeValue.end,
         "minNumOfRoom": selectedBedrooms+1,
-        "maxNumOfRoom": 20,
+        "maxNumOfRoom": 1000,
         "minNumOfBathroom": selectedBathrooms+1,
-        "maxNumOfBathroom": 20,
+        "maxNumOfBathroom": 1000,
         "minNumOfHalls": selectedHalls+1,
-        "maxNumOfHalls": 20,
+        "maxNumOfHalls": 1000,
         "finished": finished,
         "single": single,
         "acceptBusiness": acceptBusiness
@@ -63,7 +63,6 @@ class FilterProvider with ChangeNotifier{
 
     }
     return [];
-    notifyListeners();
   }
   void resetFilters() {
 

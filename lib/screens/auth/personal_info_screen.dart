@@ -515,9 +515,11 @@ class PersonalInfoScreen extends StatelessWidget {
                   )
                 ],
               ),
+              if(signupProvider.loading)const LoadingScreen() ,
             ],
           ),
         ),
+
       ),
     );
   }

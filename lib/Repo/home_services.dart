@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:semsark/Repo/remote/remote_status.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
 import 'package:semsark/models/response/user_details.dart';
@@ -24,6 +25,8 @@ class HomeServices {
 
 
   Future checkIsFav(id) async {
+    token=await Helper.getToken();
+
     headers['Authorization'] = 'Bearer $token';
     try {
       final http.Response response = await http.get(
@@ -36,7 +39,9 @@ class HomeServices {
     }
   }
   Future refreshToken() async {
-  headers['Authorization'] = 'Bearer $token';
+    token=await Helper.getToken();
+
+    headers['Authorization'] = 'Bearer $token';
 
   final http.Response response = await http.get(
   Uri.parse("$baseURL/token/refresh"),
@@ -46,6 +51,8 @@ class HomeServices {
 }
   Future addToFav(id) async
   {
+    token=await Helper.getToken();
+
     headers['Authorization'] = 'Bearer $token';
 
     try {
@@ -70,6 +77,8 @@ class HomeServices {
   }
   Future removeFromFav(id) async
   {
+    token=await Helper.getToken();
+
     headers['Authorization'] = 'Bearer $token';
     print(token);
     try {
@@ -96,9 +105,11 @@ class HomeServices {
     }
   }
 
-  String token = Helper.token;
+  String token = "";
   Future createAdvertisement(CreateAdvertisementModel model) async
   {
+    token=await Helper.getToken();
+
     headers['Authorization'] = 'Bearer $token';
 
     try {
@@ -125,6 +136,8 @@ class HomeServices {
 
   Future editAdvertisement(AdvertisementModel model) async
   {
+    token=await Helper.getToken();
+
     headers['Authorization'] = 'Bearer $token';
 
     try {
@@ -151,32 +164,72 @@ class HomeServices {
     }
   }
 
-  Future getUser() async {
-    headers['Authorization'] = 'Bearer $token';
-    try {
-      final http.Response response = await http.get(
-        Uri.parse(GET_USER),
-        headers: headers,
+  // Future getUser() async {
+  //   token=await Helper.getToken();
+  //
+  //   headers['Authorization'] = 'Bearer $token';
+  //   try {
+  //     final http.Response response = await http.get(
+  //       Uri.parse(GET_USER),
+  //       headers: headers,
+  //     );
+  //     print(response.body);
+  //     if (response.statusCode == 200) {
+  //       return Success(
+  //         code: 200,
+  //         response: userDetailsFromJson(response.body),
+  //       );
+  //     }
+  //     return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
+  //   } on HttpException {
+  //     return Failure(code: NO_INTERNE, errorResponse: "No Internet");
+  //   } on FormatException {
+  //     return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
+  //   } catch (e) {
+  //     print(e);
+  //     return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+  //   }
+  // }
+  Future createFakeAds()async{
+
+    Random random = Random();
+    List<double> lat=[30.045012, 30.031740,30.037960,30.037980,30.045005, 30.038000,30.037940,30.045020, 30.037900,30.031780];
+    List<double> lng=[31.205260,31.211241,31.210968,31.205260,31.211241,31.210968,31.205260,31.211241,31.210968,31.205260];
+    for (int i = 0; i < 10; i++) {
+      CreateAdvertisementModel ad = CreateAdvertisementModel(
+        signalPower: random.nextBool() ? SignalPower.VODAFONE.name : SignalPower.WE.name,
+        elevator: random.nextBool(),
+        acceptBusiness: random.nextBool(),
+        dailyPrice: random.nextBool() ? DailyPrice.DAILY.name : DailyPrice.MONTHLY.name,
+        title: "Fake Ad #${i + 1}",
+        category: random.nextBool() ? Category.SELL.name : Category.RENT.name,
+        apartmentDetails: "Spacious and modern apartment",
+        city: "Giza",
+        gov: "Dokki",
+        price: random.nextInt(10000000).toDouble(),
+        lng: lng[i], // Giza, Dokki longitude range
+        lat: lat[i], // Giza, Dokki latitude range
+        area: 100,
+        numOfRoom: random.nextInt(4) + 1,
+        numOfBathroom: random.nextInt(3) + 1,
+        numOfHalls: random.nextInt(2) + 1,
+        level: random.nextInt(10) + 1,
+        finished: random.nextBool(),
+        single: random.nextBool(),
+        types: random.nextBool() ? Types.APARTMENT.name : Types.DUPLEX.name, photosList: [],
       );
-      print(response.body);
-      if (response.statusCode == 200) {
-        return Success(
-          code: 200,
-          response: userDetailsFromJson(response.body),
-        );
-      }
-      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
-    } on HttpException {
-      return Failure(code: NO_INTERNE, errorResponse: "No Internet");
-    } on FormatException {
-      return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
-    } catch (e) {
-      print(e);
-      return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
+      await createAdvertisement(ad);
+      print("ad $i created");
     }
   }
 
+   double generateRandomCoordinate(double min, double max) {
+    Random random = Random();
+    return min + (max - min) * random.nextDouble();
+  }
   Future getUserById(id) async {
+    token=await Helper.getToken();
+
     headers['Authorization'] = 'Bearer $token';
     try {
       final http.Response response = await http.get(
@@ -202,6 +255,8 @@ class HomeServices {
   }
 
   Future getAdvertisements() async {
+    token=await Helper.getToken();
+
     try {
       final http.Response response = await http.get(
         Uri.parse(GET_ALL_ADS),
@@ -225,6 +280,8 @@ class HomeServices {
     }
   }
   Future getRecommendations(id) async {
+    token=await Helper.getToken();
+
     try {
       final http.Response response = await http.post(
         Uri.parse("$GET_RECOMMENDED_ADS$id"),
@@ -248,6 +305,8 @@ class HomeServices {
     }
   }
   Future getAdvertisementById( id ) async {
+    token=await Helper.getToken();
+
     // String token = await getToken();
     headers['Authorization'] = 'Bearer $token';
     try {
@@ -272,6 +331,8 @@ class HomeServices {
     }
   }
   Future filter(data) async {
+    token=await Helper.getToken();
+
     // String token = await getToken();
     headers['Authorization'] = 'Bearer $token';
     try {
@@ -281,10 +342,9 @@ class HomeServices {
           body: jsonEncode(data)
       );
       if (response.statusCode == 200) {
-        List<AdvertisementModel>list=[];
         return Success(
           code: 200,
-          response: jsonDecode(response.body).length==0||jsonDecode(response.body)==[]? list:allAdvertisementFromJson(response.body),
+          response:  allAdvertisementFromJson(response.body),
         );
       }
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
