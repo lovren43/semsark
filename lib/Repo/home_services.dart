@@ -197,7 +197,7 @@ class HomeServices {
     List<double> lng=[31.205260,31.211241,31.210968,31.205260,31.211241,31.210968,31.205260,31.211241,31.210968,31.205260];
     for (int i = 0; i < 10; i++) {
       CreateAdvertisementModel ad = CreateAdvertisementModel(
-        signalPower: random.nextBool() ? SignalPower.VODAFONE.name : SignalPower.WE.name,
+        signalPower: random.nextBool() ? SignalPower.Vodafone.name : SignalPower.WE.name,
         elevator: random.nextBool(),
         acceptBusiness: random.nextBool(),
         dailyPrice: random.nextBool() ? DailyPrice.DAILY.name : DailyPrice.MONTHLY.name,

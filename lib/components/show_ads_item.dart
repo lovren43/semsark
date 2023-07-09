@@ -142,10 +142,16 @@ class AdItem extends StatelessWidget {
                         style: Helper.textStyle,
                       ),
                       if(model!.category=="RENT")
-                        Text(
-                          "/${model!.dailyPrice.toUpperCase()}",
-                          //"MONTHLY",
-                          style: Helper.stlye,
+                        SizedBox(
+                          child: Text(
+                            "/${model!.dailyPrice.toUpperCase()}",
+                            //"MONTHLY",
+
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 10,
+                            ),
+                          ),
                         ),
                     ],
                   ),

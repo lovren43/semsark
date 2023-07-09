@@ -1,20 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:semsark/models/response/advertisement_response_model.dart';
-import 'package:semsark/provider/filter_provider.dart';
-import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/screens/home/home_screen.dart';
 import 'package:semsark/utils/constants.dart';
 
+import '../../provider/home_provider.dart';
 import '../../utils/helper.dart';
 
-class FilterScreen extends StatelessWidget {
+class FilterScreen extends StatefulWidget {
+  @override
+  State<FilterScreen> createState() => _FilterScreenState();
+}
+
+class _FilterScreenState extends State<FilterScreen> {
+  final Map<int, String> selection = {
+    0: '1',
+    1: '2',
+    2: '3+',
+  };
+
+  int selectedBedrooms = 0;
+  int selectedBathrooms = 0;
+  int selectedHalls = 0;
+
+  int maxSelectedBedrooms = 1000;
+  int maxSelectedBathrooms = 1000;
+  int maxSelectedHalls = 1000;
+
+  RangeValues priceRangeValue = const RangeValues(0.0, 200000000);
+  RangeValues areaRangeValue = const RangeValues(0.0, 50000);
+
+  List<String> selectedPropertyTypes = [];
+  bool finished = false;
+  bool single = false;
+  bool elevator = false;
+  bool acceptBusiness = false;
+  List<bool> isSelected = [true, false];
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var homeProvider = Provider.of<HomeProvider>(context);
-    var filterProvider = Provider.of<FilterProvider>(context);
-    var provider = Provider.of<HomeProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -25,8 +49,9 @@ class FilterScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed:(){
-              homeProvider.setFilter(false);
-              filterProvider.resetFilters();
+              setState(() {
+                resetFilters();
+              });
             },
             style: TextButton.styleFrom(
               foregroundColor: Colors.black,
@@ -38,7 +63,6 @@ class FilterScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: (){
-            //provider.changePosition(HOME_PAGE);
             Navigator.pop(context);
           },
         ),
@@ -65,15 +89,16 @@ class FilterScreen extends StatelessWidget {
                           selectedColor: Colors.white,
                           fillColor: Helper.blue,
                           onPressed: (int index) {
-                            for (int i = 0;
-                                i < filterProvider.isSelected.length;
-                                i++) {
-                              filterProvider.isSelected[i] = i == index;
-                            }
-                            filterProvider.notifyListeners();
+                            setState(() {
+                              for (int i = 0;
+                              i < isSelected.length;
+                              i++) {
+                                isSelected[i] = i == index;
+                              }
+                            });
 
                           },
-                          isSelected: filterProvider.isSelected,
+                          isSelected: isSelected,
                           children: [
                             SizedBox(
                               width: width / 4,
@@ -106,25 +131,21 @@ class FilterScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: filterProvider.selection.entries.map((entry) {
+                        children: selection.entries.map((entry) {
                           return OutlinedButton(
                             onPressed: () {
-                              if(entry.key==3){
-                                filterProvider.setRoomMore(true);
-                              }else{
-                                filterProvider.setRoomMore(false);
-
-                              }
-                              filterProvider.setBedRooms(entry.key);
-
+                              setState(() {
+                                selectedBedrooms = entry.key;
+                                maxSelectedBedrooms = entry.key==2? 1000 : entry.key;
+                              });
                             },
                             style: OutlinedButton.styleFrom(
                               foregroundColor:
-                                  filterProvider.selectedBedrooms == entry.key
+                                  selectedBedrooms == entry.key
                                       ? Colors.white
                                       : Colors.black,
                               backgroundColor:
-                                  filterProvider.selectedBedrooms == entry.key
+                                  selectedBedrooms == entry.key
                                       ? Helper.blue
                                       : Colors.white,
                             ),
@@ -132,19 +153,6 @@ class FilterScreen extends StatelessWidget {
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 12),
-                      filterProvider.roomMore ?
-                      TextFormField(
-                        onChanged: (data) {
-                          filterProvider.setBedRooms(data.isEmpty?0:int.parse(data));
-                        },
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Color(0xFFf1f6fb),
-                          label: Text("Number of bedroom"),
-                        ),
-                      )
-                          :Text(""),
                       const SizedBox(height: 12),
                       const Text(
                         "Bathrooms",
@@ -154,25 +162,23 @@ class FilterScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children:
-                            filterProvider.selection.entries.map((entry) {
+                            selection.entries.map((entry) {
                           return OutlinedButton(
                             onPressed: () {
-                              if(entry.key==3){
-                                filterProvider.setBathMore(true);
-                              }else{
-                                filterProvider.setBathMore(false);
+                              setState(() {
+                                selectedBathrooms = entry.key;
+                                maxSelectedBathrooms = entry.key==2? 1000 : entry.key;
 
-                              }
-                              filterProvider.setBathRooms(entry.key);
+                              });
 
                             },
                             style: OutlinedButton.styleFrom(
                               foregroundColor:
-                                  filterProvider.selectedBathrooms == entry.key
+                                  selectedBathrooms == entry.key
                                       ? Colors.white
                                       : Colors.black,
                               backgroundColor:
-                                  filterProvider.selectedBathrooms == entry.key
+                                  selectedBathrooms == entry.key
                                       ? Helper.blue
                                       : Colors.white,
                             ),
@@ -180,21 +186,6 @@ class FilterScreen extends StatelessWidget {
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 12),
-                      filterProvider.bathMore ?
-
-                         TextFormField(
-                           onChanged: (data) {
-                             filterProvider.setBathRooms(data.isEmpty?0:int.parse(data));
-                           },
-                           decoration: const InputDecoration(
-                             filled: true,
-                             fillColor: Color(0xFFf1f6fb),
-                             label: Text("Number of bathroom"),
-                           ),
-                         )
-                        :Text(""),
-
                       const SizedBox(height: 12),
                       const Text(
                         "Halls",
@@ -203,25 +194,22 @@ class FilterScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: filterProvider.selection.entries.map((entry) {
+                        children: selection.entries.map((entry) {
                           return OutlinedButton(
                             onPressed: () {
-                              if(entry.key==3){
-                                filterProvider.setHallsMore(true);
-                              }else{
-                                filterProvider.setHallsMore(false);
-
-                              }
-                              filterProvider.setHalls(entry.key);
+                              setState(() {
+                                selectedHalls = entry.key;
+                                maxSelectedHalls = entry.key==2? 1000 : entry.key;
+                              });
 
                             },
                             style: OutlinedButton.styleFrom(
                               foregroundColor:
-                                  filterProvider.selectedHalls == entry.key
+                                  selectedHalls == entry.key
                                       ? Colors.white
                                       : Colors.black,
                               backgroundColor:
-                                  filterProvider.selectedHalls == entry.key
+                                  selectedHalls == entry.key
                                       ? Helper.blue
                                       : Colors.white,
                             ),
@@ -230,20 +218,6 @@ class FilterScreen extends StatelessWidget {
                         }).toList(),
                       ),
                       const SizedBox(height: 12),
-                      filterProvider.hallsMore ?
-
-                      TextFormField(
-                        onChanged: (data) {
-                          filterProvider.setHalls(data.isEmpty?0:int.parse(data));
-                        },
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Color(0xFFf1f6fb),
-                          label: Text("Number of halls"),
-                        ),
-                      )
-                          :Text(""),
-                      const SizedBox(height: 12),
                       const Text(
                         "Property Types",
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -251,26 +225,45 @@ class FilterScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       CheckboxListTile(
                         title: const Text("Apartment"),
-                        value: filterProvider.selectedPropertyTypes
+                        value: selectedPropertyTypes
                             .contains('APARTMENT'),
-                        onChanged: (value) {
-                          filterProvider.changeType("apartment") ;
+                        onChanged: (bool? value) {
+                          setState(() {
+                            if(value!){
+                              selectedPropertyTypes.add("APARTMENT") ;
+                            }else {
+                              selectedPropertyTypes.remove("APARTMENT") ;
+
+                            }
+                          });
                         },
                       ),
                       CheckboxListTile(
                         title: const Text("Duplex"),
                         value:
-                            filterProvider.selectedPropertyTypes.contains('duplex'),
+                            selectedPropertyTypes.contains('DUPLEX'),
                         onChanged: (value) {
-                          filterProvider.changeType("duplex");
+                          setState(() {
+                            if(value!){
+                              selectedPropertyTypes.add("DUPLEX") ;
+                            }else {
+                              selectedPropertyTypes.remove("DUPLEX") ;
+                            }
+                          });
                         },
                       ),
                       CheckboxListTile(
                         title: const Text("Studio"),
                         value:
-                            filterProvider.selectedPropertyTypes.contains('studio'),
+                            selectedPropertyTypes.contains('STUDIO'),
                         onChanged: (value) {
-                          filterProvider.changeType("studio");
+                          setState(() {
+                            if(value!){
+                              selectedPropertyTypes.add("STUDIO") ;
+                            }else {
+                              selectedPropertyTypes.remove("STUDIO") ;
+                            }
+                          });
                         },
                       ),
                       const SizedBox(height: 12),
@@ -280,17 +273,19 @@ class FilterScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       RangeSlider(
-                        values: filterProvider.rangeValue,
+                        values: priceRangeValue,
                         min: 0,
-                        max: 5000000,
-                        divisions: 5000000,
+                        max: 200000000,
+                        divisions: 200000000,
                         activeColor: Helper.blue,
                         onChanged: (values) {
-                          filterProvider.setPriceRange(values);
+                          setState(() {
+                            priceRangeValue = values ;
+                          });
                         },
                         labels: RangeLabels(
-                          filterProvider.rangeValue.start.round().toString(),
-                          filterProvider.rangeValue.end.round().toString(),
+                          priceRangeValue.start.round().toString(),
+                          priceRangeValue.end.round().toString(),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -300,17 +295,18 @@ class FilterScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       RangeSlider(
-                        values: filterProvider.areaRangeValue,
+                        values: areaRangeValue,
                         min: 0,
-                        max: 5000,
-                        divisions: 500,
+                        max: 50000,
+                        divisions: 5000,
                         activeColor: Helper.blue,
                         onChanged: (values) {
-                          filterProvider.setAreaRange(values);
-                        },
+                          setState(() {
+                            areaRangeValue = values ;
+                          });                        },
                         labels: RangeLabels(
-                          filterProvider.areaRangeValue.start.round().toString(),
-                          filterProvider.areaRangeValue.end.round().toString(),
+                          areaRangeValue.start.round().toString(),
+                          areaRangeValue.end.round().toString(),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -321,31 +317,46 @@ class FilterScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       CheckboxListTile(
                         title: const Text("Finished"),
-                        value: filterProvider.finished,
+                        value: finished,
                         onChanged: (value) {
-                          filterProvider.setFinished(value) ;
+                          setState(() {
+                            finished = value! ;
+                          });
                         },
                       ),
                       CheckboxListTile(
-                        title: const Text("Single"),
-                        value: filterProvider.single,
+                        title: const Text("Elevator"),
+                        value: elevator,
                         onChanged: (value) {
-                          filterProvider.setSingle(value) ;
+                          setState(() {
+                            elevator = value! ;
+                          });
                         },
                       ),
-                      CheckboxListTile(
-                        title: const Text("Accept Business"),
-                        value: filterProvider.acceptBusiness,
+                      if(isSelected[0])
+                        CheckboxListTile(
+                        title: const Text("Accept Single?"),
+                        value: single,
                         onChanged: (value) {
-                          filterProvider.setAcceptBusiness(value) ;
-
+                          setState(() {
+                            single = value! ;
+                          });                        },
+                      ),
+                      if(isSelected[0])
+                        CheckboxListTile(
+                        title: const Text("Accept Business?"),
+                        value: acceptBusiness,
+                        onChanged: (value) {
+                          setState(() {
+                            acceptBusiness = value! ;
+                          });
                         },
                       ),
                       // CheckboxListTile(
                       //   title: const Text("Elevator"),
-                      //   value: filterProvider.elevator,
+                      //   value: elevator,
                       //   onChanged: (value) {
-                      //     filterProvider.setElevator(value);
+                      //     setElevator(value);
                       //   },
                       // ),
                       const SizedBox(height: 12),
@@ -354,10 +365,26 @@ class FilterScreen extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () async{
                             // Perform filtering logic here
-                            homeProvider.setFilter(true);
-                            homeProvider.advertisements =await  filterProvider.filter() as List<AdvertisementModel>;
-                            homeProvider.notifyListeners();
-                            provider.changePosition(HOME_PAGE);
+                            var data= {
+                              "category": isSelected[0] ? "RENT":"SELL",
+                              "city": "",
+                              "types": selectedPropertyTypes,
+                              "minPrice": priceRangeValue.start,
+                              "maxPrice": priceRangeValue.end,
+                              "minArea": areaRangeValue.start,
+                              "maxArea": areaRangeValue.end,
+                              "minNumOfRoom": selectedBedrooms+1,
+                              "maxNumOfRoom": maxSelectedBedrooms+1,
+                              "minNumOfBathroom": selectedBathrooms+1,
+                              "maxNumOfBathroom": maxSelectedBathrooms+1,
+                              "minNumOfHalls": selectedHalls+1,
+                              "maxNumOfHalls": maxSelectedHalls+1,
+                              "finished": finished,
+                              "single": single,
+                              "acceptBusiness": acceptBusiness
+                            };
+                            await Provider.of<HomeProvider>(context , listen: false)
+                            .filter(data);
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
@@ -388,5 +415,20 @@ class FilterScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void resetFilters() {
+
+    // elevator = false ;
+    selectedBedrooms = 0;
+    selectedBathrooms = 0;
+    selectedHalls = 0;
+    priceRangeValue = const RangeValues(0.0, 200000000);
+    areaRangeValue = const RangeValues(0.0, 50000);
+    selectedPropertyTypes.clear();
+    finished = false;
+    single = false;
+    acceptBusiness = false;
+    isSelected = [true , false] ;
   }
 }

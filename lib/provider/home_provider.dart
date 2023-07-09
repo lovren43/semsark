@@ -18,7 +18,6 @@ class HomeProvider with ChangeNotifier{
 
   // att
   String search="";
-  bool filter = false;
   bool isMap = true;
   bool isLoading = false;
   bool isVerified = false;
@@ -61,10 +60,6 @@ class HomeProvider with ChangeNotifier{
   HomeProvider(){
     init();
   }
-  setFilter(val){
-    filter=val;
-    notifyListeners();
-  }
   changeMap(){
     isMap = !isMap;
     notifyListeners();
@@ -99,30 +94,6 @@ class HomeProvider with ChangeNotifier{
   //Api
   getAllAdvertisement() async {
     setLoading(true);
-    if(filter){
-
-      markers = {} ;
-      final Uint8List markerIcon = await getBytesFromAsset("assets/images/markerm.png", 200);
-
-      setLoading(false);
-      for(int i = 0 ; i<advertisements!.length ; i++){
-        var position = LatLng(
-          double.tryParse('${advertisements![i].lat}')!.toDouble() ,
-          double.tryParse('${advertisements![i].lng}')!.toDouble() ,
-        );
-        markers.add(Marker(markerId: MarkerId("$i"),
-          position: position,
-          icon: BitmapDescriptor.fromBytes(markerIcon),
-          onTap: (){
-            mapController.addInfoWindow!(
-                MapAdvertisementItem(model: advertisements![i],) ,
-                position
-            );
-          },
-        ));
-
-      }
-    }else{
       var response = await services.getAdvertisements();
 
       if(response is Success){
@@ -151,13 +122,18 @@ class HomeProvider with ChangeNotifier{
       }else if (response is Failure){
         errorMsg = response.errorResponse as String;
       }
-    }
     setLoading(false);
-
-    setFilter(false);
   }
 
 
+  filter(data) async {
+    print(data) ;
+    var res= await services.filter(data);
+    if(res is Success){
+      advertisements =  res.response as List<AdvertisementModel>;
+    }
+    notifyListeners();
+  }
   getFilteredAdvertisement() async {
     //setLoading(true);
     markers = {} ;

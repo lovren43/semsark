@@ -8,7 +8,7 @@ import 'package:semsark/models/response/advertisement_response_model.dart';
 import '../models/request/ad_model.dart';
 import 'constants.dart';
 enum Category { SELL, RENT }
-enum SignalPower { VODAFONE, WE }
+enum SignalPower { Vodafone, WE }
 enum DailyPrice { DAILY, MONTHLY }
 enum Types { APARTMENT, DUPLEX }
 class Helper {

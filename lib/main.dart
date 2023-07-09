@@ -12,6 +12,7 @@ import 'package:semsark/provider/home_provider.dart';
 import 'package:semsark/provider/login_provider.dart';
 import 'package:semsark/provider/profile_provider.dart';
 import 'package:semsark/provider/sign_up_provider.dart';
+import 'package:semsark/screens/home/filter_screen.dart';
 import 'package:semsark/screens/splash/splash_screen.dart';
 import 'package:semsark/utils/helper.dart';
 
