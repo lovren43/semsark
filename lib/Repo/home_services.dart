@@ -193,8 +193,8 @@ class HomeServices {
   Future createFakeAds()async{
 
     Random random = Random();
-    List<double> lat=[30.045012, 30.031740,30.037960,30.037980,30.045005, 30.038000,30.037940,30.045020, 30.037900,30.031780];
-    List<double> lng=[31.205260,31.211241,31.210968,31.205260,31.211241,31.210968,31.205260,31.211241,31.210968,31.205260];
+    List<double> lat=[30.045012, 30.031740,30.037960,30.037980,30.045005, 30.038000,30.037840,30.047220, 30.037900,30.031780];
+    List<double> lng=[31.205260,31.211251,31.210968,31.215250,31.211241,31.212978,31.205260,31.211241,31.211948,31.205260];
     for (int i = 0; i < 10; i++) {
       CreateAdvertisementModel ad = CreateAdvertisementModel(
         signalPower: random.nextBool() ? SignalPower.Vodafone.name : SignalPower.WE.name,
@@ -216,7 +216,8 @@ class HomeServices {
         level: random.nextInt(10) + 1,
         finished: random.nextBool(),
         single: random.nextBool(),
-        types: random.nextBool() ? Types.APARTMENT.name : Types.DUPLEX.name, photosList: [],
+        types: random.nextBool() ? Types.APARTMENT.name : Types.DUPLEX.name,
+        photosList: ["https://firebasestorage.googleapis.com/v0/b/gp-semsark.appspot.com/o/haha.jpeg?alt=media&token=bba90df7-0c46-4edd-ade2-0f1ddc8aa307"],
       );
       await createAdvertisement(ad);
       print("ad $i created");
@@ -262,7 +263,7 @@ class HomeServices {
         Uri.parse(GET_ALL_ADS),
         headers: headers,
       );
-
+      print(response.body);
       if (response.statusCode == 200) {
         return Success(
           code: 200,

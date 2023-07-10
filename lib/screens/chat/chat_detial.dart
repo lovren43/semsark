@@ -183,6 +183,9 @@ class ChatDetailPage extends StatelessWidget {
                       FloatingActionButton(
                         onPressed: () {
                           //provider.setReciverEmail(provider.reciver!.email);
+                          DateTime currentDate = DateTime.now();
+                          print(currentDate);
+                          String formattedDate = DateFormat('dd-MM-yyyy HH:mm:ss').format(currentDate);
                           provider.setDate(formattedDate);
                           provider.setMessage(provider.textEditingController.text);
                           provider.sendMessage();

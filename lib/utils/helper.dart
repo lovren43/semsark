@@ -17,7 +17,7 @@ class Helper {
   static Color light_blue_or = Colors.lightBlueAccent;
   static Color grey = Colors.grey;
   static Color input_field_color = const Color(0xfff1f6fb);
-  static String token = "";
+  //static String token = "";
   static TextStyle textStyle = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
@@ -28,15 +28,33 @@ class Helper {
 
   static getToken() async {
     var box = await Hive.openBox(MY_BOX) ;
-    token = box.get("token") ?? "";
-    return token;
+    return box.get("token") ?? "";
   }
   static setToken(_token) async {
     var box = await Hive.openBox(MY_BOX) ;
     box.put("token" , _token);
-    token = _token ;
   }
 
+  static setEmail(_email) async {
+    var box = await Hive.openBox(MY_BOX) ;
+    box.put("email" , _email);
+  }
+
+  static getEmail() async {
+    var box = await Hive.openBox(MY_BOX) ;
+    return box.get("email") ?? "";
+  }
+
+
+  static setPassword(_pass) async {
+    var box = await Hive.openBox(MY_BOX) ;
+    box.put("pass" , _pass);
+  }
+
+  static getPassword() async {
+    var box = await Hive.openBox(MY_BOX) ;
+    return box.get("pass") ?? "";
+  }
 
 
 }

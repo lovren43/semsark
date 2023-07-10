@@ -317,7 +317,8 @@ class _EditAdScreenState extends State<EditAdScreen> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              Row(
+                              if(provider.model!.category=="RENT")
+                                Row(
                                   children: [
                                     Expanded(
                                       child: Column(

@@ -98,6 +98,7 @@ class HomeProvider with ChangeNotifier{
 
       if(response is Success){
         advertisements = response.response as List<AdvertisementModel> ;
+        print(advertisements);
         markers = {} ;
         final Uint8List markerIcon = await getBytesFromAsset("assets/images/markerm.png", 200);
 

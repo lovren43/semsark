@@ -263,8 +263,8 @@ class SignUpScreen extends StatelessWidget {
                         height: 50,
                         child: CustomButon(
                           text: "DONE",
-                          onTap: () {
-                            // SignUpServices().sendOTP(email!);
+                          onTap: () async {
+                            //await SignUpServices().sendOTP(email!);
                             Navigator.push(
                               context,
                               MaterialPageRoute(

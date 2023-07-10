@@ -21,10 +21,10 @@ class ChatServices {
     'content-Type': 'application/json',
     'Accept': "application/json",
   };
-  String token = Helper.token;
 
   Future getChatUser() async {
     String url = '$GET_CHAT_USER';
+    String token = await Helper.getToken() ;
     headers['Authorization'] = 'Bearer $token';
     try {
       http.Response response = await http.get(
@@ -45,32 +45,10 @@ class ChatServices {
     }
   }
 
-  // Future getReciverEmail(){
-  //    String url = '$VERFIY_EMAIL/$email';
-  //   print(email);
-  //   try {
-  //     http.Response response = await http.get(
-  //         Uri.parse(url),
-  //         headers: headers,
-  //     );
-  //     print(response.toString());
-  //     if (response.statusCode == 200) {
-  //       return Success(
-  //         code: 200,
-  //         response: "",
-  //       );
-  //     }
-  //     return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Data");
-  //   } on HttpException {
-  //     return Failure(code: NO_INTERNE, errorResponse: "No Internet");
-  //   } on FormatException {
-  //     return Failure(code: INVALID_FORMAT, errorResponse: "Invalid Format");
-  //   } catch (e) {
-  //     return Failure(code: UNKNOWN, errorResponse: "Unknown Error");
-  //   }
-  // }
   Future getChatRoom(email) async {
     String url = '$GET_CHAT_ROOM/$email';
+    String token = await Helper.getToken() ;
+
     headers['Authorization'] = 'Bearer $token';
 
     try {
@@ -95,10 +73,10 @@ class ChatServices {
     }
   }
 
-
-
   Future sendChatMessage(message) async {
     String url = '$SEND_MESSAGE';
+    String token = await Helper.getToken() ;
+
     headers['Authorization'] = 'Bearer $token';
     try {
       final http.Response response = await http.post(Uri.parse(url),

@@ -100,7 +100,8 @@ class ProfileProvider with ChangeNotifier {
     var response = await services.logout();
     if (response is Success) {
       await Helper.setToken("");
-
+      await Helper.setEmail("");
+      await Helper.setPassword("");
     }
     setLoading(false);
     notifyListeners();

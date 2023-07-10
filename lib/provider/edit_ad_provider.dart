@@ -170,6 +170,7 @@ class EditAdProvider with ChangeNotifier{
     model!.price = double.parse(priceController.text);
     model!.area = int.parse(areaController.text);
     model!.dailyPrice = dailyPrice;
+
     model!.apartmentDetails = detailsController.text;
     model!.types = type_val;
     model!.signalPower = signal_val;
@@ -178,6 +179,12 @@ class EditAdProvider with ChangeNotifier{
     model!.numOfBathroom = num_of_bath_rooms ;
     model!.level = num_of_level ;
     model!.numOfHalls = num_of_halls ;
+
+    model!.single = acceptSingle=="YES" ;
+    model!.finished = fin_value=="YES" ;
+    model!.acceptBusiness = acceptBusiness=="YES" ;
+    model!.elevator = elevator=="YES" ;
+
 
     var response = await services.editAdvertisement(model!);
     setLoading(false);

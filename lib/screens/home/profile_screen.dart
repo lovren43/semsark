@@ -391,42 +391,43 @@ class ProfileScreen extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('User Verification'),
-                    content: Text('Your Account is not verified yet'),
-                    actions: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => VerifyUserScreen()),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(primary: Helper.blue),
-                          child: Text('Verify'),
+              if(!provider.user.verifyId!){
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('User Verification'),
+                      content: Text('Your Account is not verified yet'),
+                      actions: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => VerifyUserScreen()),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(primary: Helper.blue),
+                            child: Text('Verify'),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: ElevatedButton.styleFrom(primary: Colors.grey),
-                          child: Text('Later'),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(primary: Colors.grey),
+                            child: Text('Later'),
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
-
+                      ],
+                    );
+                  },
+                );
+              }
             },
             child: Icon(
               provider.user.verifyId == null || !provider.user.verifyId!

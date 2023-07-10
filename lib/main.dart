@@ -22,7 +22,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   //Hive.registerAdapter(LocalAdvertisementAdapter());
-  //await Helper.setToken("");
+  //await Helper.setEmail("");
   runApp(const Semsark());
 }
 

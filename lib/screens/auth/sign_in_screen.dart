@@ -11,6 +11,7 @@ import 'package:semsark/components/loading_screen.dart';
 import 'package:semsark/screens/auth/forget_password_screen.dart';
 import 'package:semsark/screens/auth/sign_up_screen.dart';
 
+import '../../provider/chat_provider.dart';
 import '../../provider/create_ad_provider.dart';
 import '../../provider/home_provider.dart';
 import '../../provider/login_provider.dart';
@@ -151,7 +152,7 @@ class LoginScreen extends StatelessWidget {
                             if (provider.success){
                               await Provider.of<HomeProvider>(context , listen: false).init();
                               await Provider.of<ProfileProvider>(context, listen: false).init();
-                              //await Provider.of<ChatProvider>(context, listen: false).init();
+                              await Provider.of<ChatProvider>(context, listen: false).init();
                               await Provider.of<CreateAdvertisementProvider>(context, listen: false).init();
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomeScreen()));
                             }

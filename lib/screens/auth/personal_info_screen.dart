@@ -56,7 +56,7 @@ class PersonalInfoScreen extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: const Text('Please choose media to select'),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 8,
+              height: MediaQuery.of(context).size.height / 7,
               child: Column(
                 children: [
                   ElevatedButton(

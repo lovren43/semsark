@@ -78,6 +78,7 @@ class SignUpProvider with ChangeNotifier {
     var response = await services.verifyEmail(email);
     setLoading(false);
     if (response is Success) {
+      sendOtp();
       success = true;
     } else if (response is Failure) {
       errorMessage = response.errorResponse as String?;
@@ -139,6 +140,8 @@ class SignUpProvider with ChangeNotifier {
     setLoading(false);
     if (response is Success) {
       await Helper.setToken(response.response as String);
+      await Helper.setEmail(email);
+      await Helper.setPassword(password);
       notifyListeners();
       return true;
     } else if (response is Failure) {
